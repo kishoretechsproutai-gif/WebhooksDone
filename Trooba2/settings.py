@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'CoreApplication',
      "rest_framework",
     "rest_framework_simplejwt",
+    "django_celery_results",
+    "django_celery_beat",
 ]
 
 
@@ -160,4 +162,17 @@ if not ENCRYPTION_KEY:
 # Fernet expects bytes
 ENCRYPTION_KEY = ENCRYPTION_KEY.encode()
 
+
+# ---- Celery (broker = MySQL, results = Django DB) ----
+# Change USER/PASS/HOST/DB to your values
+CELERY_BROKER_URL = "sqla+mysql+pymysql://root:@localhost:3306/troobadata_2"
+CELERY_RESULT_BACKEND = "django-db"
+
+# Celery will import tasks from your views module
+CELERY_IMPORTS = ("CoreApplication.views",)   # e.g. "context_api.views"
+
+# (Optional) small safety tweaks
+CELERY_TASK_TIME_LIMIT = 60 * 30        # 30 min hard time limit
+CELERY_TASK_SOFT_TIME_LIMIT = 60 * 25   # 25 min soft limit
+CELERY_WORKER_CONCURRENCY = 2           # adjust for your VPS
 
