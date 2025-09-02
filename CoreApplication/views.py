@@ -92,7 +92,6 @@ def get_user_from_token(request):
             status=status.HTTP_401_UNAUTHORIZED,
         )
     
-    
 from celery import shared_task
 from decimal import Decimal
 import requests
@@ -100,21 +99,58 @@ from django.conf import settings
 from CoreApplication.models import CompanyUser, Customer, Product, ProductVariant, Order, OrderLineItem
 import logging
 from cryptography.fernet import Fernet
+import time, re, json
 
 logger = logging.getLogger(__name__)
 
+# ---------------- Pagination Helper ----------------
+def fetch_pages(url, headers):
+    """Yield one page of Shopify results at a time (250 records)"""
+    while url:
+        resp = requests.get(url, headers=headers, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+
+        for key, value in data.items():
+            yield value or []
+
+        link = resp.headers.get("Link")
+        if link and 'rel="next"' in link:
+            match = re.search(r'<([^>]+)>; rel="next"', link)
+            url = match.group(1) if match else None
+        else:
+            url = None
+
+        time.sleep(0.5)  # respect Shopify rate limits
+
+
+# ---------------- Webhook Helper ----------------
+def create_webhook(shop_url, token, topic, callback_url):
+    headers = {
+        "X-Shopify-Access-Token": token,
+        "Content-Type": "application/json",
+    }
+    data = {"webhook": {"topic": topic, "address": callback_url, "format": "json"}}
+    resp = requests.post(
+        f"https://{shop_url}/admin/api/2025-01/webhooks.json",
+        headers=headers,
+        data=json.dumps(data),
+        timeout=10,
+    )
+    if resp.status_code not in (200, 201):
+        logger.error(f"❌ Webhook {topic} failed: {resp.text}")
+    else:
+        logger.info(f"✅ Webhook {topic} created")
+    return resp.json()
+
+
+# ---------------- Main Celery Task ----------------
 @shared_task(bind=True, max_retries=3)
 def fetch_shopify_data_task(self, company_user_id):
     try:
-        # Fetch company user row
-        logger.info("Fetching user credentials...")
+        # Credentials
         user = CompanyUser.objects.get(id=company_user_id)
-        logger.info(f"Credentials fetched for user {company_user_id}")
-
-# Decrypt using the correct key
         fernet = Fernet(settings.ENCRYPTION_KEY)
-
-# ✅ Remove .encode()
         access_token = fernet.decrypt(user.shopify_access_token).decode()
         shopify_store_url = fernet.decrypt(user.shopify_store_url).decode()
 
@@ -124,106 +160,119 @@ def fetch_shopify_data_task(self, company_user_id):
         }
 
         # --- Customers ---
-        logger.info("Starting sync: Customers")
-        resp = requests.get(f"https://{shopify_store_url}/admin/api/2025-01/customers.json", headers=headers)
-        for c in resp.json().get("customers", []):
-            Customer.objects.update_or_create(
-                shopify_id=c["id"],
-                defaults={
-                    "company": user,
-                    "email": c.get("email"),
-                    "first_name": c.get("first_name"),
-                    "last_name": c.get("last_name"),
-                    "phone": c.get("phone"),
-                    "created_at": c.get("created_at"),
-                    "updated_at": c.get("updated_at"),
-                    "city": c.get("default_address", {}).get("city"),
-                    "region": c.get("default_address", {}).get("province"),
-                    "country": c.get("default_address", {}).get("country"),
-                    "total_spent": Decimal(c.get("total_spent") or "0.00"),
-                }
-            )
-        logger.info(f"Completed sync: Customers ({len(resp.json().get('customers', []))} records)")
+        url = f"https://{shopify_store_url}/admin/api/2025-01/customers.json?limit=250"
+        for page in fetch_pages(url, headers):
+            for c in page:
+                addr = c.get("default_address") or {}
+                Customer.objects.update_or_create(
+                    shopify_id=c.get("id"),
+                    defaults={
+                        "company": user,
+                        "email": c.get("email"),
+                        "first_name": c.get("first_name"),
+                        "last_name": c.get("last_name"),
+                        "phone": c.get("phone"),
+                        "created_at": c.get("created_at"),
+                        "updated_at": c.get("updated_at"),
+                        "city": addr.get("city"),
+                        "region": addr.get("province"),
+                        "country": addr.get("country"),
+                        "total_spent": Decimal(c.get("total_spent") or "0.00"),
+                    },
+                )
 
         # --- Products & Variants ---
-        logger.info("Starting sync: Products")
-        resp = requests.get(f"https://{shopify_store_url}/admin/api/2025-01/products.json", headers=headers)
-        for p in resp.json().get("products", []):
-            product, _ = Product.objects.update_or_create(
-                shopify_id=p["id"],
-                defaults={
-                    "company": user,
-                    "title": p.get("title"),
-                    "vendor": p.get("vendor"),
-                    "product_type": p.get("product_type"),
-                    "tags": p.get("tags"),
-                    "status": p.get("status"),
-                    "created_at": p.get("created_at"),
-                    "updated_at": p.get("updated_at"),
-                }
-            )
-
-            for v in p.get("variants", []):
-                ProductVariant.objects.update_or_create(
-                    shopify_id=v["id"],
+        url = f"https://{shopify_store_url}/admin/api/2025-01/products.json?limit=250"
+        for page in fetch_pages(url, headers):
+            for p in page:
+                product, _ = Product.objects.update_or_create(
+                    shopify_id=p.get("id"),
                     defaults={
                         "company": user,
-                        "product_id": product.shopify_id,
-                        "title": v.get("title"),
-                        "sku": v.get("sku"),
-                        "price": Decimal(v.get("price") or "0.00"),
-                        "compare_at_price": Decimal(v.get("compare_at_price") or "0.00"),
-                        "cost": Decimal(v.get("cost") or "0.00"),
-                        "inventory_quantity": v.get("inventory_quantity") or 0,
-                        "created_at": v.get("created_at"),
-                        "updated_at": v.get("updated_at"),
-                    }
+                        "title": p.get("title"),
+                        "vendor": p.get("vendor"),
+                        "product_type": p.get("product_type"),
+                        "tags": p.get("tags"),
+                        "status": p.get("status"),
+                        "created_at": p.get("created_at"),
+                        "updated_at": p.get("updated_at"),
+                    },
                 )
-        logger.info(f"Completed sync: Products ({len(resp.json().get('products', []))} records)")
+                for v in p.get("variants") or []:
+                    ProductVariant.objects.update_or_create(
+                        shopify_id=v.get("id"),
+                        defaults={
+                            "company": user,
+                            "product_id": product.shopify_id,
+                            "title": v.get("title"),
+                            "sku": v.get("sku"),
+                            "price": Decimal(v.get("price") or "0.00"),
+                            "compare_at_price": Decimal(v.get("compare_at_price") or "0.00"),
+                            "cost": Decimal(v.get("cost") or "0.00"),
+                            "inventory_quantity": v.get("inventory_quantity") or 0,
+                            "created_at": v.get("created_at"),
+                            "updated_at": v.get("updated_at"),
+                        },
+                    )
 
         # --- Orders & Line Items ---
-        logger.info("Starting sync: Orders")
-        resp = requests.get(f"https://{shopify_store_url}/admin/api/2025-01/orders.json", headers=headers)
-        for o in resp.json().get("orders", []):
-            order, _ = Order.objects.update_or_create(
-                shopify_id=o["id"],
-                defaults={
-                    "company": user,
-                    "customer_id": o.get("customer", {}).get("id"),
-                    "order_number": o.get("order_number"),
-                    "order_date": o.get("created_at"),
-                    "fulfillment_status": o.get("fulfillment_status"),
-                    "financial_status": o.get("financial_status"),
-                    "currency": o.get("currency"),
-                    "total_price": Decimal(o.get("total_price") or "0.00"),
-                    "subtotal_price": Decimal(o.get("subtotal_price") or "0.00"),
-                    "total_tax": Decimal(o.get("total_tax") or "0.00"),
-                    "total_discount": Decimal(o.get("total_discounts") or "0.00"),
-
-                    "created_at": o.get("created_at"),
-                    "updated_at": o.get("updated_at"),
-                }
-            )
-
-            for li in o.get("line_items", []):
-                OrderLineItem.objects.update_or_create(
-                    shopify_line_item_id=li.get("id"),
+        url = f"https://{shopify_store_url}/admin/api/2025-01/orders.json?limit=250&status=any"
+        for page in fetch_pages(url, headers):
+            for o in page:
+                customer_id = o["customer"].get("id") if o.get("customer") else None
+                order, _ = Order.objects.update_or_create(
+                    shopify_id=o.get("id"),
                     defaults={
                         "company": user,
-                        "order_id": order.shopify_id,
-                        "product_id": li.get("product_id"),
-                        "variant_id": li.get("variant_id"),
-                        "quantity": li.get("quantity") or 0,
-                        "price": Decimal(li.get("price") or "0.00"),
-                        "discount_allocated": Decimal(li.get("total_discount") or "0.00"),
-                        "total": Decimal((Decimal(li.get("price") or 0) * (li.get("quantity") or 0))),
-                    }
+                        "customer_id": customer_id,
+                        "order_number": o.get("order_number"),
+                        "order_date": o.get("created_at"),
+                        "fulfillment_status": o.get("fulfillment_status"),
+                        "financial_status": o.get("financial_status"),
+                        "currency": o.get("currency"),
+                        "total_price": Decimal(o.get("total_price") or "0.00"),
+                        "subtotal_price": Decimal(o.get("subtotal_price") or "0.00"),
+                        "total_tax": Decimal(o.get("total_tax") or "0.00"),
+                        "total_discount": Decimal(o.get("total_discounts") or "0.00"),
+                        "created_at": o.get("created_at"),
+                        "updated_at": o.get("updated_at"),
+                    },
                 )
-        logger.info(f"Completed sync: Orders ({len(resp.json().get('orders', []))} records)")
+                for li in o.get("line_items") or []:
+                    OrderLineItem.objects.update_or_create(
+                        shopify_line_item_id=li.get("id"),
+                        defaults={
+                            "company": user,
+                            "order_id": order.shopify_id,
+                            "product_id": li.get("product_id"),
+                            "variant_id": li.get("variant_id"),
+                            "quantity": li.get("quantity") or 0,
+                            "price": Decimal(li.get("price") or "0.00"),
+                            "discount_allocated": Decimal(li.get("total_discount") or "0.00"),
+                            "total": Decimal((Decimal(li.get("price") or 0) * (li.get("quantity") or 0))),
+                        },
+                    )
+
+        # --- Webhook Registration ---
+        topics = [
+            "customers/create",
+            "customers/update",
+            "products/create",
+            "products/update",
+            "products/delete",
+            "orders/create",
+            "orders/updated",
+        ]
+        for topic in topics:
+            callback = f"{settings.WEBHOOK_BASE_URL}/webhooks/{topic.replace('/', '_')}/"
+            create_webhook(shopify_store_url, access_token, topic, callback)
 
     except Exception as e:
         logger.error(f"❌ Error syncing Shopify data for user {company_user_id}: {e}")
         self.retry(exc=e, countdown=60)
+
+
+
 
 
 
