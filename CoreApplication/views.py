@@ -199,7 +199,9 @@ def fetch_shopify_data_task(self, company_user_id):
                     "subtotal_price": Decimal(o.get("subtotal_price") or "0.00"),
                     "total_tax": Decimal(o.get("total_tax") or "0.00"),
                     "total_discount": Decimal(o.get("total_discounts") or "0.00"),
-                    "location_id": o.get("location_id"),
+
+                    "created_at": o.get("created_at"),
+                    "updated_at": o.get("updated_at"),
                 }
             )
 

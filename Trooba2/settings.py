@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-xu43%*_fq@xqe1e=dr($&h3n7mkc*t^_g+*w*($uvfrjt$u%de'
+import os
+from dotenv import load_dotenv
+load_dotenv()
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,12 +83,17 @@ WSGI_APPLICATION = 'Trooba2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'troobadata_2',
-        'USER': 'root',
-        'PASSWORD': '',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
         'HOST': 'localhost',  # Or the IP address of your MySQL server
         'PORT': '3306',       # The default MySQL port
     }
@@ -153,9 +162,11 @@ SIMPLE_JWT = {
 
 
 import os
+from dotenv import load_dotenv
+
 
 # Read the Fernet key from env (must be the base64 string you generated)
-ENCRYPTION_KEY = "JUjIy9M1ax9cDHr0iDeEKj-Rd-rAmesqVid5eSgAM8w="
+ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
 #os.environ.get("TROOBA_ENC_KEY") 
 if not ENCRYPTION_KEY:
     raise RuntimeError("TROOBA_ENC_KEY is not set in environment variables.")
@@ -165,7 +176,7 @@ ENCRYPTION_KEY = ENCRYPTION_KEY.encode()
 
 # ---- Celery (broker = MySQL, results = Django DB) ----
 # Change USER/PASS/HOST/DB to your values
-CELERY_BROKER_URL = "sqla+mysql+pymysql://root:@localhost:3306/troobadata_2"
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL") 
 CELERY_RESULT_BACKEND = "django-db"
 
 # Celery will import tasks from your views module

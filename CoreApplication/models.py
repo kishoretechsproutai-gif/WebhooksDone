@@ -107,11 +107,8 @@ class Order(models.Model):
     subtotal_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     total_tax = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     total_discount = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-
-    location_id = models.BigIntegerField(null=True, blank=True)  # Shopify location ID
-
-    created_at = models.DateTimeField(null=True, blank=True)  
-    updated_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.CharField(max_length=50,null=True, blank=True)  
+    updated_at = models.CharField(max_length=50,null=True, blank=True)
 
     def __str__(self):
         return f"Order {self.order_number or self.shopify_id}"
