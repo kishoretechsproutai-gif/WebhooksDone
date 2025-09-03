@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+# 'gotrooba.ai','127.0.0.1:8000'
 
 # Application definition
 
@@ -187,3 +187,10 @@ CELERY_TASK_TIME_LIMIT = 60 * 30        # 30 min hard time limit
 CELERY_TASK_SOFT_TIME_LIMIT = 60 * 25   # 25 min soft limit
 CELERY_WORKER_CONCURRENCY = 2           # adjust for your VPS
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # This loads the variables from the .env file
+
+# Now you can access the variable like this:
+WEBHOOK_BASE_URL = os.getenv("WEBHOOK_BASE_URL")
