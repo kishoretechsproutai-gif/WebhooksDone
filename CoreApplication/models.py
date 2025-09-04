@@ -5,12 +5,12 @@ from decimal import Decimal
 
 class CompanyUser(models.Model):
     company = models.CharField(max_length=255, null=True, blank=True)
-    email = models.EmailField(unique=True, null=True, blank=True)
+    email = models.EmailField(max_length=255, unique=True, null=True, blank=True)
     password = models.CharField(max_length=255, null=True, blank=True)
 
     shopify_access_token = models.TextField(blank=True, null=True)
     shopify_store_url = models.TextField(blank=True, null=True)
-
+    webhook_secret = models.CharField(max_length=255, null=True, blank=True)
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
 
@@ -25,17 +25,17 @@ class Customer(models.Model):
     shopify_id = models.BigIntegerField(unique=True, null=True, blank=True)
     company = models.ForeignKey("CompanyUser", on_delete=models.CASCADE, related_name="customers")
 
-    email = models.EmailField(max_length=254, null=True, blank=True)
-    first_name = models.CharField(max_length=100, null=True, blank=True)
-    last_name = models.CharField(max_length=100, null=True, blank=True)
-    phone = models.CharField(max_length=20, null=True, blank=True)
+    email = models.EmailField(max_length=255, null=True, blank=True)
+    first_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True)
+    phone = models.CharField(max_length=255, null=True, blank=True)
 
     created_at = models.DateTimeField(null=True, blank=True)  
     updated_at = models.DateTimeField(null=True, blank=True)
 
     city = models.CharField(max_length=255, null=True, blank=True)
     region = models.CharField(max_length=255, null=True, blank=True)
-    country = models.CharField(max_length=100, null=True, blank=True)
+    country = models.CharField(max_length=255, null=True, blank=True)
     total_spent = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
@@ -50,8 +50,8 @@ class Location(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     region = models.CharField(max_length=255, blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
-    postal_code = models.CharField(max_length=20, blank=True, null=True)
+    country = models.CharField(max_length=255, blank=True, null=True)
+    postal_code = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.name or f"Location {self.shopify_id}"
@@ -68,7 +68,7 @@ class Product(models.Model):
 
     created_at = models.DateTimeField(null=True, blank=True)  
     updated_at = models.DateTimeField(null=True, blank=True)
-    status = models.CharField(max_length=50, blank=True, null=True)
+    status = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.title or f"Product {self.shopify_id}"
@@ -97,18 +97,18 @@ class Order(models.Model):
     shopify_id = models.BigIntegerField(unique=True, null=True, blank=True)
     company = models.ForeignKey("CompanyUser", on_delete=models.CASCADE, related_name="orders")
     customer_id = models.BigIntegerField(null=True, blank=True)  # Shopify customer ID
-    order_number = models.CharField(max_length=100, null=True, blank=True)
+    order_number = models.CharField(max_length=255, null=True, blank=True)
     order_date = models.DateTimeField(null=True, blank=True)
-    fulfillment_status = models.CharField(max_length=50, null=True, blank=True)
-    financial_status = models.CharField(max_length=50, null=True, blank=True)
-    currency = models.CharField(max_length=10, default="USD")
+    fulfillment_status = models.CharField(max_length=255, null=True, blank=True)
+    financial_status = models.CharField(max_length=255, null=True, blank=True)
+    currency = models.CharField(max_length=255, default="USD")
 
     total_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     subtotal_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     total_tax = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     total_discount = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    created_at = models.CharField(max_length=50,null=True, blank=True)  
-    updated_at = models.CharField(max_length=50,null=True, blank=True)
+    created_at = models.CharField(max_length=255, null=True, blank=True)  
+    updated_at = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return f"Order {self.order_number or self.shopify_id}"
@@ -132,7 +132,7 @@ class OrderLineItem(models.Model):
 class Prompt(models.Model):
     company = models.ForeignKey("CompanyUser", on_delete=models.CASCADE, related_name="prompts")
     prompt = models.TextField(null=True, blank=True)
-    type = models.CharField(max_length=50, blank=True, null=True)
+    type = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.prompt[:50] if self.prompt else "Prompt"

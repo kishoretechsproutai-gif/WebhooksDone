@@ -194,3 +194,29 @@ load_dotenv()  # This loads the variables from the .env file
 
 # Now you can access the variable like this:
 WEBHOOK_BASE_URL = os.getenv("WEBHOOK_BASE_URL")
+
+
+
+
+
+
+import os
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django-error.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
