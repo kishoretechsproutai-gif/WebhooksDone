@@ -195,6 +195,14 @@ load_dotenv()  # This loads the variables from the .env file
 # Now you can access the variable like this:
 WEBHOOK_BASE_URL = os.getenv("WEBHOOK_BASE_URL")
 
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    "fetch-collections-every-day": {
+        "task": "CoreApplication.views.fetch_collections_for_all_users",
+        "schedule": crontab(minute=0, hour=0),  # runs every day at midnight
+    },
+}
 
 
 
@@ -219,4 +227,5 @@ LOGGING = {
             'propagate': True,
         },
     },
+    
 }

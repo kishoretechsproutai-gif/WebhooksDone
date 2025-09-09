@@ -19,7 +19,7 @@ from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from cryptography.fernet import Fernet
 from celery import shared_task
 from CoreApplication.models import (
-    CompanyUser, Customer, Product, ProductVariant, Order, OrderLineItem
+    CompanyUser, Customer, Product, ProductVariant, Order, OrderLineItem ,Prompt
 )
 import secrets
 
@@ -102,9 +102,6 @@ def generate_date_ranges(start_date_str="2015-01-01", window_days=4):
 
 # ---------------- Webhook Helper ----------------
 def create_webhook(shop_url, token, topic, callback_url, secret=None):
-    """
-    Creates Shopify webhook. Optionally sets webhook_secret in DB.
-    """
     logger.info(f"🔔 Creating webhook for topic={topic} at {callback_url}")
     headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
     data = {"webhook": {"topic": topic, "address": callback_url, "format": "json"}}
@@ -123,14 +120,13 @@ def create_webhook(shop_url, token, topic, callback_url, secret=None):
 def fetch_shopify_data_task(self, company_user_id):
     logger.info(f"🚀 Starting Shopify sync for company_user_id={company_user_id}")
     try:
-        # ---------------- Decrypt user info ----------------
         user = CompanyUser.objects.get(id=company_user_id)
         fernet = Fernet(settings.ENCRYPTION_KEY)
         access_token = fernet.decrypt(user.shopify_access_token.encode()).decode()
         shopify_store_url = fernet.decrypt(user.shopify_store_url.encode()).decode()
         headers = {"X-Shopify-Access-Token": access_token, "Content-Type": "application/json"}
 
-        # ---------------- Customers ----------------
+        # Customers
         url = f"https://{shopify_store_url}/admin/api/2025-01/customers.json?limit=250"
         for page_no, page in enumerate(fetch_pages(url, headers), start=1):
             for c in page:
@@ -146,13 +142,13 @@ def fetch_shopify_data_task(self, company_user_id):
                         "created_at": c.get("created_at"),
                         "updated_at": c.get("updated_at"),
                         "city": sanitize_text(remove_emoji(addr.get("city"))),
-                        "region": sanitize_text(remove_emoji(addr.get("province"))),
+                        "region": sanitize_text(remove_emoji(addr.get("province"))),  # <-- region added
                         "country": sanitize_text(remove_emoji(addr.get("country"))),
                         "total_spent": sanitize_decimal(c.get("total_spent")),
                     },
                 )
 
-        # ---------------- Products & Variants ----------------
+        # Products & Variants
         url = f"https://{shopify_store_url}/admin/api/2025-01/products.json?limit=250"
         for page_no, page in enumerate(fetch_pages(url, headers), start=1):
             for p in page:
@@ -186,12 +182,13 @@ def fetch_shopify_data_task(self, company_user_id):
                         },
                     )
 
-        # ---------------- Orders ----------------
+        # Orders
         url = f"https://{shopify_store_url}/admin/api/2025-01/orders.json?limit=250&status=any"
         total_orders = 0
         for page_no, page in enumerate(fetch_pages(url, headers), start=1):
             for o in page:
                 customer_id = o.get("customer", {}).get("id") if o.get("customer") else None
+                addr = o.get("billing_address") or {}
                 order, _ = Order.objects.update_or_create(
                     shopify_id=o.get("id"),
                     defaults={
@@ -208,6 +205,7 @@ def fetch_shopify_data_task(self, company_user_id):
                         "total_discount": sanitize_decimal(o.get("total_discounts")),
                         "created_at": o.get("created_at"),
                         "updated_at": o.get("updated_at"),
+                        "region": sanitize_text(remove_emoji(addr.get("country"))),  # <-- region added here
                     },
                 )
                 for li in o.get("line_items") or []:
@@ -233,7 +231,6 @@ def fetch_shopify_data_task(self, company_user_id):
 
         logger.info(f"🎉 Total orders synced: {total_orders}")
 
-        # ---------------- Webhooks ----------------
         if not user.webhook_secret:
             user.webhook_secret = secrets.token_hex(32)
             user.save()
@@ -279,6 +276,7 @@ def verify_hmac(request, company_user_id):
 def process_webhook_task(company_user_id, topic, payload):
     try:
         if topic in ["customers_create", "customers_update"]:
+            addr = payload.get("default_address") or {}
             Customer.objects.update_or_create(
                 shopify_id=payload.get("id"),
                 defaults={
@@ -286,6 +284,9 @@ def process_webhook_task(company_user_id, topic, payload):
                     "first_name": sanitize_text(remove_emoji(payload.get("first_name"))),
                     "last_name": sanitize_text(remove_emoji(payload.get("last_name"))),
                     "email": sanitize_text(remove_emoji(payload.get("email"))),
+                    "city": sanitize_text(remove_emoji(addr.get("city"))),
+                    "region": sanitize_text(remove_emoji(addr.get("province"))),
+                    "country": sanitize_text(remove_emoji(addr.get("country"))),
                 }
             )
         elif topic in ["products_create", "products_update"]:
@@ -303,6 +304,7 @@ def process_webhook_task(company_user_id, topic, payload):
         elif topic == "products_delete":
             Product.objects.filter(shopify_id=payload.get("id")).delete()
         elif topic in ["orders_create", "orders_updated"]:
+            addr = payload.get("billing_address") or {}
             Order.objects.update_or_create(
                 shopify_id=payload.get("id"),
                 defaults={
@@ -311,6 +313,7 @@ def process_webhook_task(company_user_id, topic, payload):
                     "fulfillment_status": sanitize_text(remove_emoji(payload.get("fulfillment_status"))),
                     "financial_status": sanitize_text(remove_emoji(payload.get("financial_status"))),
                     "currency": sanitize_text(remove_emoji(payload.get("currency"))),
+                    "region": sanitize_text(remove_emoji(addr.get("country"))),
                 }
             )
     except Exception as e:
@@ -321,34 +324,39 @@ def process_webhook_task(company_user_id, topic, payload):
 def shopify_webhook_view(request, company_user_id, topic):
     if request.method != "POST":
         return JsonResponse({"error": "Invalid method"}, status=405)
-    
-    # ---------------- TEMP: Disable HMAC verification for local testing ----------------
-    # if not verify_hmac(request, company_user_id):
-    #     return JsonResponse({"error": "Invalid HMAC"}, status=401)
-    
     try:
         payload = json.loads(request.body.decode())
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON"}, status=400)
-    
     process_webhook_task.delay(company_user_id, topic, payload)
     return HttpResponse(status=200)
-
 
 # ---------------- Register & Login ----------------
 class RegisterView(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         company = sanitize_text(remove_emoji(request.data.get("company")))
         email = sanitize_text(remove_emoji(request.data.get("email")))
         password = request.data.get("password")
+
         if not company or not email or not password:
             return Response({"error": "All fields are required"}, status=status.HTTP_400_BAD_REQUEST)
+
         if CompanyUser.objects.filter(email=email).exists():
             return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create the user
         user = CompanyUser(company=company, email=email)
         user.set_password(password)
         user.save()
+
+        # Create a row in Prompt table with company name
+        Prompt.objects.create(
+            company=company,  # store the company name
+            prompt=f"Welcome prompt for {company}",
+        )
+
         return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
 
 class LoginView(APIView):
@@ -401,3 +409,527 @@ class GetShopifyCredentialsView(APIView):
             return Response({"shopify_access_token": decrypted_token, "shopify_store_url": decrypted_url}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": f"Failed to decrypt credentials: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# Promotional Data Fetching From Excel Sheet
+
+import pandas as pd
+from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import PromotionalData
+
+
+class UploadPromotionalDataView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        user, error_response = get_user_from_token(request)
+        if error_response:
+            return error_response
+        user_id = user.id
+
+        uploaded_file = request.FILES.get('file')
+        if not uploaded_file:
+            return Response({"error": "No file uploaded"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            df = pd.read_excel(uploaded_file)
+            
+            required_columns = [
+                'campaign_name', 'ad_group_name', 'date',
+                'clicks', 'impressions', 'cost', 'conversions',
+                'conversion_value', 'ctr', 'cpc', 'roas'
+            ]
+            
+            missing_columns = [col for col in required_columns if col not in df.columns]
+            if missing_columns:
+                return Response({"error": f"Missing columns: {missing_columns}"}, status=status.HTTP_400_BAD_REQUEST)
+
+            records_created = 0
+            for _, row in df.iterrows():
+                promo = PromotionalData(
+                    user_id=user_id,
+                    campaign_name=row['campaign_name'],
+                    ad_group_name=row['ad_group_name'],
+                    date=pd.to_datetime(row['date']).date(),
+                    clicks=int(row['clicks']),
+                    impressions=int(row['impressions']),
+                    cost=float(row['cost']),
+                    conversions=int(row['conversions']),
+                    conversion_value=float(row['conversion_value']),
+                    ctr=float(row['ctr']),
+                    cpc=float(row['cpc']),
+                    roas=float(row['roas'])
+                )
+                promo.save()
+                records_created += 1
+
+            return Response({"message": f"{records_created} records successfully uploaded."}, status=status.HTTP_201_CREATED)
+        
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# --------------------------------------------------------------------------------
+
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+from .models import CompanyUser, Collection, CollectionItem
+from django.conf import settings
+from cryptography.fernet import Fernet
+from celery import shared_task
+import requests
+import logging
+
+logger = logging.getLogger(__name__)
+
+# ---------------------------
+# Celery Task: Fetch Collections for a Single User
+# ---------------------------
+@shared_task(bind=True)
+def fetch_collections_task(self, company_user_id):
+    """
+    Fetch Shopify collections and products for a given user ID.
+    - Updates or creates Collection and CollectionItem objects.
+    - Fetches product images from Shopify products API.
+    """
+    print("🚀 Starting fetch_collections_task...")
+    logger.info("Fetch collections task started")
+
+    try:
+        # Get the CompanyUser
+        user = CompanyUser.objects.get(id=company_user_id)
+        print(f"🔑 Fetching collections for user: {user.email} (ID: {user.id})")
+
+        # Decrypt Shopify credentials
+        fernet = Fernet(settings.ENCRYPTION_KEY)
+        access_token = fernet.decrypt(user.shopify_access_token.encode()).decode()
+        shopify_store_url = fernet.decrypt(user.shopify_store_url.encode()).decode()
+        print(f"🔐 Decrypted Shopify URL: {shopify_store_url}")
+
+        headers = {
+            "X-Shopify-Access-Token": access_token,
+            "Content-Type": "application/json"
+        }
+
+        # Fetch custom collections from Shopify
+        collections_url = f"https://{shopify_store_url}/admin/api/2025-01/custom_collections.json"
+        print(f"🌐 Sending request to Shopify collections API...")
+        response = requests.get(collections_url, headers=headers)
+        print(f"📦 Shopify response code: {response.status_code}")
+        if response.status_code != 200:
+            print(f"❌ Shopify API error: {response.status_code} {response.text}")
+            return
+
+        collections = response.json().get("custom_collections", [])
+        print(f"📂 Fetched {len(collections)} collections")
+
+        # Loop through collections
+        for c in collections:
+            title = c.get("title")
+            print(f"🔹 Processing collection: {title}")
+
+            collection, created = Collection.objects.update_or_create(
+                shopify_id=c.get("id"),
+                defaults={
+                    "company_id": user.id,
+                    "title": title,
+                    "handle": c.get("handle"),
+                    "updated_at": c.get("updated_at"),
+                    "image_src": c.get("image", {}).get("src") if c.get("image") else None,
+                },
+            )
+            print(f"{'✅ Created' if created else '♻ Updated'} collection '{collection.title}'")
+
+            # Fetch products for this collection
+            collects_url = f"https://{shopify_store_url}/admin/api/2025-01/collects.json?collection_id={collection.shopify_id}"
+            print(f"🛒 Fetching products from: {collects_url}")
+            collects_resp = requests.get(collects_url, headers=headers)
+            print(f"📦 Collects response code: {collects_resp.status_code}")
+            if collects_resp.status_code != 200:
+                print(f"❌ Error fetching products for collection '{collection.title}'")
+                continue
+
+            collects = collects_resp.json().get("collects", [])
+            print(f"📌 Found {len(collects)} products in collection '{collection.title}'")
+
+            for item in collects:
+                product_id = item.get("product_id")
+                print(f"➕ Adding/updating product {product_id} in collection '{collection.title}'")
+
+                # Fetch product details to get image
+                product_url = f"https://{shopify_store_url}/admin/api/2025-01/products/{product_id}.json"
+                product_resp = requests.get(product_url, headers=headers)
+                image_src = None
+
+                if product_resp.status_code == 200:
+                    product_data = product_resp.json().get("product", {})
+                    images = product_data.get("images", [])
+                    if images:
+                        image_src = images[0].get("src")  # take first product image
+
+                # Save or update product in CollectionItem
+                CollectionItem.objects.update_or_create(
+                    collection=collection,
+                    product_id=product_id,
+                    defaults={"image_src": image_src},
+                )
+                print(f"✅ Product {product_id} saved with image {image_src}")
+
+        print("🎉 Collections fetch completed successfully")
+        logger.info("Collections fetch completed successfully")
+
+    except Exception as e:
+        print("❌ Error occurred in fetch_collections_task:", e)
+        logger.error("Error in fetch_collections_task", exc_info=True)
+
+
+# ---------------------------
+# API View: Manual Trigger
+# ---------------------------
+class FetchCollectionsView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        """
+        Manual trigger endpoint to fetch collections for a user.
+        Uses JWT token to identify the user.
+        """
+        user, error_response = get_user_from_token(request)
+        if error_response:
+            return error_response
+
+        print(f"User fetched from token: {user.email} (ID: {user.id})")
+
+        # Call the Celery task asynchronously
+        print("Calling fetch collections task asynchronously...")
+        fetch_collections_task.apply_async(args=[user.id])
+        print("Task has been queued")
+
+        return Response({"message": "Collection fetch started"}, status=status.HTTP_200_OK)
+
+
+# ---------------------------
+# Celery Beat Scheduled Task: Automatic 24-hour Fetch
+# ---------------------------
+
+@shared_task
+def fetch_collections_for_all_users():
+    """
+    Automatic task that runs every 24 hours.
+    - Fetches collections for all users who have Shopify credentials.
+    """
+    users = CompanyUser.objects.filter(shopify_access_token__isnull=False, shopify_store_url__isnull=False)
+    print(f"📅 Running scheduled fetch for {users.count()} users")
+    for user in users:
+        print(f"➡️ Fetching collections for user: {user.email}")
+        fetch_collections_task.apply_async(args=[user.id])
+
+# Collections are fetching but not images . images will be empty in CollectionItem table . Its not important but will do it in Version 2
+
+
+# ===================================================================================================================
+
+import logging
+from celery import shared_task
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+
+from CoreApplication.models import (
+    Order, OrderLineItem, Customer, Collection,
+    CollectionItem, Product, ProductVariant, CompanyUser, PromotionalData
+)
+
+import chromadb
+from sentence_transformers import SentenceTransformer
+
+logger = logging.getLogger(__name__)
+
+# -----------------------------
+# Helper functions to sanitize metadata
+# -----------------------------
+def safe_int(val):
+    return int(val) if val is not None else 0
+
+def safe_float(val):
+    return float(val) if val is not None else 0.0
+
+def safe_str(val):
+    return str(val) if val is not None else ""
+
+def safe_bool(val):
+    return bool(val) if val is not None else False
+
+# -----------------------------
+# Celery Task
+# -----------------------------
+@shared_task(bind=True, max_retries=3)
+def train_vector_db_task(self, company_user_id):
+    logger.info(f"🚀 Starting Vector DB training for company_user_id={company_user_id}")
+
+    try:
+        # Fetch tenant-specific data
+        orders = list(Order.objects.filter(company_id=company_user_id))
+        order_items = list(OrderLineItem.objects.filter(company_id=company_user_id))
+        customers = list(Customer.objects.filter(company_id=company_user_id))
+        collections = list(Collection.objects.filter(company_id=company_user_id))
+        collection_items = list(CollectionItem.objects.filter(collection__company_id=company_user_id))
+        products = list(Product.objects.filter(company_id=company_user_id))
+        variants = list(ProductVariant.objects.filter(company_id=company_user_id))
+        promotions = list(PromotionalData.objects.filter(user_id=company_user_id))
+
+        logger.info(f"📦 Data counts — Orders: {len(orders)}, OrderItems: {len(order_items)}, Customers: {len(customers)}, Collections: {len(collections)}, CollectionItems: {len(collection_items)}, Products: {len(products)}, Variants: {len(variants)}, Promotions: {len(promotions)}")
+
+        # Initialize ChromaDB
+        client = chromadb.PersistentClient(path=f"D:/TROOBA_PRODUCTION/chroma_db/tenant_{company_user_id}")
+        collection_name = f"tenant_{company_user_id}"
+        vector_collection = client.get_or_create_collection(name=collection_name)
+
+        model = SentenceTransformer('all-MiniLM-L6-v2')
+        batch_size = 500
+
+        # -----------------------------
+        # Helper for batch processing
+        # -----------------------------
+        def process_batch(items, get_text_fn, get_metadata_fn, id_prefix):
+            for i in range(0, len(items), batch_size):
+                batch = items[i:i+batch_size]
+                texts = [get_text_fn(obj) for obj in batch]
+                embeddings = model.encode(texts, convert_to_tensor=False)
+                ids = [f"{id_prefix}_{safe_int(obj.id)}" for obj in batch]
+                metadatas = [get_metadata_fn(obj) for obj in batch]
+                vector_collection.add(documents=texts, ids=ids, embeddings=embeddings, metadatas=metadatas)
+                logger.info(f"✅ Batch {i//batch_size + 1}/{(len(items)-1)//batch_size + 1} for {id_prefix} persisted successfully.")
+
+        # -----------------------------
+        # Metadata & Text functions
+        # -----------------------------
+        def order_text(order):
+            return (
+                f"Order ID: {safe_int(order.id)}, Shopify ID: {safe_int(order.shopify_id)}, Company ID: {safe_int(order.company_id)}, "
+                f"Customer ID: {safe_int(order.customer_id)}, Order Number: {safe_str(order.order_number)}, Order Date: {safe_str(order.order_date)}, "
+                f"Fulfillment Status: {safe_str(order.fulfillment_status)}, Financial Status: {safe_str(order.financial_status)}, Currency: {safe_str(order.currency)}, "
+                f"Total Price: {safe_float(order.total_price)}, Subtotal Price: {safe_float(order.subtotal_price)}, Total Tax: {safe_float(order.total_tax)}, Total Discount: {safe_float(order.total_discount)}, "
+                f"Created At: {safe_str(order.created_at)}, Updated At: {safe_str(order.updated_at)}, Region: {safe_str(order.region)}"
+            )
+
+        def order_metadata(order):
+            return {
+                "id": safe_int(order.id),
+                "shopify_id": safe_int(order.shopify_id),
+                "company_id": safe_int(order.company_id),
+                "customer_id": safe_int(order.customer_id),
+                "total_price": safe_float(order.total_price),
+                "subtotal_price": safe_float(order.subtotal_price),
+                "total_tax": safe_float(order.total_tax),
+                "total_discount": safe_float(order.total_discount)
+            }
+
+        def order_item_text(item):
+            return (
+                f"Line Item ID: {safe_int(item.id)}, Shopify Line Item ID: {safe_int(item.shopify_line_item_id)}, Company ID: {safe_int(item.company_id)}, "
+                f"Order ID: {safe_int(item.order_id)}, Product ID: {safe_int(item.product_id)}, Variant ID: {safe_int(item.variant_id)}, "
+                f"Quantity: {safe_int(item.quantity)}, Price: {safe_float(item.price)}, Discount Allocated: {safe_float(item.discount_allocated)}, Total: {safe_float(item.total)}"
+            )
+
+        def order_item_metadata(item):
+            return {
+                "id": safe_int(item.id),
+                "order_id": safe_int(item.order_id),
+                "product_id": safe_int(item.product_id),
+                "variant_id": safe_int(item.variant_id),
+                "quantity": safe_int(item.quantity),
+                "price": safe_float(item.price)
+            }
+
+        def customer_text(customer):
+            return (
+                f"Customer ID: {safe_int(customer.id)}, Shopify ID: {safe_int(customer.shopify_id)}, Company ID: {safe_int(customer.company_id)}, "
+                f"Email: {safe_str(customer.email)}, First Name: {safe_str(customer.first_name)}, Last Name: {safe_str(customer.last_name)}, "
+                f"Phone: {safe_str(customer.phone)}, Created At: {safe_str(customer.created_at)}, Updated At: {safe_str(customer.updated_at)}, "
+                f"City: {safe_str(customer.city)}, Region: {safe_str(customer.region)}, Country: {safe_str(customer.country)}, Total Spent: {safe_float(customer.total_spent)}"
+            )
+
+        def customer_metadata(customer):
+            return {
+                "id": safe_int(customer.id),
+                "company_id": safe_int(customer.company_id),
+                "total_spent": safe_float(customer.total_spent)
+            }
+
+        def collection_text(coll):
+            return f"Collection ID: {safe_int(coll.id)}, Company ID: {safe_int(coll.company_id)}, Shopify ID: {safe_int(coll.shopify_id)}, Title: {safe_str(coll.title)}, Handle: {safe_str(coll.handle)}, Updated At: {safe_str(coll.updated_at)}"
+
+        def collection_metadata(coll):
+            return {
+                "id": safe_int(coll.id),
+                "company_id": safe_int(coll.company_id)
+            }
+
+        def collection_item_text(ci):
+            return f"CollectionItem ID: {safe_int(ci.id)}, Collection ID: {safe_int(ci.collection_id)}, Product ID: {safe_int(ci.product_id)}, Image Src: {safe_str(ci.image_src)}"
+
+        def collection_item_metadata(ci):
+            return {
+                "id": safe_int(ci.id),
+                "collection_id": safe_int(ci.collection_id),
+                "product_id": safe_int(ci.product_id)
+            }
+
+        def product_text(product):
+            return f"Product ID: {safe_int(product.id)}, Shopify ID: {safe_int(product.shopify_id)}, Company ID: {safe_int(product.company_id)}, Title: {safe_str(product.title)}, Vendor: {safe_str(product.vendor)}, Product Type: {safe_str(product.product_type)}, Tags: {safe_str(product.tags)}"
+
+        def product_metadata(product):
+            return {
+                "id": safe_int(product.id),
+                "company_id": safe_int(product.company_id)
+            }
+
+        def variant_text(variant):
+            return f"Variant ID: {safe_int(variant.id)}, Shopify ID: {safe_int(variant.shopify_id)}, Company ID: {safe_int(variant.company_id)}, Product ID: {safe_int(variant.product_id)}, Title: {safe_str(variant.title)}, SKU: {safe_str(variant.sku)}, Price: {safe_float(variant.price)}, Compare At Price: {safe_float(variant.compare_at_price)}, Cost: {safe_float(variant.cost)}, Inventory Quantity: {safe_int(variant.inventory_quantity)}"
+
+        def variant_metadata(variant):
+            return {
+                "id": safe_int(variant.id),
+                "company_id": safe_int(variant.company_id),
+                "product_id": safe_int(variant.product_id),
+                "price": safe_float(variant.price),
+                "compare_at_price": safe_float(variant.compare_at_price),
+                "cost": safe_float(variant.cost),
+                "inventory_quantity": safe_int(variant.inventory_quantity)
+            }
+
+        def promo_text(promo):
+            return f"Promo: {safe_str(promo.campaign_name)}, Clicks: {safe_int(promo.clicks)}, Impressions: {safe_int(promo.impressions)}, Cost: {safe_float(promo.cost)}"
+
+        def promo_metadata(promo):
+            return {
+                "clicks": safe_int(promo.clicks),
+                "impressions": safe_int(promo.impressions),
+                "cost": safe_float(promo.cost),
+                "conversions": safe_int(promo.conversions)
+            }
+
+        # -----------------------------
+        # Process all batches
+        # -----------------------------
+        process_batch(orders, order_text, order_metadata, "order")
+        process_batch(order_items, order_item_text, order_item_metadata, "orderitem")
+        process_batch(customers, customer_text, customer_metadata, "customer")
+        process_batch(collections, collection_text, collection_metadata, "collection")
+        process_batch(collection_items, collection_item_text, collection_item_metadata, "collectionitem")
+        process_batch(products, product_text, product_metadata, "product")
+        process_batch(variants, variant_text, variant_metadata, "variant")
+        process_batch(promotions, promo_text, promo_metadata, "promo")
+
+        logger.info(f"✅ Vector DB training completed for company_user_id={company_user_id}")
+
+    except Exception as exc:
+        logger.error(f"❌ Vector DB training failed for company_user_id={company_user_id}: {exc}", exc_info=True)
+        self.retry(exc=exc, countdown=60)
+
+# -----------------------------
+# API View
+# -----------------------------
+class TrainVectorDBView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        user, error_response = get_user_from_token(request)
+        if error_response:
+            return error_response
+
+        train_vector_db_task.apply_async(args=[user.id])
+        return Response({"message": "Vector DB training started for your account"}, status=status.HTTP_200_OK)
+
+
+# Testing Vector DBfrom django.http import JsonResponse
+
+# views.py
+import chromadb
+from sentence_transformers import SentenceTransformer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+# You can reuse your token helper
+from CoreApplication.models import CompanyUser
+
+
+# -----------------------------
+# API View
+# -----------------------------
+class VectorDBSearchView(APIView):
+    authentication_classes = []  # Or your JWT auth
+    permission_classes = []      # Add permissions as needed
+
+    def post(self, request):
+        user, error_response = get_user_from_token(request)
+        if error_response:
+            return error_response
+
+        query_text = request.data.get("query")
+        if not query_text:
+            return Response({"error": "Query text is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            company_user_id = user.id
+            folder_path = f"D:/TROOBA_PRODUCTION/chroma_db/tenant_{company_user_id}"
+            client = chromadb.PersistentClient(path=folder_path)
+            collection_name = f"tenant_{company_user_id}"
+            vector_collection = client.get_or_create_collection(name=collection_name)
+
+            model = SentenceTransformer('all-MiniLM-L6-v2')
+            query_embedding = model.encode([query_text], convert_to_tensor=False)
+
+            # Build filter for all numeric ID fields across all models
+            numeric_id_filter = {
+                "$or": [
+                    # Orders
+                    {"id": int(query_text)}, {"shopify_id": int(query_text)}, {"customer_id": int(query_text)},
+                    # OrderLineItems
+                    {"id": int(query_text)}, {"order_id": int(query_text)}, {"product_id": int(query_text)}, {"variant_id": int(query_text)},
+                    # Customers
+                    {"id": int(query_text)}, {"shopify_id": int(query_text)},
+                    # Collections
+                    {"id": int(query_text)}, {"shopify_id": int(query_text)},
+                    # CollectionItems
+                    {"id": int(query_text)}, {"collection_id": int(query_text)}, {"product_id": int(query_text)},
+                    # Products
+                    {"id": int(query_text)}, {"shopify_id": int(query_text)},
+                    # ProductVariants
+                    {"id": int(query_text)}, {"shopify_id": int(query_text)}, {"product_id": int(query_text)},
+                    # PromotionalData
+                    {"id": int(query_text)}, {"user_id": int(query_text)},
+                ]
+            }
+
+            results = vector_collection.query(
+                query_embeddings=query_embedding,
+                n_results=1000,  # adjust as needed
+                where=numeric_id_filter,
+                include=["documents", "distances", "metadatas"]
+            )
+
+            matches = []
+            for i, doc in enumerate(results['documents'][0]):
+                matches.append({
+                    "text": doc,
+                    "distance": results['distances'][0][i],
+                    "metadata": results['metadatas'][0][i]
+                })
+
+            return Response({"matches": matches}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -112,3 +112,202 @@ Traceback (most recent call last):
     ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
 django.db.utils.OperationalError: (1054, "Unknown column 'webhook_secret' in 'field list'")
 "POST /Register/ HTTP/1.1" 500 202985
+Internal Server Error: /Register/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\CoreApplication\views.py", line 355, in post
+    Prompt.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        company=company,  # store the company name
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        prompt=f"Welcome prompt for {company}",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        type="default"
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 656, in create
+    obj = self.model(**kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\base.py", line 543, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 266, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "'Tarinika-IN'": "Prompt.company" must be a "CompanyUser" instance.
+"POST /Register/ HTTP/1.1" 500 114908
+Internal Server Error: /Register/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\CoreApplication\views.py", line 355, in post
+    Prompt.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        company=company,  # store the company name
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        prompt=f"Welcome prompt for {company}",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        type="default"
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 656, in create
+    obj = self.model(**kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\base.py", line 543, in __init__
+    _setattr(self, field.name, rel_obj)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 266, in __set__
+    raise ValueError(
+    ...<7 lines>...
+    )
+ValueError: Cannot assign "'Tarinika-IN'": "Prompt.company" must be a "CompanyUser" instance.
+"POST /Register/ HTTP/1.1" 500 114908
+Internal Server Error: /TestVectorDB/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\CoreApplication\views.py", line 790, in test_vector_db
+    all_docs = vector_collection.get(include=["documents", "ids", "embeddings"])
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\models\Collection.py", line 124, in get
+    get_request = self._validate_and_prepare_get_request(
+        ids=ids,
+    ...<2 lines>...
+        include=include,
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\models\CollectionCommon.py", line 95, in wrapper
+    return func(self, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\models\CollectionCommon.py", line 254, in _validate_and_prepare_get_request
+    validate_include(include=include, dissalowed=["distances"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\types.py", line 937, in validate_include
+    raise ValueError(
+        f"Expected include item to be one of {', '.join(valid_items)}, got {item}"
+    )
+ValueError: Expected include item to be one of documents, embeddings, metadatas, distances, uris, data, got ids in get.
+"GET /TestVectorDB/?query=4127560958018 HTTP/1.1" 500 90268
+Internal Server Error: /TestVectorDB/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\CoreApplication\views.py", line 800, in get
+    all_docs = vector_collection.get(include=["documents", "ids"])
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\models\Collection.py", line 124, in get
+    get_request = self._validate_and_prepare_get_request(
+        ids=ids,
+    ...<2 lines>...
+        include=include,
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\models\CollectionCommon.py", line 95, in wrapper
+    return func(self, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\models\CollectionCommon.py", line 254, in _validate_and_prepare_get_request
+    validate_include(include=include, dissalowed=["distances"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\types.py", line 937, in validate_include
+    raise ValueError(
+        f"Expected include item to be one of {', '.join(valid_items)}, got {item}"
+    )
+ValueError: Expected include item to be one of documents, embeddings, metadatas, distances, uris, data, got ids in get.
+"GET /TestVectorDB/?query=4127560958018 HTTP/1.1" 500 117632
+Internal Server Error: /TestVectorDB/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\CoreApplication\views.py", line 800, in get
+    all_docs = vector_collection.get(include=["documents", "ids"])
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\models\Collection.py", line 124, in get
+    get_request = self._validate_and_prepare_get_request(
+        ids=ids,
+    ...<2 lines>...
+        include=include,
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\models\CollectionCommon.py", line 95, in wrapper
+    return func(self, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\models\CollectionCommon.py", line 254, in _validate_and_prepare_get_request
+    validate_include(include=include, dissalowed=["distances"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\chromadb\api\types.py", line 937, in validate_include
+    raise ValueError(
+        f"Expected include item to be one of {', '.join(valid_items)}, got {item}"
+    )
+ValueError: Expected include item to be one of documents, embeddings, metadatas, distances, uris, data, got ids in get.
+"GET /TestVectorDB/?query=4127560958018 HTTP/1.1" 500 117632
+Internal Server Error: /TestVectorDB/
+"GET /TestVectorDB/?query=4127560958018 HTTP/1.1" 500 120
+Internal Server Error: /VectorDBSearch/
+"POST /VectorDBSearch/ HTTP/1.1" 500 45
+Internal Server Error: /VectorDBSearch/
+"POST /VectorDBSearch/ HTTP/1.1" 500 66
