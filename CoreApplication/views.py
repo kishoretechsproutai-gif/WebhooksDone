@@ -271,13 +271,14 @@ def verify_hmac(request, company_user_id):
         logger.error(f"❌ HMAC verification error for company_user_id={company_user_id}: {e}")
         return False
 
-# ---------------- Webhook Task ----------------
+# ---------------- Webhook Task with Vector DB Updates ----------------
 @shared_task
 def process_webhook_task(company_user_id, topic, payload):
     try:
+        # ---------------- Customers ----------------
         if topic in ["customers_create", "customers_update"]:
             addr = payload.get("default_address") or {}
-            Customer.objects.update_or_create(
+            customer_obj, _ = Customer.objects.update_or_create(
                 shopify_id=payload.get("id"),
                 defaults={
                     "company_id": company_user_id,
@@ -289,8 +290,12 @@ def process_webhook_task(company_user_id, topic, payload):
                     "country": sanitize_text(remove_emoji(addr.get("country"))),
                 }
             )
+            # Vector DB incremental update
+            update_customer_vector(customer_obj)
+
+        # ---------------- Products ----------------
         elif topic in ["products_create", "products_update"]:
-            Product.objects.update_or_create(
+            product_obj, _ = Product.objects.update_or_create(
                 shopify_id=payload.get("id"),
                 defaults={
                     "company_id": company_user_id,
@@ -301,11 +306,16 @@ def process_webhook_task(company_user_id, topic, payload):
                     "status": sanitize_text(remove_emoji(payload.get("status"))),
                 }
             )
+            update_product_vector(product_obj)
+
         elif topic == "products_delete":
             Product.objects.filter(shopify_id=payload.get("id")).delete()
+            # Optional: remove from vector DB if needed
+
+        # ---------------- Orders ----------------
         elif topic in ["orders_create", "orders_updated"]:
             addr = payload.get("billing_address") or {}
-            Order.objects.update_or_create(
+            order_obj, _ = Order.objects.update_or_create(
                 shopify_id=payload.get("id"),
                 defaults={
                     "company_id": company_user_id,
@@ -316,8 +326,141 @@ def process_webhook_task(company_user_id, topic, payload):
                     "region": sanitize_text(remove_emoji(addr.get("country"))),
                 }
             )
+            update_order_vector(order_obj)
+
+        # ---------------- Order Line Items ----------------
+        elif topic in ["order_line_items_create", "order_line_items_update"]:
+            line_item_obj, _ = OrderLineItem.objects.update_or_create(
+                shopify_line_item_id=payload.get("id"),
+                defaults={
+                    "company_id": company_user_id,
+                    "order_id": payload.get("order_id"),
+                    "product_id": payload.get("product_id"),
+                    "variant_id": payload.get("variant_id"),
+                    "quantity": payload.get("quantity"),
+                    "price": payload.get("price"),
+                    "discount_allocated": payload.get("discount_allocated"),
+                    "total": payload.get("total")
+                }
+            )
+            update_order_line_item_vector(line_item_obj)
+
+        # ---------------- Product Variants ----------------
+        elif topic in ["product_variants_create", "product_variants_update"]:
+            variant_obj, _ = ProductVariant.objects.update_or_create(
+                shopify_id=payload.get("id"),
+                defaults={
+                    "company_id": company_user_id,
+                    "product_id": payload.get("product_id"),
+                    "title": payload.get("title"),
+                    "sku": payload.get("sku"),
+                    "price": payload.get("price"),
+                    "compare_at_price": payload.get("compare_at_price"),
+                    "cost": payload.get("cost"),
+                    "inventory_quantity": payload.get("inventory_quantity")
+                }
+            )
+            update_variant_vector(variant_obj)
+
+        # ---------------- Collections ----------------
+        elif topic in ["collections_create", "collections_update"]:
+            collection_obj, _ = Collection.objects.update_or_create(
+                shopify_id=payload.get("id"),
+                defaults={
+                    "company_id": company_user_id,
+                    "title": payload.get("title"),
+                    "handle": payload.get("handle"),
+                    "updated_at": payload.get("updated_at"),
+                    "image_src": payload.get("image_src")
+                }
+            )
+            update_collection_vector(collection_obj)
+
+        elif topic == "collections_delete":
+            Collection.objects.filter(shopify_id=payload.get("id")).delete()
+
+        # ---------------- Collection Items ----------------
+        elif topic in ["collection_items_create", "collection_items_update"]:
+            coll_item_obj, _ = CollectionItem.objects.update_or_create(
+                collection_id=payload.get("collection_id"),
+                product_id=payload.get("product_id"),
+                defaults={
+                    "image_src": payload.get("image_src")
+                }
+            )
+            update_collection_item_vector(coll_item_obj)
+
+        # ---------------- Promotional Data ----------------
+        elif topic in ["promotional_data_create", "promotional_data_update"]:
+            promo_obj, _ = PromotionalData.objects.update_or_create(
+                user_id=company_user_id,
+                date=payload.get("date"),
+                campaign_name=payload.get("campaign_name"),
+                ad_group_name=payload.get("ad_group_name"),
+                defaults={
+                    "clicks": payload.get("clicks"),
+                    "impressions": payload.get("impressions"),
+                    "cost": payload.get("cost"),
+                    "conversions": payload.get("conversions"),
+                    "conversion_value": payload.get("conversion_value"),
+                    "ctr": payload.get("ctr"),
+                    "cpc": payload.get("cpc"),
+                    "roas": payload.get("roas"),
+                }
+            )
+            update_promotional_vector(promo_obj)
+
     except Exception as e:
         logger.error(f"❌ Webhook task error ({topic}) for company_user_id={company_user_id}: {e}")
+
+        
+import chromadb
+from sentence_transformers import SentenceTransformer
+
+model = SentenceTransformer('all-MiniLM-L6-v2')  # Initialize once globally for efficiency
+
+def add_or_update_vector(text, metadata, id_prefix, obj_id, company_user_id):
+    folder_path = f"D:/TROOBA_PRODUCTION/chroma_db/tenant_{company_user_id}"
+    client = chromadb.PersistentClient(path=folder_path)
+    collection_name = f"tenant_{company_user_id}"
+    vector_collection = client.get_or_create_collection(name=collection_name)
+
+    vector_collection.add(
+        documents=[text],
+        ids=[f"{id_prefix}_{obj_id}"],
+        embeddings=model.encode([text], convert_to_tensor=False),
+        metadatas=[metadata]
+    )
+
+def update_customer_vector(customer):
+    text = f"Customer ID: {customer.id}, Shopify ID: {customer.shopify_id}, Name: {customer.first_name} {customer.last_name}, Email: {customer.email}, Total Spent: {customer.total_spent}"
+    metadata = {
+        "id": customer.id,
+        "shopify_id": customer.shopify_id,
+        "company_id": customer.company_id,
+        "total_spent": float(customer.total_spent or 0)
+    }
+    add_or_update_vector(text, metadata, "customer", customer.id, customer.company_id)
+
+def update_product_vector(product):
+    text = f"Product ID: {product.id}, Shopify ID: {product.shopify_id}, Title: {product.title}, Vendor: {product.vendor}, Product Type: {product.product_type}, Tags: {product.tags}"
+    metadata = {
+        "id": product.id,
+        "shopify_id": product.shopify_id,
+        "company_id": product.company_id
+    }
+    add_or_update_vector(text, metadata, "product", product.id, product.company_id)
+
+def update_order_vector(order):
+    text = f"Order ID: {order.id}, Shopify ID: {order.shopify_id}, Order Number: {order.order_number}, Total: {order.total_price}, Fulfillment: {order.fulfillment_status}, Financial: {order.financial_status}"
+    metadata = {
+        "id": order.id,
+        "shopify_id": order.shopify_id,
+        "company_id": order.company_id,
+        "total_price": float(order.total_price or 0)
+    }
+    add_or_update_vector(text, metadata, "order", order.id, order.company_id)
+
 
 # ---------------- Webhook View ----------------
 @csrf_exempt
@@ -869,9 +1012,18 @@ from CoreApplication.models import CompanyUser
 # -----------------------------
 # API View
 # -----------------------------
+
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from sentence_transformers import SentenceTransformer
+import chromadb
+from CoreApplication.models import Order
+
 class VectorDBSearchView(APIView):
-    authentication_classes = []  # Or your JWT auth
-    permission_classes = []      # Add permissions as needed
+    authentication_classes = []  # Add JWT auth if needed
+    permission_classes = []      # Add permissions if needed
 
     def post(self, request):
         user, error_response = get_user_from_token(request)
@@ -892,41 +1044,55 @@ class VectorDBSearchView(APIView):
             model = SentenceTransformer('all-MiniLM-L6-v2')
             query_embedding = model.encode([query_text], convert_to_tensor=False)
 
-            # Build filter for all numeric ID fields across all models
             numeric_id_filter = {
                 "$or": [
-                    # Orders
                     {"id": int(query_text)}, {"shopify_id": int(query_text)}, {"customer_id": int(query_text)},
-                    # OrderLineItems
-                    {"id": int(query_text)}, {"order_id": int(query_text)}, {"product_id": int(query_text)}, {"variant_id": int(query_text)},
-                    # Customers
-                    {"id": int(query_text)}, {"shopify_id": int(query_text)},
-                    # Collections
-                    {"id": int(query_text)}, {"shopify_id": int(query_text)},
-                    # CollectionItems
-                    {"id": int(query_text)}, {"collection_id": int(query_text)}, {"product_id": int(query_text)},
-                    # Products
-                    {"id": int(query_text)}, {"shopify_id": int(query_text)},
-                    # ProductVariants
-                    {"id": int(query_text)}, {"shopify_id": int(query_text)}, {"product_id": int(query_text)},
-                    # PromotionalData
-                    {"id": int(query_text)}, {"user_id": int(query_text)},
+                    {"order_id": int(query_text)}, {"product_id": int(query_text)}, {"variant_id": int(query_text)},
+                    {"collection_id": int(query_text)}, {"user_id": int(query_text)}
                 ]
             }
 
             results = vector_collection.query(
                 query_embeddings=query_embedding,
-                n_results=1000,  # adjust as needed
+                n_results=10000,
                 where=numeric_id_filter,
                 include=["documents", "distances", "metadatas"]
             )
 
             matches = []
             for i, doc in enumerate(results['documents'][0]):
+                metadata = results['metadatas'][0][i]
+                order_data = None
+
+                # If order_id exists, look up Order by shopify_id
+                order_id = metadata.get("order_id")
+                if order_id:
+                    try:
+                        order = Order.objects.get(shopify_id=order_id, company_id=company_user_id)
+                        order_data = {
+                            "id": order.id,
+                            "shopify_id": order.shopify_id,
+                            "order_number": order.order_number,
+                            "order_date": str(order.order_date),
+                            "fulfillment_status": order.fulfillment_status,
+                            "financial_status": order.financial_status,
+                            "currency": order.currency,
+                            "total_price": float(order.total_price),
+                            "subtotal_price": float(order.subtotal_price),
+                            "total_tax": float(order.total_tax),
+                            "total_discount": float(order.total_discount),
+                            "region": order.region,
+                            "created_at": str(order.created_at),
+                            "updated_at": str(order.updated_at)
+                        }
+                    except Order.DoesNotExist:
+                        order_data = None
+
                 matches.append({
                     "text": doc,
                     "distance": results['distances'][0][i],
-                    "metadata": results['metadatas'][0][i]
+                    "metadata": metadata,
+                    "order": order_data
                 })
 
             return Response({"matches": matches}, status=status.HTTP_200_OK)

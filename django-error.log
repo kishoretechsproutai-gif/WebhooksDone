@@ -311,3 +311,5 @@ Internal Server Error: /VectorDBSearch/
 "POST /VectorDBSearch/ HTTP/1.1" 500 45
 Internal Server Error: /VectorDBSearch/
 "POST /VectorDBSearch/ HTTP/1.1" 500 66
+Internal Server Error: /VectorDBSearch/
+"POST /VectorDBSearch/ HTTP/1.1" 500 70
