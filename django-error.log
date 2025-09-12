@@ -313,3 +313,559 @@ Internal Server Error: /VectorDBSearch/
 "POST /VectorDBSearch/ HTTP/1.1" 500 66
 Internal Server Error: /VectorDBSearch/
 "POST /VectorDBSearch/ HTTP/1.1" 500 70
+Internal Server Error: /InOrderDetails/
+"POST /InOrderDetails/ HTTP/1.1" 500 59
+Internal Server Error: /InOrderDetails/
+"POST /InOrderDetails/ HTTP/1.1" 500 59
+Internal Server Error: /InOrderDetails/
+"POST /InOrderDetails/ HTTP/1.1" 500 59
+Internal Server Error: /InOrderDetails/
+"POST /InOrderDetails/ HTTP/1.1" 500 59
+Internal Server Error: /InOrderDetails/
+"POST /InOrderDetails/ HTTP/1.1" 500 59
+Internal Server Error: /InOrderDetails/
+"POST /InOrderDetails/ HTTP/1.1" 500 59
+Internal Server Error: /InOrderDetails/
+"POST /InOrderDetails/ HTTP/1.1" 500 59
+Internal Server Error: /InOrderDetails/
+"POST /InOrderDetails/ HTTP/1.1" 500 59
+Internal Server Error: /test-inventory-batch/
+"GET /test-inventory-batch/ HTTP/1.1" 500 66
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 105
+Internal Server Error: /PromotionalExcel/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\utils\deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\middleware\clickjacking.py", line 27, in process_response
+    if response.get("X-Frame-Options") is not None:
+       ^^^^^^^^^^^^
+AttributeError: 'CompanyUser' object has no attribute 'get'
+"POST /PromotionalExcel/ HTTP/1.1" 500 69401
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 105
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 69
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 53
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 62
+Internal Server Error: /test-inventory-batch/
+"GET /test-inventory-batch/ HTTP/1.1" 500 313
+Internal Server Error: /trigger-inventory/
+"GET /trigger-inventory/ HTTP/1.1" 500 75
+Internal Server Error: /trigger-inventory/
+"GET /trigger-inventory/ HTTP/1.1" 500 75
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 154, in get
+    details = get_sku_details(sku, tenant)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 95, in get_sku_details
+    live_data = fetch_live_inventory_from_shopify(sku, tenant)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 23, in fetch_live_inventory_from_shopify
+    shop_url = tenant.shop_url
+               ^^^^^^^^^^^^^^^
+AttributeError: 'CompanyUser' object has no attribute 'shop_url'
+"GET /trigger-inventory/ HTTP/1.1" 500 90882
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 146, in get
+    details = get_sku_details(sku, tenant)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 124, in get_sku_details
+    "name": product.name if product else "",
+            ^^^^^^^^^^^^
+AttributeError: 'Product' object has no attribute 'name'
+"GET /trigger-inventory/ HTTP/1.1" 500 88405
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 146, in get
+    details = get_sku_details(sku, tenant)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 124, in get_sku_details
+    "name": product.name if product else "",
+            ^^^^^^^^^^^^
+AttributeError: 'Product' object has no attribute 'name'
+"GET /trigger-inventory/ HTTP/1.1" 500 88405
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 69, in TriggerInventoryPredictionView
+    app=get_top5_august_2025_variants()
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 15, in get_top5_august_2025_variants
+    august_line_items = OrderLineItem.objects.filter(
+        order__created_at__range=(start_date, end_date)
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'order' into field. Choices are: company, company_id, discount_allocated, id, order_id, price, product_id, quantity, shopify_line_item_id, total, variant_id
+"GET /trigger-inventory/ HTTP/1.1" 500 123751
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 69, in TriggerInventoryPredictionView
+    app=get_top5_august_2025_variants()
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 15, in get_top5_august_2025_variants
+    august_line_items = OrderLineItem.objects.filter(
+        order__created_at__range=(start_date, end_date)
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'order' into field. Choices are: company, company_id, discount_allocated, id, order_id, price, product_id, quantity, shopify_line_item_id, total, variant_id
+"GET /trigger-inventory/ HTTP/1.1" 500 123751
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 115, in TriggerInventoryPredictionView
+    top_variants = get_top5_august_2025_variants_full_history(company_id=company_id)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 55, in get_top5_august_2025_variants_full_history
+    for li in all_line_items:
+              ^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1547, in execute_sql
+    sql, params = self.as_sql()
+                  ~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 734, in as_sql
+    extra_select, order_by, group_by = self.pre_sql_setup(
+                                       ~~~~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases or bool(combinator),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 84, in pre_sql_setup
+    self.setup_query(with_col_aliases=with_col_aliases)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 73, in setup_query
+    self.select, self.klass_info, self.annotation_col_map = self.get_select(
+                                                            ~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 279, in get_select
+    related_klass_infos = self.get_related_selections(select, select_mask)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1198, in get_related_selections
+    raise FieldError(
+    ...<6 lines>...
+    )
+django.core.exceptions.FieldError: Non-relational field given in select_related: 'order_id'. Choices are: company
+"GET /trigger-inventory/ HTTP/1.1" 500 138699
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 168, in TriggerInventoryPredictionView
+    batches = fetch_sku_batches(company.id, batch_size=10)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 26, in fetch_sku_batches
+    cat = v.product.category if hasattr(v.product, 'category') else "Uncategorized"
+                                        ^^^^^^^^^
+AttributeError: 'ProductVariant' object has no attribute 'product'. Did you mean: 'product_id'?
+"GET /trigger-inventory/ HTTP/1.1" 500 75953
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 168, in TriggerInventoryPredictionView
+    batches = fetch_sku_batches(company.id, batch_size=10)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 26, in fetch_sku_batches
+    cat = v.product.category if hasattr(v.product, 'category') else "Uncategorized"
+                                        ^^^^^^^^^
+AttributeError: 'ProductVariant' object has no attribute 'product'. Did you mean: 'product_id'?
+"GET /trigger-inventory/ HTTP/1.1" 500 75953
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 916, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+InventoryManagement.models.InventoryPrediction.DoesNotExist: InventoryPrediction matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 154, in TriggerInventoryPredictionView
+    process_inventory_for_tenant(company)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 124, in process_inventory_for_tenant
+    InventoryPrediction.objects.update_or_create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<16 lines>...
+        }
+        ^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 949, in update_or_create
+    obj, created = self.select_for_update().get_or_create(defaults, **kwargs)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 918, in get_or_create
+    params = self._extract_model_params(defaults, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 999, in _extract_model_params
+    raise exceptions.FieldError(
+    ...<5 lines>...
+    )
+django.core.exceptions.FieldError: Invalid field name(s) for model InventoryPrediction: 'last30', 'last7'.
+"GET /trigger-inventory/ HTTP/1.1" 500 120119
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 916, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+InventoryManagement.models.InventoryPrediction.DoesNotExist: InventoryPrediction matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\cursors.py", line 330, in _query
+    db.query(q)
+    ~~~~~~~~^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\connections.py", line 280, in query
+    _mysql.connection.query(self, query)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+MySQLdb.IntegrityError: (1452, 'Cannot add or update a child row: a foreign key constraint fails (`trooba_demo`.`inventorymanagement_inventoryprediction`, CONSTRAINT `InventoryManagement__sku_id_b71321fd_fk_CoreAppli` FOREIGN KEY (`sku_id`) REFERENCES `coreapplication_productvariant` (`id`)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 190, in TriggerInventoryPredictionView
+    process_variant_batch(company, batch)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 142, in process_variant_batch
+    InventoryPrediction.objects.update_or_create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        company_id=company.id,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<16 lines>...
+        }
+        ^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 949, in update_or_create
+    obj, created = self.select_for_update().get_or_create(defaults, **kwargs)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 923, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1820, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\cursors.py", line 330, in _query
+    db.query(q)
+    ~~~~~~~~^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\connections.py", line 280, in query
+    _mysql.connection.query(self, query)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: (1452, 'Cannot add or update a child row: a foreign key constraint fails (`trooba_demo`.`inventorymanagement_inventoryprediction`, CONSTRAINT `InventoryManagement__sku_id_b71321fd_fk_CoreAppli` FOREIGN KEY (`sku_id`) REFERENCES `coreapplication_productvariant` (`id`)')
+"GET /trigger-inventory/ HTTP/1.1" 500 254162
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 198, in get
+    process_tenant_inventory(company)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 146, in process_tenant_inventory
+    po_q = PurchaseOrder.objects.filter(company=company, sku_id=v.sku)
+           ^^^^^^^^^^^^^
+NameError: name 'PurchaseOrder' is not defined
+"GET /trigger-inventory/ HTTP/1.1" 500 107409
+Internal Server Error: /trigger-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+TypeError: View.__init__() takes 1 positional argument but 2 were given
+"POST /trigger-inventory/ HTTP/1.1" 500 69892
+Internal Server Error: /admin/InventoryManagement/inventoryprediction/638/change/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\options.py", line 688, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\options.py", line 1889, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\options.py", line 1747, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\options.py", line 1855, in _changeform_view
+    "subtitle": str(obj) if obj else None,
+                ~~~^^^^^
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\models.py", line 26, in __str__
+    return f"{self.product_name} ({self.sku.sku}) - {self.week_start_date}"
+                                   ^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'sku'
+"GET /admin/InventoryManagement/inventoryprediction/638/change/ HTTP/1.1" 500 117723
+Internal Server Error: /admin/InventoryManagement/inventoryprediction/651/change/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\options.py", line 688, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\options.py", line 1889, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\options.py", line 1747, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\options.py", line 1855, in _changeform_view
+    "subtitle": str(obj) if obj else None,
+                ~~~^^^^^
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\models.py", line 26, in __str__
+    return f"{self.product_name} ({self.sku.sku}) - {self.week_start_date}"
+                                   ^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'sku'
+"GET /admin/InventoryManagement/inventoryprediction/651/change/ HTTP/1.1" 500 117723

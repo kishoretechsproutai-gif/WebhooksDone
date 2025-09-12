@@ -518,24 +518,39 @@ class LoginView(APIView):
         return Response({"access_token": access_token, "expires_in_days": 15}, status=status.HTTP_200_OK)
 
 # ---------------- Save & Get Shopify Credentials ----------------
+from celery import chain
+
 class SaveShopifyCredentialsView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
+
     def post(self, request):
         user, error_response = get_user_from_token(request)
         if error_response: return error_response
+
         access_token = sanitize_text(remove_emoji(request.data.get("access_token")))
         store_url = sanitize_text(remove_emoji(request.data.get("store_url")))
+
         if not access_token or not store_url:
             return Response({"error": "Access token and store URL are required"}, status=status.HTTP_400_BAD_REQUEST)
+
         fernet = Fernet(settings.ENCRYPTION_KEY)
         user.shopify_access_token = fernet.encrypt(access_token.encode()).decode()
         user.shopify_store_url = fernet.encrypt(store_url.encode()).decode()
+
         if not user.webhook_secret:
             user.webhook_secret = secrets.token_hex(32)
+
         user.save()
-        fetch_shopify_data_task.apply_async(args=[user.id], countdown=5)
-        return Response({"message": "Shopify credentials saved, sync started", "user_id": user.id}, status=status.HTTP_200_OK)
+
+        # Chain Shopify data fetch and vector training
+        chain(
+            fetch_shopify_data_task.s(user.id),
+            train_vector_db_task.s(user.id)
+        ).apply_async()
+
+        return Response({"message": "Shopify credentials saved, data sync and training scheduled", "user_id": user.id}, status=status.HTTP_200_OK)
+
 
 class GetShopifyCredentialsView(APIView):
     authentication_classes = []
@@ -557,63 +572,80 @@ class GetShopifyCredentialsView(APIView):
 # Promotional Data Fetching From Excel Sheet
 
 import pandas as pd
-from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+import logging
+from datetime import date
+from django.views import View
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from .models import PromotionalData
 
+logger = logging.getLogger(__name__)
 
-class UploadPromotionalDataView(APIView):
-    authentication_classes = []
-    permission_classes = [AllowAny]
 
+@method_decorator(csrf_exempt, name='dispatch')
+class UploadPromotionalDataView(View):
     def post(self, request):
-        user, error_response = get_user_from_token(request)
+        # ✅ Get user from token
+        user, error_response = get_user_from_token(request)  # `user` = CompanyUser object
         if error_response:
             return error_response
-        user_id = user.id
 
-        uploaded_file = request.FILES.get('file')
-        if not uploaded_file:
-            return Response({"error": "No file uploaded"}, status=status.HTTP_400_BAD_REQUEST)
-        
+        # ✅ File check
+        excel_file = request.FILES.get('file')
+        if not excel_file:
+            return JsonResponse({"error": "No file uploaded"}, status=400)
+
         try:
-            df = pd.read_excel(uploaded_file)
-            
-            required_columns = [
-                'campaign_name', 'ad_group_name', 'date',
-                'clicks', 'impressions', 'cost', 'conversions',
-                'conversion_value', 'ctr', 'cpc', 'roas'
-            ]
-            
-            missing_columns = [col for col in required_columns if col not in df.columns]
-            if missing_columns:
-                return Response({"error": f"Missing columns: {missing_columns}"}, status=status.HTTP_400_BAD_REQUEST)
+            # ✅ Force Excel to read all values as string (avoids Excel mis-typing)
+            df = pd.read_excel(excel_file, dtype=str, engine="openpyxl")
+            today = date.today()
 
-            records_created = 0
-            for _, row in df.iterrows():
-                promo = PromotionalData(
-                    user_id=user_id,
-                    campaign_name=row['campaign_name'],
-                    ad_group_name=row['ad_group_name'],
-                    date=pd.to_datetime(row['date']).date(),
-                    clicks=int(row['clicks']),
-                    impressions=int(row['impressions']),
-                    cost=float(row['cost']),
-                    conversions=int(row['conversions']),
-                    conversion_value=float(row['conversion_value']),
-                    ctr=float(row['ctr']),
-                    cpc=float(row['cpc']),
-                    roas=float(row['roas'])
+            for index, row in df.iterrows():
+                raw_variant_id = row.get('variant_id') or row.get('varient_id')  # handle typo
+
+                # ✅ Skip rows with missing variant_id
+                if pd.isna(raw_variant_id) or not str(raw_variant_id).strip():
+                    logger.warning(f"⚠️ Skipping row {index} - missing variant_id")
+                    continue
+
+                # ✅ Convert safely to integer
+                try:
+                    variant_id = int(float(str(raw_variant_id).strip()))
+                except Exception as ex:
+                    logger.error(f"❌ Invalid variant_id at row {index}: {raw_variant_id} ({ex})")
+                    continue
+
+                # ✅ Create or update record
+                PromotionalData.objects.update_or_create(
+                    variant_id=variant_id,
+                    date=today,
+                    defaults={
+                        'user_id': user,
+                        'image_url': row.get('Image'),
+                        'title': row.get('Title'),
+                        'price': float(row.get('Price')) if row.get('Price') not in [None, "", "nan"] else None,
+                        'clicks': int(float(row.get('Clicks') or 0)),
+                        'impressions': int(float(row.get('Impressions') or 0)),
+                        'ctr': float(row.get('CTR')) if row.get('CTR') not in [None, "", "nan"] else None,
+                        'currency_code': row.get('CurrencyCode'),
+                        'avg_cpc': float(row.get('AvgCPC')) if row.get('AvgCPC') not in [None, "", "nan"] else None,
+                        'cost': float(row.get('Cost')) if row.get('Cost') not in [None, "", "nan"] else None,
+                        'conversions': int(float(row.get('Conversions') or 0)),
+                        'conversion_value': float(row.get('ConvValue')) if row.get('ConvValue') not in [None, "", "nan"] else None,
+                        'conv_value_per_cost': float(row.get('ConvValue/cost')) if row.get('ConvValue/cost') not in [None, "", "nan"] else None,
+                        'cost_per_conversion': float(row.get('Cost/conv.')) if row.get('Cost/conv.') not in [None, "", "nan"] else None,
+                        'conversion_rate': float(row.get('ConvRate')) if row.get('ConvRate') not in [None, "", "nan"] else None,
+                    }
                 )
-                promo.save()
-                records_created += 1
 
-            return Response({"message": f"{records_created} records successfully uploaded."}, status=status.HTTP_201_CREATED)
-        
+            return JsonResponse({"message": "Promotional data uploaded successfully"}, status=200)
+
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            logger.error(f"Error uploading promotional data: {e}")
+            return JsonResponse({"error": str(e)}, status=500)
+
+
 
 
 # --------------------------------------------------------------------------------
@@ -1099,3 +1131,52 @@ class VectorDBSearchView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+# views.py
+
+import pandas as pd
+from django.views import View
+from django.http import JsonResponse
+from django.utils.dateparse import parse_date
+from .models import PurchaseOrder, CompanyUser
+import logging
+
+logger = logging.getLogger(__name__)
+
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+@method_decorator(csrf_exempt, name='dispatch')
+class UploadPurchaseOrderView(View):
+    def post(self, request):
+        user, error_response = get_user_from_token(request)
+        if error_response:
+            return error_response
+
+        excel_file = request.FILES.get('file')
+        if not excel_file:
+            return JsonResponse({"error": "No file uploaded"}, status=400)
+
+        try:
+            df = pd.read_excel(excel_file)
+
+            for index, row in df.iterrows():
+                PurchaseOrder.objects.update_or_create(
+                    purchase_order_id=row['PurchaseOrderID'],
+                    defaults={
+                        'supplier_name': row['SupplierName'],
+                        'sku_id': row['SKUID(VariantID)'],
+                        'order_date': str(row['OrderDate']),
+                        'delivery_date': str(row['DeliveryDate']),
+                        'quantity_ordered': int(row['QuantityOrdered']),
+                        'company': user,
+                    }
+                )
+
+            return JsonResponse({"message": "Purchase orders uploaded successfully"}, status=200)
+
+        except Exception as e:
+            logger.error(f"Error uploading purchase orders: {e}")
+            return JsonResponse({"error": str(e)}, status=500)

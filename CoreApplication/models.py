@@ -140,42 +140,46 @@ class Prompt(models.Model):
     def __str__(self):
         return self.prompt[:50] if self.prompt else "Prompt"
 
-# Promotional Data modelfrom django.db import models
-from decimal import Decimal
+from django.db import models
 
 class PromotionalData(models.Model):
     # Multi-tenant identification
-    user_id = models.IntegerField()
+    user_id = models.ForeignKey("CompanyUser", on_delete=models.CASCADE)
 
-    # Mandatory campaign details
-    campaign_name = models.CharField(max_length=255)
-    ad_group_name = models.CharField(max_length=255)
-    
-    # Date of data
+    # Product/variant level linkage
+    image_url = models.URLField(max_length=500, blank=True, null=True)  # from "Image"
+    title = models.CharField(max_length=255, null=True)  # from "Title"
+    variant_id = models.BigIntegerField(null=True, db_index=True)  # Shopify Variant ID
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)  # from "Price"
+
+    # Date of data (always today for uploads)
     date = models.DateField()
-    
+
     # Core Google Ads metrics
     clicks = models.PositiveIntegerField()
     impressions = models.PositiveIntegerField()
-    cost = models.DecimalField(max_digits=12, decimal_places=2)
+    ctr = models.DecimalField(max_digits=6, decimal_places=2, null=True)  # Click Through Rate (%)
+    currency_code = models.CharField(max_length=10, null=True)  # from "CurrencyCode"
+    avg_cpc = models.DecimalField(max_digits=8, decimal_places=2, null=True)  # from "AvgCPC"
+    cost = models.DecimalField(max_digits=12, decimal_places=2, null=True)
+
+    # Conversion metrics
     conversions = models.PositiveIntegerField()
-    conversion_value = models.DecimalField(max_digits=12, decimal_places=2)
-    
-    # Derived metrics
-    ctr = models.DecimalField(max_digits=5, decimal_places=2)  # Click Through Rate (%)
-    cpc = models.DecimalField(max_digits=8, decimal_places=2)  # Cost per click
-    roas = models.DecimalField(max_digits=8, decimal_places=2) # Return on ad spend
-    
+    conversion_value = models.DecimalField(max_digits=12, decimal_places=2, null=True)  # "ConvValue"
+    conv_value_per_cost = models.DecimalField(max_digits=8, decimal_places=2, null=True)  # "ConvValue/cost"
+    cost_per_conversion = models.DecimalField(max_digits=8, decimal_places=2, null=True)  # "Cost/conv."
+    conversion_rate = models.DecimalField(max_digits=6, decimal_places=2, null=True)  # "ConvRate"
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         verbose_name = "Promotional Data"
         verbose_name_plural = "Promotional Data"
         ordering = ['-date']
-    
+
     def __str__(self):
-        return f"User {self.user_id} - {self.campaign_name} ({self.date})"
+        return f"Variant {self.variant_id} - {self.title} ({self.date})"
 
 
 
@@ -203,3 +207,18 @@ class CollectionItem(models.Model):
 
     def __str__(self):
         return f"Product {self.product_id} in {self.collection.title}"
+
+
+
+
+class PurchaseOrder(models.Model):
+    purchase_order_id = models.CharField(max_length=100, unique=True)
+    supplier_name = models.CharField(max_length=255)
+    sku_id = models.CharField(max_length=100)  # Variant ID
+    order_date = models.CharField(max_length=100)
+    delivery_date = models.CharField(max_length=100)
+    quantity_ordered = models.PositiveIntegerField()
+    company = models.ForeignKey(CompanyUser, on_delete=models.CASCADE)  # Linked to CompanyUser
+
+    def __str__(self):
+        return f"{self.purchase_order_id} - {self.sku_id}"

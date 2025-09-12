@@ -26,6 +26,11 @@ from dotenv import load_dotenv
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 
+
+import os
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -46,6 +51,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_celery_results",
     "django_celery_beat",
+    "InventoryManagement"
 ]
 
 

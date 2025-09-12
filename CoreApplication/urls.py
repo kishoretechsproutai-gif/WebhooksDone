@@ -1,7 +1,7 @@
 from django.urls import path
 from CoreApplication.views import RegisterView,LoginView,SaveShopifyCredentialsView,GetShopifyCredentialsView
 from CoreApplication.views import shopify_webhook_view,UploadPromotionalDataView,FetchCollectionsView,TrainVectorDBView,VectorDBSearchView
-
+from CoreApplication.views import UploadPurchaseOrderView
 urlpatterns = [
     path('Register/', RegisterView.as_view()), #Class based function so using .as_view()
     path('Login/',LoginView.as_view()), #Class based function so using .as_view()
@@ -12,6 +12,6 @@ urlpatterns = [
     path('FetchCollections/',FetchCollectionsView.as_view(),name='FetchCollections'),
     path('TrainVectorDB/', TrainVectorDBView.as_view(), name='TrainVectorDB'),
     path('VectorDBSearch/', VectorDBSearchView.as_view(), name='VectorDBSearch'), #Using same view as it has both get n post methods
-
+    path('InOrderDetails/',UploadPurchaseOrderView.as_view(),name='InOrderDetails'),
 ]
 
