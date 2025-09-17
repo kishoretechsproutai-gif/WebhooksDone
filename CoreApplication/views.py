@@ -582,7 +582,6 @@ from .models import PromotionalData
 
 logger = logging.getLogger(__name__)
 
-
 @method_decorator(csrf_exempt, name='dispatch')
 class UploadPromotionalDataView(View):
     def post(self, request):
@@ -597,9 +596,25 @@ class UploadPromotionalDataView(View):
             return JsonResponse({"error": "No file uploaded"}, status=400)
 
         try:
-            # ✅ Force Excel to read all values as string (avoids Excel mis-typing)
+            # ✅ Force Excel to read all values as string
             df = pd.read_excel(excel_file, dtype=str, engine="openpyxl")
             today = date.today()
+
+            def safe_int(value, default=0):
+                try:
+                    if pd.isna(value) or str(value).strip().lower() in ["", "nan", "none"]:
+                        return default
+                    return int(float(value))
+                except Exception:
+                    return default
+
+            def safe_float(value, default=None):
+                try:
+                    if pd.isna(value) or str(value).strip().lower() in ["", "nan", "none"]:
+                        return default
+                    return float(value)
+                except Exception:
+                    return default
 
             for index, row in df.iterrows():
                 raw_variant_id = row.get('variant_id') or row.get('varient_id')  # handle typo
@@ -624,18 +639,18 @@ class UploadPromotionalDataView(View):
                         'user_id': user,
                         'image_url': row.get('Image'),
                         'title': row.get('Title'),
-                        'price': float(row.get('Price')) if row.get('Price') not in [None, "", "nan"] else None,
-                        'clicks': int(float(row.get('Clicks') or 0)),
-                        'impressions': int(float(row.get('Impressions') or 0)),
-                        'ctr': float(row.get('CTR')) if row.get('CTR') not in [None, "", "nan"] else None,
+                        'price': safe_float(row.get('Price')),
+                        'clicks': safe_int(row.get('Clicks')),
+                        'impressions': safe_int(row.get('Impressions')),
+                        'ctr': safe_float(row.get('CTR')),
                         'currency_code': row.get('CurrencyCode'),
-                        'avg_cpc': float(row.get('AvgCPC')) if row.get('AvgCPC') not in [None, "", "nan"] else None,
-                        'cost': float(row.get('Cost')) if row.get('Cost') not in [None, "", "nan"] else None,
-                        'conversions': int(float(row.get('Conversions') or 0)),
-                        'conversion_value': float(row.get('ConvValue')) if row.get('ConvValue') not in [None, "", "nan"] else None,
-                        'conv_value_per_cost': float(row.get('ConvValue/cost')) if row.get('ConvValue/cost') not in [None, "", "nan"] else None,
-                        'cost_per_conversion': float(row.get('Cost/conv.')) if row.get('Cost/conv.') not in [None, "", "nan"] else None,
-                        'conversion_rate': float(row.get('ConvRate')) if row.get('ConvRate') not in [None, "", "nan"] else None,
+                        'avg_cpc': safe_float(row.get('AvgCPC')),
+                        'cost': safe_float(row.get('Cost')),
+                        'conversions': safe_int(row.get('Conversions')),
+                        'conversion_value': safe_float(row.get('ConvValue')),
+                        'conv_value_per_cost': safe_float(row.get('ConvValue/cost')),
+                        'cost_per_conversion': safe_float(row.get('Cost/conv.')),
+                        'conversion_rate': safe_float(row.get('ConvRate')),
                     }
                 )
 

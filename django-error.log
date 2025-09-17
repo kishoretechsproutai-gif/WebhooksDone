@@ -869,3 +869,1060 @@ Traceback (most recent call last):
                                    ^^^^^^^^^^^^
 AttributeError: 'str' object has no attribute 'sku'
 "GET /admin/InventoryManagement/inventoryprediction/651/change/ HTTP/1.1" 500 117723
+Internal Server Error: /VectorDBSearch/
+"POST /VectorDBSearch/ HTTP/1.1" 500 65
+Internal Server Error: /Predictions/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 235, in Predictions
+    return render(request, 'predictions.html', {'predictions': data})
+           ^^^^^^
+NameError: name 'render' is not defined
+"GET /Predictions/ HTTP/1.1" 500 76663
+Internal Server Error: /Predictions/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 236, in Predictions
+    return render(request, 'predictions.html', {'predictions': data})
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: predictions.html
+"GET /Predictions/ HTTP/1.1" 500 102669
+Internal Server Error: /Predictions/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 237, in Predictions
+    'predictions': json.dumps(data, cls=DjangoJSONEncoder)
+                   ^^^^
+NameError: name 'json' is not defined. Did you forget to import 'json'?
+"GET /Predictions/ HTTP/1.1" 500 76896
+Internal Server Error: /Predictions/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 238, in Predictions
+        return render(request, 'your_template.html', {
+               ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'predictions': json.dumps(data, cls=DjangoJSONEncoder)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    })
+    ^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: your_template.html
+"GET /Predictions/ HTTP/1.1" 500 104171
+Internal Server Error: /Predictions/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 238, in Predictions
+        return render(request, 'your_template.html', {
+               ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'predictions': json.dumps(data, cls=DjangoJSONEncoder)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    })
+    ^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: your_template.html
+"GET /Predictions/ HTTP/1.1" 500 104171
+Internal Server Error: /admin/django_celery_results/taskresult/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\response.py", line 111, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\response.py", line 89, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\templatetags\base.py", line 45, in render
+    return super().render(context)
+           ~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\library.py", line 258, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 424, in date_hierarchy
+    for day in days
+               ^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 285, in __iter__
+    for row in compiler.results_iter(
+               ~~~~~~~~~~~~~~~~~~~~~^
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1498, in apply_converters
+    value = converter(value, expression, connection)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\functions\datetime.py", line 348, in convert_value
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Database returned an invalid datetime value. Are time zone definitions for your database installed?
+"GET /admin/django_celery_results/taskresult/ HTTP/1.1" 500 404769
+Internal Server Error: /admin/django_celery_results/taskresult/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\response.py", line 111, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\response.py", line 89, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\templatetags\base.py", line 45, in render
+    return super().render(context)
+           ~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\library.py", line 258, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 424, in date_hierarchy
+    for day in days
+               ^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 285, in __iter__
+    for row in compiler.results_iter(
+               ~~~~~~~~~~~~~~~~~~~~~^
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1498, in apply_converters
+    value = converter(value, expression, connection)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\functions\datetime.py", line 348, in convert_value
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Database returned an invalid datetime value. Are time zone definitions for your database installed?
+"GET /admin/django_celery_results/taskresult/ HTTP/1.1" 500 404780
+Internal Server Error: /admin/django_celery_results/taskresult/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\response.py", line 111, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\response.py", line 89, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\templatetags\base.py", line 45, in render
+    return super().render(context)
+           ~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\library.py", line 258, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 424, in date_hierarchy
+    for day in days
+               ^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 285, in __iter__
+    for row in compiler.results_iter(
+               ~~~~~~~~~~~~~~~~~~~~~^
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1498, in apply_converters
+    value = converter(value, expression, connection)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\functions\datetime.py", line 348, in convert_value
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Database returned an invalid datetime value. Are time zone definitions for your database installed?
+"GET /admin/django_celery_results/taskresult/ HTTP/1.1" 500 404780
+Internal Server Error: /debug_openai/FNT0682XCP/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 243, in DebugOpenAIPrompt
+    company_id = user.id
+                 ^^^^^^^
+AttributeError: 'tuple' object has no attribute 'id'
+"POST /debug_openai/FNT0682XCP/ HTTP/1.1" 500 74731
+Internal Server Error: /debug_openai/FNT0682XCP/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 243, in DebugOpenAIPrompt
+    company_id = user.id
+                 ^^^^^^^
+AttributeError: 'tuple' object has no attribute 'id'
+"GET /debug_openai/FNT0682XCP/ HTTP/1.1" 500 74723
+Internal Server Error: /Predictions/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 208, in Predictions
+    predictions = InventoryPrediction.objects.filter(company_id=user.id)
+                                                                ^^^^^^^
+AttributeError: 'tuple' object has no attribute 'id'
+"GET /Predictions/ HTTP/1.1" 500 70826
+Internal Server Error: /debug_openai/PANV0023ST2/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 295, in DebugOpenAIPrompt
+    return JsonResponse({
+        "company_id": company_id,
+    ...<8 lines>...
+        "prompt_to_send": prompt_text
+    })
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\http\response.py", line 748, in __init__
+    data = json.dumps(data, cls=encoder, **json_dumps_params)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\serializers\json.py", line 106, in default
+    return super().default(o)
+           ~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type ModelState is not JSON serializable
+"GET /debug_openai/PANV0023ST2/ HTTP/1.1" 500 132756
+Internal Server Error: /debug_openai/PANV0023ST2/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 295, in DebugOpenAIPrompt
+    return JsonResponse({
+        "company_id": company_id,
+    ...<8 lines>...
+        "prompt_to_send": prompt_text
+    })
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\http\response.py", line 748, in __init__
+    data = json.dumps(data, cls=encoder, **json_dumps_params)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\serializers\json.py", line 106, in default
+    return super().default(o)
+           ~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type ModelState is not JSON serializable
+"GET /debug_openai/PANV0023ST2/ HTTP/1.1" 500 132691
+Internal Server Error: /debug_openai/PANV0023ST2/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 295, in DebugOpenAIPrompt
+    return JsonResponse({
+        "company_id": company_id,
+    ...<8 lines>...
+        "prompt_to_send": prompt_text
+    })
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\http\response.py", line 748, in __init__
+    data = json.dumps(data, cls=encoder, **json_dumps_params)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\serializers\json.py", line 106, in default
+    return super().default(o)
+           ~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type ModelState is not JSON serializable
+"GET /debug_openai/PANV0023ST2/ HTTP/1.1" 500 132690
+Internal Server Error: /debug_openai/US-ANX0559XRP/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 296, in DebugOpenAIPrompt
+    return JsonResponse({
+        "company_id": company_id,
+    ...<8 lines>...
+        "prompt_to_send": prompt_text
+    })
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\http\response.py", line 748, in __init__
+    data = json.dumps(data, cls=encoder, **json_dumps_params)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\serializers\json.py", line 106, in default
+    return super().default(o)
+           ~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type ModelState is not JSON serializable
+"GET /debug_openai/US-ANX0559XRP/ HTTP/1.1" 500 144860
+Internal Server Error: /testingonesku
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 364, in ForecastSingleSKU
+    prompt_text = base_prompt + "\n\n" + json.dumps({
+                                         ~~~~~~~~~~^^
+        "variant": variant_dict,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+        "order_history": order_history
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    })
+    ^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 231, in dumps
+    return _default_encoder.encode(obj)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type Decimal is not JSON serializable
+"GET /testingonesku HTTP/1.1" 500 137721
+Internal Server Error: /testingonesku/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 364, in ForecastSingleSKU
+    prompt_text = base_prompt + "\n\n" + json.dumps({
+                                         ~~~~~~~~~~^^
+        "variant": variant_dict,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+        "order_history": order_history
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    })
+    ^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 231, in dumps
+    return _default_encoder.encode(obj)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type Decimal is not JSON serializable
+"GET /testingonesku/ HTTP/1.1" 500 137899
+Internal Server Error: /testingonesku/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 384, in TestSingleSKUForecast
+    return JsonResponse({
+        "variant": obj_to_dict(variant),
+    ...<6 lines>...
+        "openai_raw_response": raw_response
+    }, safe=False)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\http\response.py", line 748, in __init__
+    data = json.dumps(data, cls=encoder, **json_dumps_params)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\serializers\json.py", line 106, in default
+    return super().default(o)
+           ~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type ChatCompletion is not JSON serializable
+"GET /testingonesku/ HTTP/1.1" 500 169285
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 52
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 52
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 52
+Internal Server Error: /testingonesku/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 412, in TestSingleSKUForecast
+    return JsonResponse({
+        "variant": obj_to_dict(variant),
+    ...<8 lines>...
+        "forecast": forecast
+    }, safe=False)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\http\response.py", line 748, in __init__
+    data = json.dumps(data, cls=encoder, **json_dumps_params)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\serializers\json.py", line 106, in default
+    return super().default(o)
+           ~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type CompanyUser is not JSON serializable
+"GET /testingonesku/ HTTP/1.1" 500 136580
+Internal Server Error: /testingonesku/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 352, in TestSingleSKUForecast
+    for li in line_items:
+              ^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1547, in execute_sql
+    sql, params = self.as_sql()
+                  ~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 734, in as_sql
+    extra_select, order_by, group_by = self.pre_sql_setup(
+                                       ~~~~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases or bool(combinator),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 84, in pre_sql_setup
+    self.setup_query(with_col_aliases=with_col_aliases)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 73, in setup_query
+    self.select, self.klass_info, self.annotation_col_map = self.get_select(
+                                                            ~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 279, in get_select
+    related_klass_infos = self.get_related_selections(select, select_mask)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1365, in get_related_selections
+    raise FieldError(
+    ...<6 lines>...
+    )
+django.core.exceptions.FieldError: Invalid field name(s) given in select_related: 'order'. Choices are: company
+"GET /testingonesku/ HTTP/1.1" 500 126745
+Internal Server Error: /testingonesku/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 354, in TestSingleSKUForecast
+    for li in line_items:
+              ^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1547, in execute_sql
+    sql, params = self.as_sql()
+                  ~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 734, in as_sql
+    extra_select, order_by, group_by = self.pre_sql_setup(
+                                       ~~~~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases or bool(combinator),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 84, in pre_sql_setup
+    self.setup_query(with_col_aliases=with_col_aliases)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 73, in setup_query
+    self.select, self.klass_info, self.annotation_col_map = self.get_select(
+                                                            ~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 279, in get_select
+    related_klass_infos = self.get_related_selections(select, select_mask)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1365, in get_related_selections
+    raise FieldError(
+    ...<6 lines>...
+    )
+django.core.exceptions.FieldError: Invalid field name(s) given in select_related: 'order'. Choices are: company
+"GET /testingonesku/ HTTP/1.1" 500 121951
+Internal Server Error: /testingonesku/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 354, in TestSingleSKUForecast
+    for li in line_items:
+              ^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1547, in execute_sql
+    sql, params = self.as_sql()
+                  ~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 734, in as_sql
+    extra_select, order_by, group_by = self.pre_sql_setup(
+                                       ~~~~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases or bool(combinator),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 84, in pre_sql_setup
+    self.setup_query(with_col_aliases=with_col_aliases)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 73, in setup_query
+    self.select, self.klass_info, self.annotation_col_map = self.get_select(
+                                                            ~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 279, in get_select
+    related_klass_infos = self.get_related_selections(select, select_mask)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1365, in get_related_selections
+    raise FieldError(
+    ...<6 lines>...
+    )
+django.core.exceptions.FieldError: Invalid field name(s) given in select_related: 'order'. Choices are: company
+"GET /testingonesku/ HTTP/1.1" 500 121951
+Internal Server Error: /testingonesku/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 360, in TestSingleSKUForecast
+    sorted_sales = OrderedDict(sorted(monthly_sales.items(), key=lambda x: date.strptime(x[0], "%Y %b"), reverse=False))
+                               ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 360, in <lambda>
+    sorted_sales = OrderedDict(sorted(monthly_sales.items(), key=lambda x: date.strptime(x[0], "%Y %b"), reverse=False))
+                                                                           ^^^^^^^^^^^^^
+AttributeError: type object 'datetime.date' has no attribute 'strptime'. Did you mean: 'strftime'?
+"GET /testingonesku/ HTTP/1.1" 500 83988
+Internal Server Error: /testingonesku/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 362, in TestSingleSKUForecast
+    sorted_sales = OrderedDict(sorted(monthly_sales.items(),
+                               ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+                                      key=lambda x: date.strptime(x[0], "%Y %b")))
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 363, in <lambda>
+    key=lambda x: date.strptime(x[0], "%Y %b")))
+                  ^^^^^^^^^^^^^
+AttributeError: type object 'datetime.date' has no attribute 'strptime'. Did you mean: 'strftime'?
+"GET /testingonesku/ HTTP/1.1" 500 83626
+Internal Server Error: /testingonesku/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 376, in TestSingleSKUForecast
+    "tags": variant.tags or ""
+            ^^^^^^^^^^^^
+AttributeError: 'ProductVariant' object has no attribute 'tags'
+"GET /testingonesku/ HTTP/1.1" 500 89345
+Internal Server Error: /testingonesku/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\options.py", line 681, in get_field
+    return self.fields_map[field_name]
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'tags'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryManagement\views.py", line 314, in TestSingleSKUForecast
+    .get(company_id=company_id, sku=sku)
+     ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 633, in get
+    num = len(clone)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 380, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1547, in execute_sql
+    sql, params = self.as_sql()
+                  ~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 734, in as_sql
+    extra_select, order_by, group_by = self.pre_sql_setup(
+                                       ~~~~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases or bool(combinator),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 84, in pre_sql_setup
+    self.setup_query(with_col_aliases=with_col_aliases)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 73, in setup_query
+    self.select, self.klass_info, self.annotation_col_map = self.get_select(
+                                                            ~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 256, in get_select
+    select_mask = self.query.get_select_mask()
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 769, in get_select_mask
+    return self._get_only_select_mask(opts, mask)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 738, in _get_only_select_mask
+    field = opts.get_field(field_name)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\options.py", line 683, in get_field
+    raise FieldDoesNotExist(
+        "%s has no field named '%s'" % (self.object_name, field_name)
+    )
+django.core.exceptions.FieldDoesNotExist: ProductVariant has no field named 'tags'
+"GET /testingonesku/ HTTP/1.1" 500 130963
+Internal Server Error: /admin/django_celery_results/taskresult/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\response.py", line 111, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\response.py", line 89, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\templatetags\base.py", line 45, in render
+    return super().render(context)
+           ~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\library.py", line 258, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 424, in date_hierarchy
+    for day in days
+               ^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 285, in __iter__
+    for row in compiler.results_iter(
+               ~~~~~~~~~~~~~~~~~~~~~^
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1498, in apply_converters
+    value = converter(value, expression, connection)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\functions\datetime.py", line 348, in convert_value
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Database returned an invalid datetime value. Are time zone definitions for your database installed?
+"GET /admin/django_celery_results/taskresult/ HTTP/1.1" 500 404778
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 48
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 48
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 48
+Internal Server Error: /PromotionalExcel/
+"POST /PromotionalExcel/ HTTP/1.1" 500 48
