@@ -295,6 +295,7 @@ def Predictions(request):
     return JsonResponse({"predictions": data}, encoder=DjangoJSONEncoder, safe=False)
 
 
+
 @csrf_exempt
 def TestSingleSKUForecast(request):
     company_id = 2
@@ -320,16 +321,34 @@ def TestSingleSKUForecast(request):
 
     sku_data, prompt_text = prepare_sku_data(company_id, variant)
     print(f"[INFO] Full input prepared for Gemini for SKU={sku}")
-    full_input = prompt_text + "\n" + json.dumps(sku_data)
+
+    # Combine prompt and data
+    full_input = prompt_text + "\n" + json.dumps(sku_data, indent=2)
+    
+    # Show full input clearly in the logs
+    print("[INFO] ======= Full Input to Gemini =======")
+    print(full_input)
+    print("[INFO] ==================================")
+
+    # Calculate token count
     enc = tiktoken.get_encoding("cl100k_base")
     token_count = len(enc.encode(full_input))
-    payload = {"contents": [{"parts": [{"text": full_input}]}]}
-    print(f"[INFO] Sending payload to Gemini, token_count={token_count}")
-    forecast = call_gemini_forecast(sku_data, prompt_text)
+    print(f"[INFO] Token count for input: {token_count}")
 
+    payload = {"contents": [{"parts": [{"text": full_input}]}]}
+    print("[INFO] Payload ready to send:")
+    print(json.dumps(payload, indent=2))
+
+    # Call Gemini
+    forecast = call_gemini_forecast(sku_data, prompt_text)
+    print("[INFO] Forecast response received:")
+    print(json.dumps(forecast, indent=2))
+
+    # Return everything in the response for inspection
     return JsonResponse({
         "token_count": token_count,
         "payload_sent_to_gemini": payload,
+        "full_input": full_input,
         "forecast_response": forecast,
         "promotional_data": sku_data.get("promotional_data", [])
     }, safe=False)
