@@ -3336,3 +3336,208 @@ Traceback (most recent call last):
     )
 django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '[sku]' from 'sku_data[sku]'
 "GET /predictions/chart/ HTTP/1.1" 500 230876
+Internal Server Error: /forecast/run/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 131, in forecast_top5_skus
+    for sku_obj in sku_objs:
+                   ^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 398, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1547, in execute_sql
+    sql, params = self.as_sql()
+                  ~~~~~~~~~~~^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 734, in as_sql
+    extra_select, order_by, group_by = self.pre_sql_setup(
+                                       ~~~~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases or bool(combinator),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 84, in pre_sql_setup
+    self.setup_query(with_col_aliases=with_col_aliases)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 73, in setup_query
+    self.select, self.klass_info, self.annotation_col_map = self.get_select(
+                                                            ~~~~~~~~~~~~~~~^
+        with_col_aliases=with_col_aliases,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 279, in get_select
+    related_klass_infos = self.get_related_selections(select, select_mask)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1365, in get_related_selections
+    raise FieldError(
+    ...<6 lines>...
+    )
+django.core.exceptions.FieldError: Invalid field name(s) given in select_related: 'product'. Choices are: company
+"GET /forecast/run/ HTTP/1.1" 500 145152
+Internal Server Error: /forecast/run/
+Internal Server Error: /Median_WMAPE/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 385, in median_metrics_chart_view
+    return render(request, "Testingproject/Median_charts.html", {
+        "metrics_json": median_results
+    })
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'median_metrics_per_month' not found. 'median_metrics_per_month' is not a valid view function or pattern name.
+"GET /Median_WMAPE/ HTTP/1.1" 500 142081
+Internal Server Error: /Median_WMAPE/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 385, in median_metrics_chart_view
+    return render(request, "Testingproject/Median_charts.html", {
+        "metrics_json": median_results
+    })
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'median_metrics_per_month' not found. 'median_metrics_per_month' is not a valid view function or pattern name.
+"GET /Median_WMAPE/ HTTP/1.1" 500 142081
+Internal Server Error: /Median_WMAPE/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 385, in median_metrics_chart_view
+    return render(request, "Testingproject/Median_charts.html", {
+        "metrics_json": median_results
+    })
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'median_metrics_per_month' not found. 'median_metrics_per_month' is not a valid view function or pattern name.
+"GET /Median_WMAPE/ HTTP/1.1" 500 142081
+Internal Server Error: /Monthwise_prdictions/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 431, in sku_predictions_per_month
+    return render(request, "Predictions_table.html", {
+        "predictions_json": results
+    })
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: Predictions_table.html
+"GET /Monthwise_prdictions/ HTTP/1.1" 500 104476
+Internal Server Error: /OneSkuPrediction/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 521, in forecast_one_sku
+    monthly_totals[month_key] += li.quantity or 0
+    ~~~~~~~~~~~~~~^^^^^^^^^^^
+KeyError: '2024-06'
+"GET /OneSkuPrediction/ HTTP/1.1" 500 85029
+Internal Server Error: /forecast/run/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 146, in forecast_top5_skus
+    if order_obj and li.variant_id == sku_obj.shopify_id and six_months_ago <= order_obj.order_date < current_month:
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '<=' not supported between instances of 'datetime.date' and 'datetime.datetime'
+"GET /forecast/run/ HTTP/1.1" 500 102053
