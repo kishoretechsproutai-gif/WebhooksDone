@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "InventoryManagement",
     "Testingproject",
+    "InventoryAPI",
+    "vectordb",
 ]
 
 
@@ -209,6 +211,10 @@ CELERY_BEAT_SCHEDULE = {
         "task": "CoreApplication.views.fetch_collections_for_all_users",
         "schedule": crontab(minute=0, hour=0),  # runs every day at midnight
     },
+    "run-monthly-forecast-on-28th": {
+        "task": "CoreApplication.views.run_monthly_forecast",
+        "schedule": crontab(minute=0, hour=0, day_of_month="28"),  # runs on 28th of each month at 00:00
+    },
 }
 
 
@@ -236,3 +242,7 @@ LOGGING = {
     },
     
 }
+
+
+CELERY_TIMEZONE = 'Asia/Kolkata'
+CELERY_ENABLE_UTC = True

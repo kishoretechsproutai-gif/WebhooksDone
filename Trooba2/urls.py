@@ -23,6 +23,8 @@ urlpatterns = [
     path('', include('CoreApplication.urls')),
     path('', include('InventoryManagement.urls')),
     path('', include('Testingproject.urls')),
+    path('', include('InventoryAPI.urls')),
+    path('',include('vectordb.urls')),
 ]
 
 

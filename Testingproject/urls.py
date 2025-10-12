@@ -2,9 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("forecast/run/", views.forecast_top5_skus, name="run_forecasting"),
-    path("WMAPE/",views.WMAPE_Calculation, name="WMAPE_Calculation"),
-    path("Median_WMAPE/",views.median_metrics_chart_view, name="Median_WMAPE_Calculation"),
-    path("Monthwise_prdictions/",views.sku_predictions_per_month, name="Monthwise_prdictions"),
+    path("debug-sku-payload/", views.forecast_single_sku, name="debug_single_sku_payload"), #Testing
+    path("ManualAdminForeCast/",views.manual_forecast, name="ManualAdminForeCast"), #AdminManualForeCast
+    
+    path("TestingInventoryValuation/",views.calculate_inventory_value_from_shopify, name="TestingInventoryValuation"), #TestingInventoryValuation
+    path("TestingMetricsDemo/metrics/", views.demo_calculate_metrics,name="TestingMetricsDemo"), #TestingMetricsDemo
 
 ]

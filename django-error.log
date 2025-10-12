@@ -3541,3 +3541,926 @@ Traceback (most recent call last):
                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: '<=' not supported between instances of 'datetime.date' and 'datetime.datetime'
 "GET /forecast/run/ HTTP/1.1" 500 102053
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 518, in debug_single_sku_payload
+    variant = ProductVariant.objects.filter(company_user_id=tenant_id).first()
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'company_user_id' into field. Choices are: company, company_id, compare_at_price, cost, created_at, id, inventory_quantity, price, product_id, shopify_id, sku, title, updated_at
+"POST /debug-sku-payload/ HTTP/1.1" 500 124533
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 518, in debug_single_sku_payload
+    variant = ProductVariant.objects.filter(company_user_id=tenant_id).first()
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'company_user_id' into field. Choices are: company, company_id, compare_at_price, cost, created_at, id, inventory_quantity, price, product_id, shopify_id, sku, title, updated_at
+"GET /debug-sku-payload/ HTTP/1.1" 500 124525
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 527, in debug_single_sku_payload
+    collection_items = CollectionItem.objects.filter(product_id=variant.product_id)
+                       ^^^^^^^^^^^^^^
+NameError: name 'CollectionItem' is not defined
+"GET /debug-sku-payload/ HTTP/1.1" 500 75717
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 527, in debug_single_sku_payload
+    collection_items = CollectionItem.objects.filter(product_id=variant.product_id)
+                       ^^^^^^^^^^^^^^
+NameError: name 'CollectionItem' is not defined
+"POST /debug-sku-payload/ HTTP/1.1" 500 75725
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 604, in debug_sku_prediction
+    if order.order_date >= date.today() - relativedelta(months=3):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'datetime.datetime' and 'datetime.date'
+"POST /debug-sku-payload/ HTTP/1.1" 500 86513
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 611, in debug_sku_prediction
+    if order.order_date >= date.today() - relativedelta(months=3):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'datetime.datetime' and 'datetime.date'
+"POST /debug-sku-payload/ HTTP/1.1" 500 86513
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 613, in debug_sku_prediction
+    if order.order_date >= date.today() - relativedelta(months=3):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'datetime.datetime' and 'datetime.date'
+"POST /debug-sku-payload/ HTTP/1.1" 500 86513
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 613, in debug_sku_prediction
+    if order.order_date >= date.today() - relativedelta(months=3):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'datetime.datetime' and 'datetime.date'
+"POST /debug-sku-payload/ HTTP/1.1" 500 86513
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 105, in forecast_single_sku
+    collections_qs = variant.product.collectionitem_set.select_related("collection").all() if product else []
+                     ^^^^^^^^^^^^^^^
+AttributeError: 'ProductVariant' object has no attribute 'product'. Did you mean: 'product_id'?
+"POST /debug-sku-payload/ HTTP/1.1" 500 82494
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 120, in forecast_single_sku
+    if order_obj.order_date >= date.today() - relativedelta(months=2) and li.quantity > 0:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'datetime.datetime' and 'datetime.date'
+"POST /debug-sku-payload/ HTTP/1.1" 500 86249
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 98, in forecast_single_sku
+    if order.order_date >= date.today() - relativedelta(months=2):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>=' not supported between instances of 'datetime.datetime' and 'datetime.date'
+"POST /debug-sku-payload/ HTTP/1.1" 500 85110
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 188, in forecast_single_sku
+    openai_response = call_openai(final_prompt)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 14, in call_openai
+    response = openai.chat.completions.create(
+               ^^^^^^
+NameError: name 'openai' is not defined. Did you mean: 'open'?
+"POST /debug-sku-payload/ HTTP/1.1" 500 120090
+Internal Server Error: /test-live-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 566, in test_live_inventory
+    from . import get_live_inventory
+ImportError: cannot import name 'get_live_inventory' from 'Testingproject' (D:\TROOBA_PRODUCTION\Testingproject\__init__.py)
+"POST /test-live-inventory/ HTTP/1.1" 500 76764
+Internal Server Error: /test-live-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 916, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+Testingproject.models.SKUForecastHistory.DoesNotExist: SKUForecastHistory matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 625, in test_live_inventory
+    forecast_obj, _ = SKUForecastHistory.objects.update_or_create(
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        defaults={"live_inventory": live_qty}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 949, in update_or_create
+    obj, created = self.select_for_update().get_or_create(defaults, **kwargs)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 918, in get_or_create
+    params = self._extract_model_params(defaults, **kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 999, in _extract_model_params
+    raise exceptions.FieldError(
+    ...<5 lines>...
+    )
+django.core.exceptions.FieldError: Invalid field name(s) for model SKUForecastHistory: 'live_inventory'.
+"POST /test-live-inventory/ HTTP/1.1" 500 108262
+Internal Server Error: /test-live-inventory/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 916, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+Testingproject.models.SKUForecastHistory.DoesNotExist: SKUForecastHistory matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\cursors.py", line 330, in _query
+    db.query(q)
+    ~~~~~~~~^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\connections.py", line 280, in query
+    _mysql.connection.query(self, query)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+MySQLdb.IntegrityError: (1048, "Column 'predicted_sales_30' cannot be null")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 625, in test_live_inventory
+    forecast_obj, _ = SKUForecastHistory.objects.update_or_create(
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        defaults={"live_inventory": live_qty}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 949, in update_or_create
+    obj, created = self.select_for_update().get_or_create(defaults, **kwargs)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 923, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1820, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\cursors.py", line 330, in _query
+    db.query(q)
+    ~~~~~~~~^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\MySQLdb\connections.py", line 280, in query
+    _mysql.connection.query(self, query)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: (1048, "Column 'predicted_sales_30' cannot be null")
+"POST /test-live-inventory/ HTTP/1.1" 500 218849
+Internal Server Error: /debug-sku-payload/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 847, in forecast_single_sku
+    predicted_sales_30 = parsed_response.get("predicted_sales_30", 0)
+                         ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+"POST /debug-sku-payload/ HTTP/1.1" 500 147481
+Internal Server Error: /inventory/reorder/report/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryAPI\views.py", line 97, in inventory_reorder_report
+    OrderLineItem.objects.filter(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        order__company=company,
+        ^^^^^^^^^^^^^^^^^^^^^^^
+        order__order_date__gte=three_months_ago,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'order' into field. Choices are: company, company_id, discount_allocated, id, order_id, price, product_id, quantity, shopify_line_item_id, total, variant_id
+"GET /inventory/reorder/report/ HTTP/1.1" 500 131171
+Internal Server Error: /inventory/reorder/report/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryAPI\views.py", line 120, in inventory_reorder_report
+    OrderLineItem.objects.filter(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        order__company=company,
+        ^^^^^^^^^^^^^^^^^^^^^^^
+        order__order_date__gte=three_months_ago,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'order' into field. Choices are: company, company_id, discount_allocated, id, order_id, price, product_id, quantity, shopify_line_item_id, total, variant_id
+"GET /inventory/reorder/report/ HTTP/1.1" 500 148782
+Internal Server Error: /ManualAdminForeCast/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\Testingproject\views.py", line 341, in manual_forecast
+    OrderLineItem.objects.filter(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+        order__order_date__gte=two_months_ago
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'order' into field. Choices are: company, company_id, discount_allocated, id, order_id, price, product_id, quantity, shopify_line_item_id, total, variant_id
+"POST /ManualAdminForeCast/ HTTP/1.1" 500 128069
+Internal Server Error: /inventory/reorder/report/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryAPI\views.py", line 120, in inventory_reorder_report
+    .annotate(total_sales=Sum("actual_sales"))
+     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1590, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1638, in _annotate
+    clone.query.add_annotation(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        annotation,
+        ^^^^^^^^^^^
+        alias,
+        ^^^^^^
+        select=select,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1086, in add_annotation
+    annotation = annotation.resolve_expression(self, allow_joins=True, reuse=None)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\aggregates.py", line 64, in resolve_expression
+    c = super().resolve_expression(query, allow_joins, reuse, summarize)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\expressions.py", line 942, in resolve_expression
+    c.source_expressions[pos] = arg.resolve_expression(
+                                ~~~~~~~~~~~~~~~~~~~~~~^
+        query, allow_joins, reuse, summarize, for_save
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\expressions.py", line 822, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1929, in resolve_ref
+    join_info = self.setup_joins(
+        field_list, self.get_meta(), self.get_initial_alias(), can_reuse=reuse
+    )
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1776, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ~~~~~~~~~~~~~~~~~~^
+        names[:pivot],
+        ^^^^^^^^^^^^^^
+    ...<2 lines>...
+        fail_on_missing=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'actual_sales' into field. Choices are: actual_sales_30, company, company_id, created_at, error, error_reason, id, live_inventory, month, predicted_sales_30, predicted_sales_60, predicted_sales_90, reason, sku
+"GET /inventory/reorder/report/ HTTP/1.1" 500 129064
+Internal Server Error: /inventory/riskalert/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryAPI\views.py", line 329, in get_risk_alerts
+    if not delivery_date or delivery_date < today:
+                            ^^^^^^^^^^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'str' and 'datetime.date'
+"GET /inventory/riskalert/ HTTP/1.1" 500 78097
+Internal Server Error: /dashboard/overview/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryAPI\views.py", line 599, in CompanyDashboardMetricsView
+    OrderLineItem.objects.filter(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        order__company=user,
+        ^^^^^^^^^^^^^^^^^^^^
+        order__created_at__year=latest_month.year,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        order__created_at__month=latest_month.month,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'order' into field. Choices are: company, company_id, discount_allocated, id, order_id, price, product_id, quantity, shopify_line_item_id, total, variant_id
+"GET /dashboard/overview/ HTTP/1.1" 500 130887
+Internal Server Error: /dashboard/overview/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryAPI\views.py", line 599, in CompanyDashboardMetricsView
+    OrderLineItem.objects.filter(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=user,
+        ^^^^^^^^^^^^^
+    ...<2 lines>...
+        created_at__month=latest_month.month,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'created_at' into field. Choices are: company, company_id, discount_allocated, id, order_id, price, product_id, quantity, shopify_line_item_id, total, variant_id
+"GET /dashboard/overview/ HTTP/1.1" 500 131321
+Internal Server Error: /dashboard/overview/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryAPI\views.py", line 599, in CompanyDashboardMetricsView
+    OrderLineItem.objects.filter(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=user,
+        ^^^^^^^^^^^^^
+    ...<2 lines>...
+        created_at__month=latest_month.month,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'created_at' into field. Choices are: company, company_id, discount_allocated, id, order_id, price, product_id, quantity, shopify_line_item_id, total, variant_id
+"GET /dashboard/overview/ HTTP/1.1" 500 131321
+Internal Server Error: /dashboard/overview/
+Traceback (most recent call last):
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\TROOBA_PRODUCTION\InventoryAPI\views.py", line 597, in CompanyDashboardMetricsView
+    .filter(Q(order__order_date__gte=start_date) & Q(order__order_date__lt=end_date))
+     ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1498, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1357, in build_filter
+    return self._add_q(
+           ~~~~~~~~~~~^
+        filter_expr,
+        ^^^^^^^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1529, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ~~~~~~~~~~~~~~~~~^
+        child,
+        ^^^^^^
+    ...<6 lines>...
+        summarize=summarize,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1379, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1189, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\TROOBA_PRODUCTION\TroobaEnvi\Lib\site-packages\django\db\models\sql\query.py", line 1677, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'order' into field. Choices are: company, company_id, discount_allocated, id, order_id, price, product_id, quantity, shopify_line_item_id, total, variant_id
+"GET /dashboard/overview/?month=2025-07 HTTP/1.1" 500 138835
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 14
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 22
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 22
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 22
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 22
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 206
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 206
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 223
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 232
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 290
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 665
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 917
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 420
+Internal Server Error: /trooba_gemini_query/
+"POST /trooba_gemini_query/ HTTP/1.1" 500 419
