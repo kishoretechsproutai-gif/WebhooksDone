@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from celery.schedules import crontab
+from datetime import timedelta
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -21,13 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-import os
-from dotenv import load_dotenv
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
-import os
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 
@@ -47,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'CoreApplication',
-     "rest_framework",
+    'corsheaders',
+    "rest_framework",
     "rest_framework_simplejwt",
     "django_celery_results",
     "django_celery_beat",
@@ -59,6 +59,7 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -66,6 +67,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 ROOT_URLCONF = 'Trooba2.urls'
@@ -92,8 +97,6 @@ WSGI_APPLICATION = 'Trooba2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-import os
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -160,23 +163,15 @@ REST_FRAMEWORK = {
 }
 
 
-
-
-from datetime import timedelta
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
 }
 
 
-
-import os
-from dotenv import load_dotenv
-
-
 # Read the Fernet key from env (must be the base64 string you generated)
 ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
-#os.environ.get("TROOBA_ENC_KEY") 
+# os.environ.get("TROOBA_ENC_KEY")
 if not ENCRYPTION_KEY:
     raise RuntimeError("TROOBA_ENC_KEY is not set in environment variables.")
 # Fernet expects bytes
@@ -185,7 +180,7 @@ ENCRYPTION_KEY = ENCRYPTION_KEY.encode()
 
 # ---- Celery (broker = MySQL, results = Django DB) ----
 # Change USER/PASS/HOST/DB to your values
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL") 
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = "django-db"
 
 # Celery will import tasks from your views module
@@ -196,15 +191,12 @@ CELERY_TASK_TIME_LIMIT = 60 * 30        # 30 min hard time limit
 CELERY_TASK_SOFT_TIME_LIMIT = 60 * 25   # 25 min soft limit
 CELERY_WORKER_CONCURRENCY = 2           # adjust for your VPS
 
-import os
-from dotenv import load_dotenv
 
 load_dotenv()  # This loads the variables from the .env file
 
 # Now you can access the variable like this:
 WEBHOOK_BASE_URL = os.getenv("WEBHOOK_BASE_URL")
 
-from celery.schedules import crontab
 
 CELERY_BEAT_SCHEDULE = {
     "fetch-collections-every-day": {
@@ -213,15 +205,11 @@ CELERY_BEAT_SCHEDULE = {
     },
     "run-monthly-forecast-on-28th": {
         "task": "CoreApplication.views.run_monthly_forecast",
-        "schedule": crontab(minute=0, hour=0, day_of_month="28"),  # runs on 28th of each month at 00:00
+        # runs on 28th of each month at 00:00
+        "schedule": crontab(minute=0, hour=0, day_of_month="28"),
     },
 }
 
-
-
-
-
-import os
 
 LOGGING = {
     'version': 1,
@@ -240,7 +228,7 @@ LOGGING = {
             'propagate': True,
         },
     },
-    
+
 }
 
 

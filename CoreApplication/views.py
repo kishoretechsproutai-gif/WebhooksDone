@@ -1,3 +1,19 @@
+from rest_framework_simplejwt.tokens import RefreshToken
+from .models import PurchaseOrder, CompanyUser
+from django.utils.dateparse import parse_date
+from CoreApplication.models import Order
+from django.shortcuts import get_object_or_404
+from CoreApplication.models import CompanyUser
+from .models import CompanyUser, Collection, CollectionItem
+from .models import PromotionalData
+from django.utils.decorators import method_decorator
+from django.http import JsonResponse
+from django.views import View
+from datetime import date
+import pandas as pd
+from celery import chain
+from sentence_transformers import SentenceTransformer
+import chromadb
 import base64
 import hmac
 import hashlib
@@ -19,17 +35,20 @@ from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from cryptography.fernet import Fernet
 from celery import shared_task
 from CoreApplication.models import (
-    CompanyUser, Customer, Product, ProductVariant, Order, OrderLineItem ,Prompt
+    CompanyUser, Customer, Product, ProductVariant, Order, OrderLineItem, Prompt
 )
 import secrets
 
 logger = logging.getLogger(__name__)
 
 # ---------------- Helper: Sanitize Text & Decimal ----------------
+
+
 def sanitize_text(value, max_length=255):
     if value is None:
         return ""
     return str(value)[:max_length]
+
 
 def sanitize_decimal(value, default="0.00"):
     try:
@@ -38,6 +57,8 @@ def sanitize_decimal(value, default="0.00"):
         return Decimal(default)
 
 # ---------------- Helper: Remove Emoji ----------------
+
+
 def remove_emoji(text):
     if not text:
         return ""
@@ -45,6 +66,8 @@ def remove_emoji(text):
     return re.sub(r'[\U00010000-\U0010FFFF]', '', text)
 
 # ---------------- Helper: JWT ----------------
+
+
 def get_user_from_token(request):
     logger.info("🔑 Extracting user from JWT token...")
     auth_header = request.headers.get("Authorization")
@@ -69,6 +92,8 @@ def get_user_from_token(request):
         return None, Response({"error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
 
 # ---------------- Pagination Helper ----------------
+
+
 def fetch_pages(url, headers):
     logger.info(f"🌐 Fetching Shopify pages from URL: {url}")
     while url:
@@ -89,6 +114,8 @@ def fetch_pages(url, headers):
         time.sleep(0.5)
 
 # ---------------- Date Range Helper ----------------
+
+
 def generate_date_ranges(start_date_str="2015-01-01", window_days=4):
     start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
     end_date = datetime.utcnow()
@@ -101,9 +128,12 @@ def generate_date_ranges(start_date_str="2015-01-01", window_days=4):
     return ranges
 
 # ---------------- Webhook Helper ----------------
+
+
 def create_webhook(shop_url, token, topic, callback_url, secret=None):
     logger.info(f"🔔 Creating webhook for topic={topic} at {callback_url}")
-    headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
+    headers = {"X-Shopify-Access-Token": token,
+               "Content-Type": "application/json"}
     data = {"webhook": {"topic": topic, "address": callback_url, "format": "json"}}
     resp = requests.post(
         f"https://{shop_url}/admin/api/2025-01/webhooks.json",
@@ -116,15 +146,21 @@ def create_webhook(shop_url, token, topic, callback_url, secret=None):
     return resp.json()
 
 # ---------------- Celery: Shopify Sync ----------------
+
+
 @shared_task(bind=True, max_retries=3, soft_time_limit=604800)
 def fetch_shopify_data_task(self, company_user_id):
-    logger.info(f"🚀 Starting Shopify sync for company_user_id={company_user_id}")
+    logger.info(
+        f"🚀 Starting Shopify sync for company_user_id={company_user_id}")
     try:
         user = CompanyUser.objects.get(id=company_user_id)
         fernet = Fernet(settings.ENCRYPTION_KEY)
-        access_token = fernet.decrypt(user.shopify_access_token.encode()).decode()
-        shopify_store_url = fernet.decrypt(user.shopify_store_url.encode()).decode()
-        headers = {"X-Shopify-Access-Token": access_token, "Content-Type": "application/json"}
+        access_token = fernet.decrypt(
+            user.shopify_access_token.encode()).decode()
+        shopify_store_url = fernet.decrypt(
+            user.shopify_store_url.encode()).decode()
+        headers = {"X-Shopify-Access-Token": access_token,
+                   "Content-Type": "application/json"}
 
         # Customers
         url = f"https://{shopify_store_url}/admin/api/2025-01/customers.json?limit=250"
@@ -142,7 +178,8 @@ def fetch_shopify_data_task(self, company_user_id):
                         "created_at": c.get("created_at"),
                         "updated_at": c.get("updated_at"),
                         "city": sanitize_text(remove_emoji(addr.get("city"))),
-                        "region": sanitize_text(remove_emoji(addr.get("province"))),  # <-- region added
+                        # <-- region added
+                        "region": sanitize_text(remove_emoji(addr.get("province"))),
                         "country": sanitize_text(remove_emoji(addr.get("country"))),
                         "total_spent": sanitize_decimal(c.get("total_spent")),
                     },
@@ -187,7 +224,8 @@ def fetch_shopify_data_task(self, company_user_id):
         total_orders = 0
         for page_no, page in enumerate(fetch_pages(url, headers), start=1):
             for o in page:
-                customer_id = o.get("customer", {}).get("id") if o.get("customer") else None
+                customer_id = o.get("customer", {}).get(
+                    "id") if o.get("customer") else None
                 addr = o.get("billing_address") or {}
                 order, _ = Order.objects.update_or_create(
                     shopify_id=o.get("id"),
@@ -205,13 +243,15 @@ def fetch_shopify_data_task(self, company_user_id):
                         "total_discount": sanitize_decimal(o.get("total_discounts")),
                         "created_at": o.get("created_at"),
                         "updated_at": o.get("updated_at"),
-                        "region": sanitize_text(remove_emoji(addr.get("country"))),  # <-- region added here
+                        # <-- region added here
+                        "region": sanitize_text(remove_emoji(addr.get("country"))),
                     },
                 )
                 for li in o.get("line_items") or []:
                     quantity = li.get("quantity") or 0
                     price = sanitize_decimal(li.get("price"))
-                    discount_allocated = sanitize_decimal(li.get("total_discount"))
+                    discount_allocated = sanitize_decimal(
+                        li.get("total_discount"))
                     total = price * quantity
                     OrderLineItem.objects.update_or_create(
                         shopify_line_item_id=li.get("id"),
@@ -242,21 +282,27 @@ def fetch_shopify_data_task(self, company_user_id):
         ]
         for topic in topics:
             callback = f"{settings.WEBHOOK_BASE_URL}/webhooks/{company_user_id}/{topic.replace('/', '_')}/"
-            create_webhook(shopify_store_url, access_token, topic, callback, secret=user.webhook_secret)
+            create_webhook(shopify_store_url, access_token, topic,
+                           callback, secret=user.webhook_secret)
 
-        logger.info(f"🎉 Shopify sync completed for company_user_id={company_user_id}")
+        logger.info(
+            f"🎉 Shopify sync completed for company_user_id={company_user_id}")
 
     except Exception as e:
-        logger.error(f"❌ Sync error for company_user_id={company_user_id}: {e}")
+        logger.error(
+            f"❌ Sync error for company_user_id={company_user_id}: {e}")
         self.retry(exc=e, countdown=60)
 
 # ---------------- Webhook Security ----------------
+
+
 def verify_hmac(request, company_user_id):
     try:
         user = CompanyUser.objects.get(id=company_user_id)
         secret = user.webhook_secret
         if not secret:
-            logger.error(f"❌ No webhook secret found for company_user_id={company_user_id}")
+            logger.error(
+                f"❌ No webhook secret found for company_user_id={company_user_id}")
             return False
         hmac_header = request.headers.get("X-Shopify-Hmac-Sha256", "")
         body = request.body
@@ -265,13 +311,17 @@ def verify_hmac(request, company_user_id):
         ).decode()
         return hmac.compare_digest(digest, hmac_header)
     except CompanyUser.DoesNotExist:
-        logger.error(f"❌ CompanyUser {company_user_id} not found for HMAC verification")
+        logger.error(
+            f"❌ CompanyUser {company_user_id} not found for HMAC verification")
         return False
     except Exception as e:
-        logger.error(f"❌ HMAC verification error for company_user_id={company_user_id}: {e}")
+        logger.error(
+            f"❌ HMAC verification error for company_user_id={company_user_id}: {e}")
         return False
 
 # ---------------- Webhook Task with Vector DB Updates ----------------
+
+
 @shared_task
 def process_webhook_task(company_user_id, topic, payload):
     try:
@@ -411,13 +461,13 @@ def process_webhook_task(company_user_id, topic, payload):
             update_promotional_vector(promo_obj)
 
     except Exception as e:
-        logger.error(f"❌ Webhook task error ({topic}) for company_user_id={company_user_id}: {e}")
+        logger.error(
+            f"❌ Webhook task error ({topic}) for company_user_id={company_user_id}: {e}")
 
-        
-import chromadb
-from sentence_transformers import SentenceTransformer
 
-model = SentenceTransformer('all-MiniLM-L6-v2')  # Initialize once globally for efficiency
+# Initialize once globally for efficiency
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
 
 def add_or_update_vector(text, metadata, id_prefix, obj_id, company_user_id):
     folder_path = f"D:/TROOBA_PRODUCTION/chroma_db/tenant_{company_user_id}"
@@ -432,6 +482,7 @@ def add_or_update_vector(text, metadata, id_prefix, obj_id, company_user_id):
         metadatas=[metadata]
     )
 
+
 def update_customer_vector(customer):
     text = f"Customer ID: {customer.id}, Shopify ID: {customer.shopify_id}, Name: {customer.first_name} {customer.last_name}, Email: {customer.email}, Total Spent: {customer.total_spent}"
     metadata = {
@@ -440,7 +491,9 @@ def update_customer_vector(customer):
         "company_id": customer.company_id,
         "total_spent": float(customer.total_spent or 0)
     }
-    add_or_update_vector(text, metadata, "customer", customer.id, customer.company_id)
+    add_or_update_vector(text, metadata, "customer",
+                         customer.id, customer.company_id)
+
 
 def update_product_vector(product):
     text = f"Product ID: {product.id}, Shopify ID: {product.shopify_id}, Title: {product.title}, Vendor: {product.vendor}, Product Type: {product.product_type}, Tags: {product.tags}"
@@ -449,7 +502,9 @@ def update_product_vector(product):
         "shopify_id": product.shopify_id,
         "company_id": product.company_id
     }
-    add_or_update_vector(text, metadata, "product", product.id, product.company_id)
+    add_or_update_vector(text, metadata, "product",
+                         product.id, product.company_id)
+
 
 def update_order_vector(order):
     text = f"Order ID: {order.id}, Shopify ID: {order.shopify_id}, Order Number: {order.order_number}, Total: {order.total_price}, Fulfillment: {order.fulfillment_status}, Financial: {order.financial_status}"
@@ -475,6 +530,8 @@ def shopify_webhook_view(request, company_user_id, topic):
     return HttpResponse(status=200)
 
 # ---------------- Register & Login ----------------
+
+
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
@@ -502,23 +559,57 @@ class RegisterView(APIView):
 
         return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
 
+
 class LoginView(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         email = sanitize_text(remove_emoji(request.data.get("email")))
         password = request.data.get("password")
+
         try:
             user = CompanyUser.objects.get(email=email)
         except CompanyUser.DoesNotExist:
             return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
+
         if not user.check_password(password):
             return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
+
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
-        return Response({"access_token": access_token, "expires_in_days": 15}, status=status.HTTP_200_OK)
+        company_name = user.company
+        company_shopify_token = user.shopify_access_token
+        company_shopify_url = user.shopify_store_url
+
+        # Default flags
+        shopify_connected = False
+        decrypted_url = None
+
+        # ✅ If Shopify credentials exist, decrypt and include URL
+        if company_shopify_token and company_shopify_url:
+            try:
+                fernet = Fernet(settings.ENCRYPTION_KEY)
+                decrypted_token = fernet.decrypt(
+                    company_shopify_token.encode()).decode()
+                decrypted_url = fernet.decrypt(
+                    company_shopify_url.encode()).decode()
+                shopify_connected = True
+            except Exception as e:
+                # Fallback if decryption fails
+                decrypted_url = None
+                shopify_connected = False
+
+        return Response({
+            "access_token": access_token,
+            "expires_in_days": 15,
+            "company_name": company_name,
+            "shopify_access_token_check": shopify_connected,
+            "shopify_store_url": decrypted_url if shopify_connected else None
+        }, status=status.HTTP_200_OK)
+
 
 # ---------------- Save & Get Shopify Credentials ----------------
-from celery import chain
+
 
 class SaveShopifyCredentialsView(APIView):
     authentication_classes = []
@@ -526,16 +617,19 @@ class SaveShopifyCredentialsView(APIView):
 
     def post(self, request):
         user, error_response = get_user_from_token(request)
-        if error_response: return error_response
+        if error_response:
+            return error_response
 
-        access_token = sanitize_text(remove_emoji(request.data.get("access_token")))
+        access_token = sanitize_text(
+            remove_emoji(request.data.get("access_token")))
         store_url = sanitize_text(remove_emoji(request.data.get("store_url")))
 
         if not access_token or not store_url:
             return Response({"error": "Access token and store URL are required"}, status=status.HTTP_400_BAD_REQUEST)
 
         fernet = Fernet(settings.ENCRYPTION_KEY)
-        user.shopify_access_token = fernet.encrypt(access_token.encode()).decode()
+        user.shopify_access_token = fernet.encrypt(
+            access_token.encode()).decode()
         user.shopify_store_url = fernet.encrypt(store_url.encode()).decode()
 
         if not user.webhook_secret:
@@ -555,15 +649,19 @@ class SaveShopifyCredentialsView(APIView):
 class GetShopifyCredentialsView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
+
     def get(self, request):
         user, error_response = get_user_from_token(request)
-        if error_response: return error_response
+        if error_response:
+            return error_response
         if not user.shopify_access_token or not user.shopify_store_url:
             return Response({"error": "No Shopify credentials found"}, status=status.HTTP_404_NOT_FOUND)
         try:
             fernet = Fernet(settings.ENCRYPTION_KEY)
-            decrypted_token = fernet.decrypt(user.shopify_access_token.encode()).decode()
-            decrypted_url = fernet.decrypt(user.shopify_store_url.encode()).decode()
+            decrypted_token = fernet.decrypt(
+                user.shopify_access_token.encode()).decode()
+            decrypted_url = fernet.decrypt(
+                user.shopify_store_url.encode()).decode()
             return Response({"shopify_access_token": decrypted_token, "shopify_store_url": decrypted_url}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": f"Failed to decrypt credentials: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -571,22 +669,16 @@ class GetShopifyCredentialsView(APIView):
 
 # Promotional Data Fetching From Excel Sheet
 
-import pandas as pd
-import logging
-from datetime import date
-from django.views import View
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from .models import PromotionalData
 
 logger = logging.getLogger(__name__)
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UploadPromotionalDataView(View):
     def post(self, request):
         # ✅ Get user from token
-        user, error_response = get_user_from_token(request)  # `user` = CompanyUser object
+        user, error_response = get_user_from_token(
+            request)  # `user` = CompanyUser object
         if error_response:
             return error_response
 
@@ -617,18 +709,21 @@ class UploadPromotionalDataView(View):
                     return default
 
             for index, row in df.iterrows():
-                raw_variant_id = row.get('variant_id') or row.get('varient_id')  # handle typo
+                raw_variant_id = row.get('variant_id') or row.get(
+                    'varient_id')  # handle typo
 
                 # ✅ Skip rows with missing variant_id
                 if pd.isna(raw_variant_id) or not str(raw_variant_id).strip():
-                    logger.warning(f"⚠️ Skipping row {index} - missing variant_id")
+                    logger.warning(
+                        f"⚠️ Skipping row {index} - missing variant_id")
                     continue
 
                 # ✅ Convert safely to integer
                 try:
                     variant_id = int(float(str(raw_variant_id).strip()))
                 except Exception as ex:
-                    logger.error(f"❌ Invalid variant_id at row {index}: {raw_variant_id} ({ex})")
+                    logger.error(
+                        f"❌ Invalid variant_id at row {index}: {raw_variant_id} ({ex})")
                     continue
 
                 # ✅ Create or update record
@@ -661,27 +756,15 @@ class UploadPromotionalDataView(View):
             return JsonResponse({"error": str(e)}, status=500)
 
 
-
-
 # --------------------------------------------------------------------------------
-
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import AllowAny
-from .models import CompanyUser, Collection, CollectionItem
-from django.conf import settings
-from cryptography.fernet import Fernet
-from celery import shared_task
-import requests
-import logging
 
 logger = logging.getLogger(__name__)
 
 # ---------------------------
 # Celery Task: Fetch Collections for a Single User
 # ---------------------------
+
+
 @shared_task(bind=True)
 def fetch_collections_task(self, company_user_id):
     """
@@ -699,8 +782,10 @@ def fetch_collections_task(self, company_user_id):
 
         # Decrypt Shopify credentials
         fernet = Fernet(settings.ENCRYPTION_KEY)
-        access_token = fernet.decrypt(user.shopify_access_token.encode()).decode()
-        shopify_store_url = fernet.decrypt(user.shopify_store_url.encode()).decode()
+        access_token = fernet.decrypt(
+            user.shopify_access_token.encode()).decode()
+        shopify_store_url = fernet.decrypt(
+            user.shopify_store_url.encode()).decode()
         print(f"🔐 Decrypted Shopify URL: {shopify_store_url}")
 
         headers = {
@@ -714,7 +799,8 @@ def fetch_collections_task(self, company_user_id):
         response = requests.get(collections_url, headers=headers)
         print(f"📦 Shopify response code: {response.status_code}")
         if response.status_code != 200:
-            print(f"❌ Shopify API error: {response.status_code} {response.text}")
+            print(
+                f"❌ Shopify API error: {response.status_code} {response.text}")
             return
 
         collections = response.json().get("custom_collections", [])
@@ -735,7 +821,8 @@ def fetch_collections_task(self, company_user_id):
                     "image_src": c.get("image", {}).get("src") if c.get("image") else None,
                 },
             )
-            print(f"{'✅ Created' if created else '♻ Updated'} collection '{collection.title}'")
+            print(
+                f"{'✅ Created' if created else '♻ Updated'} collection '{collection.title}'")
 
             # Fetch products for this collection
             collects_url = f"https://{shopify_store_url}/admin/api/2025-01/collects.json?collection_id={collection.shopify_id}"
@@ -743,15 +830,18 @@ def fetch_collections_task(self, company_user_id):
             collects_resp = requests.get(collects_url, headers=headers)
             print(f"📦 Collects response code: {collects_resp.status_code}")
             if collects_resp.status_code != 200:
-                print(f"❌ Error fetching products for collection '{collection.title}'")
+                print(
+                    f"❌ Error fetching products for collection '{collection.title}'")
                 continue
 
             collects = collects_resp.json().get("collects", [])
-            print(f"📌 Found {len(collects)} products in collection '{collection.title}'")
+            print(
+                f"📌 Found {len(collects)} products in collection '{collection.title}'")
 
             for item in collects:
                 product_id = item.get("product_id")
-                print(f"➕ Adding/updating product {product_id} in collection '{collection.title}'")
+                print(
+                    f"➕ Adding/updating product {product_id} in collection '{collection.title}'")
 
                 # Fetch product details to get image
                 product_url = f"https://{shopify_store_url}/admin/api/2025-01/products/{product_id}.json"
@@ -762,7 +852,8 @@ def fetch_collections_task(self, company_user_id):
                     product_data = product_resp.json().get("product", {})
                     images = product_data.get("images", [])
                     if images:
-                        image_src = images[0].get("src")  # take first product image
+                        # take first product image
+                        image_src = images[0].get("src")
 
                 # Save or update product in CollectionItem
                 CollectionItem.objects.update_or_create(
@@ -816,7 +907,8 @@ def fetch_collections_for_all_users():
     Automatic task that runs every 24 hours.
     - Fetches collections for all users who have Shopify credentials.
     """
-    users = CompanyUser.objects.filter(shopify_access_token__isnull=False, shopify_store_url__isnull=False)
+    users = CompanyUser.objects.filter(
+        shopify_access_token__isnull=False, shopify_store_url__isnull=False)
     print(f"📅 Running scheduled fetch for {users.count()} users")
     for user in users:
         print(f"➡️ Fetching collections for user: {user.email}")
@@ -827,34 +919,25 @@ def fetch_collections_for_all_users():
 
 # ===================================================================================================================
 
-import logging
-from celery import shared_task
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import AllowAny
-
-from CoreApplication.models import (
-    Order, OrderLineItem, Customer, Collection,
-    CollectionItem, Product, ProductVariant, CompanyUser, PromotionalData
-)
-
-import chromadb
-from sentence_transformers import SentenceTransformer
 
 logger = logging.getLogger(__name__)
 
 # -----------------------------
 # Helper functions to sanitize metadata
 # -----------------------------
+
+
 def safe_int(val):
     return int(val) if val is not None else 0
+
 
 def safe_float(val):
     return float(val) if val is not None else 0.0
 
+
 def safe_str(val):
     return str(val) if val is not None else ""
+
 
 def safe_bool(val):
     return bool(val) if val is not None else False
@@ -862,27 +945,37 @@ def safe_bool(val):
 # -----------------------------
 # Celery Task
 # -----------------------------
+
+
 @shared_task(bind=True, max_retries=3)
 def train_vector_db_task(self, company_user_id):
-    logger.info(f"🚀 Starting Vector DB training for company_user_id={company_user_id}")
+    logger.info(
+        f"🚀 Starting Vector DB training for company_user_id={company_user_id}")
 
     try:
         # Fetch tenant-specific data
         orders = list(Order.objects.filter(company_id=company_user_id))
-        order_items = list(OrderLineItem.objects.filter(company_id=company_user_id))
+        order_items = list(OrderLineItem.objects.filter(
+            company_id=company_user_id))
         customers = list(Customer.objects.filter(company_id=company_user_id))
-        collections = list(Collection.objects.filter(company_id=company_user_id))
-        collection_items = list(CollectionItem.objects.filter(collection__company_id=company_user_id))
+        collections = list(Collection.objects.filter(
+            company_id=company_user_id))
+        collection_items = list(CollectionItem.objects.filter(
+            collection__company_id=company_user_id))
         products = list(Product.objects.filter(company_id=company_user_id))
-        variants = list(ProductVariant.objects.filter(company_id=company_user_id))
-        promotions = list(PromotionalData.objects.filter(user_id=company_user_id))
+        variants = list(ProductVariant.objects.filter(
+            company_id=company_user_id))
+        promotions = list(PromotionalData.objects.filter(
+            user_id=company_user_id))
 
         logger.info(f"📦 Data counts — Orders: {len(orders)}, OrderItems: {len(order_items)}, Customers: {len(customers)}, Collections: {len(collections)}, CollectionItems: {len(collection_items)}, Products: {len(products)}, Variants: {len(variants)}, Promotions: {len(promotions)}")
 
         # Initialize ChromaDB
-        client = chromadb.PersistentClient(path=f"D:/TROOBA_PRODUCTION/chroma_db/tenant_{company_user_id}")
+        client = chromadb.PersistentClient(
+            path=f"D:/TROOBA_PRODUCTION/chroma_db/tenant_{company_user_id}")
         collection_name = f"tenant_{company_user_id}"
-        vector_collection = client.get_or_create_collection(name=collection_name)
+        vector_collection = client.get_or_create_collection(
+            name=collection_name)
 
         model = SentenceTransformer('all-MiniLM-L6-v2')
         batch_size = 500
@@ -897,8 +990,10 @@ def train_vector_db_task(self, company_user_id):
                 embeddings = model.encode(texts, convert_to_tensor=False)
                 ids = [f"{id_prefix}_{safe_int(obj.id)}" for obj in batch]
                 metadatas = [get_metadata_fn(obj) for obj in batch]
-                vector_collection.add(documents=texts, ids=ids, embeddings=embeddings, metadatas=metadatas)
-                logger.info(f"✅ Batch {i//batch_size + 1}/{(len(items)-1)//batch_size + 1} for {id_prefix} persisted successfully.")
+                vector_collection.add(
+                    documents=texts, ids=ids, embeddings=embeddings, metadatas=metadatas)
+                logger.info(
+                    f"✅ Batch {i//batch_size + 1}/{(len(items)-1)//batch_size + 1} for {id_prefix} persisted successfully.")
 
         # -----------------------------
         # Metadata & Text functions
@@ -1013,23 +1108,30 @@ def train_vector_db_task(self, company_user_id):
         # Process all batches
         # -----------------------------
         process_batch(orders, order_text, order_metadata, "order")
-        process_batch(order_items, order_item_text, order_item_metadata, "orderitem")
+        process_batch(order_items, order_item_text,
+                      order_item_metadata, "orderitem")
         process_batch(customers, customer_text, customer_metadata, "customer")
-        process_batch(collections, collection_text, collection_metadata, "collection")
-        process_batch(collection_items, collection_item_text, collection_item_metadata, "collectionitem")
+        process_batch(collections, collection_text,
+                      collection_metadata, "collection")
+        process_batch(collection_items, collection_item_text,
+                      collection_item_metadata, "collectionitem")
         process_batch(products, product_text, product_metadata, "product")
         process_batch(variants, variant_text, variant_metadata, "variant")
         process_batch(promotions, promo_text, promo_metadata, "promo")
 
-        logger.info(f"✅ Vector DB training completed for company_user_id={company_user_id}")
+        logger.info(
+            f"✅ Vector DB training completed for company_user_id={company_user_id}")
 
     except Exception as exc:
-        logger.error(f"❌ Vector DB training failed for company_user_id={company_user_id}: {exc}", exc_info=True)
+        logger.error(
+            f"❌ Vector DB training failed for company_user_id={company_user_id}: {exc}", exc_info=True)
         self.retry(exc=exc, countdown=60)
 
 # -----------------------------
 # API View
 # -----------------------------
+
+
 class TrainVectorDBView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
@@ -1046,27 +1148,14 @@ class TrainVectorDBView(APIView):
 # Testing Vector DBfrom django.http import JsonResponse
 
 # views.py
-import chromadb
-from sentence_transformers import SentenceTransformer
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 
 # You can reuse your token helper
-from CoreApplication.models import CompanyUser
 
 
 # -----------------------------
 # API View
 # -----------------------------
 
-from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from sentence_transformers import SentenceTransformer
-import chromadb
-from CoreApplication.models import Order
 
 class VectorDBSearchView(APIView):
     authentication_classes = []  # Add JWT auth if needed
@@ -1086,16 +1175,21 @@ class VectorDBSearchView(APIView):
             folder_path = f"D:/TROOBA_PRODUCTION/chroma_db/tenant_{company_user_id}"
             client = chromadb.PersistentClient(path=folder_path)
             collection_name = f"tenant_{company_user_id}"
-            vector_collection = client.get_or_create_collection(name=collection_name)
+            vector_collection = client.get_or_create_collection(
+                name=collection_name)
 
             model = SentenceTransformer('all-MiniLM-L6-v2')
-            query_embedding = model.encode([query_text], convert_to_tensor=False)
+            query_embedding = model.encode(
+                [query_text], convert_to_tensor=False)
 
             numeric_id_filter = {
                 "$or": [
-                    {"id": int(query_text)}, {"shopify_id": int(query_text)}, {"customer_id": int(query_text)},
-                    {"order_id": int(query_text)}, {"product_id": int(query_text)}, {"variant_id": int(query_text)},
-                    {"collection_id": int(query_text)}, {"user_id": int(query_text)}
+                    {"id": int(query_text)}, {"shopify_id": int(query_text)}, {
+                        "customer_id": int(query_text)},
+                    {"order_id": int(query_text)}, {"product_id": int(query_text)}, {
+                        "variant_id": int(query_text)},
+                    {"collection_id": int(query_text)}, {
+                        "user_id": int(query_text)}
                 ]
             }
 
@@ -1115,7 +1209,8 @@ class VectorDBSearchView(APIView):
                 order_id = metadata.get("order_id")
                 if order_id:
                     try:
-                        order = Order.objects.get(shopify_id=order_id, company_id=company_user_id)
+                        order = Order.objects.get(
+                            shopify_id=order_id, company_id=company_user_id)
                         order_data = {
                             "id": order.id,
                             "shopify_id": order.shopify_id,
@@ -1148,20 +1243,10 @@ class VectorDBSearchView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
 # views.py
-
-import pandas as pd
-from django.views import View
-from django.http import JsonResponse
-from django.utils.dateparse import parse_date
-from .models import PurchaseOrder, CompanyUser
-import logging
 
 logger = logging.getLogger(__name__)
 
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UploadPurchaseOrderView(View):
