@@ -931,3 +931,91 @@ def get_collection_details(request, collection_id):
     }
 
     return JsonResponse(response, safe=False, status=200)
+
+
+import pytz
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from CoreApplication.models import CompanyUser, Product, ProductVariant, Order, OrderLineItem
+
+@csrf_exempt
+def masterdatahub(request):
+    try:
+        # --- Get company ---
+        company_id = request.GET.get("company_id", 2)
+        company = CompanyUser.objects.get(id=company_id)
+        print(f"DEBUG: company_id={company_id}")
+
+        # --- Month parameter ---
+        month_param = request.GET.get("month")
+        if month_param:
+            month_dt = datetime.strptime(month_param, "%Y-%m")
+            print(f"DEBUG: Received month parameter: {month_param}")
+        else:
+            month_dt = datetime.now()
+            print(f"DEBUG: No month parameter, using current month: {month_dt.strftime('%Y-%m')}")
+
+        tz = pytz.UTC
+        start_date = tz.localize(datetime(month_dt.year, month_dt.month, 1, 0, 0, 0))
+        next_month = start_date + relativedelta(months=1)
+        end_date = next_month - timedelta(seconds=1)
+        print(f"DEBUG: Filtering orders from {start_date} to {end_date}")
+
+        # --- Product stats ---
+        total_skus = ProductVariant.objects.filter(company=company).count()
+        active_products = Product.objects.filter(company=company, status="active").count()
+        draft_products = Product.objects.filter(company=company, status="draft").count()
+        total_categories = Product.objects.filter(company=company).values("product_type").distinct().count()
+        print(f"DEBUG: total_skus={total_skus}, active_products={active_products}, draft_products={draft_products}, total_categories={total_categories}")
+
+        # --- Orders in month ---
+        orders = Order.objects.filter(
+            company=company,
+            order_date__gte=start_date,
+            order_date__lte=end_date
+        )
+        order_ids = list(orders.values_list("shopify_id", flat=True))
+        print(f"DEBUG: Filtered orders: {len(order_ids)}")
+
+        # --- OrderLineItems for filtered orders ---
+        line_items = OrderLineItem.objects.filter(order_id__in=order_ids)
+        print(f"DEBUG: Line items count: {line_items.count()}")
+
+        # --- Aggregate sales ---
+        total_sales_units = 0
+        total_sales_price = 0.0
+        category_units = {}
+        category_price = {}
+
+        # Build a mapping of product_id to product_type
+        product_types = {p.shopify_id: p.product_type or "Unknown" for p in Product.objects.filter(company=company)}
+
+        for li in line_items:
+            category_name = product_types.get(li.product_id, "Unknown")
+            total_sales_units += li.quantity or 0
+            total_sales_price += float(li.price or 0) * (li.quantity or 0)
+
+            category_units[category_name] = category_units.get(category_name, 0) + (li.quantity or 0)
+            category_price[category_name] = category_price.get(category_name, 0.0) + float(li.price or 0) * (li.quantity or 0)
+
+        print(f"DEBUG: Total sales_units: {total_sales_units}, Total sales_price: {total_sales_price}")
+
+        response_data = {
+            "company_id": company.id,
+            "total_skus": total_skus,
+            "total_categories": total_categories,
+            "active_products": active_products,
+            "draft_products": draft_products,
+            "sales_units_current_month": total_sales_units,
+            "sales_price_current_month": total_sales_price,
+            "category_wise_sales_units": category_units,
+            "category_wise_sales_price": category_price
+        }
+
+        return JsonResponse(response_data)
+
+    except Exception as e:
+        print(f"ERROR in masterdatahub: {str(e)}")
+        return JsonResponse({"error": str(e)})
