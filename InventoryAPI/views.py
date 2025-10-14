@@ -81,7 +81,7 @@ def inventory_reorder_report(request):
     company = user
     today = date.today()
 
-    # Latest Forecasts
+    # ---------------- Latest Forecasts ---------------- #
     latest_month = SKUForecastHistory.objects.filter(company=company).aggregate(latest_month=Max("month")).get("latest_month")
     if not latest_month:
         return JsonResponse({"error": "No forecasts found for this company."}, status=404)
@@ -195,40 +195,73 @@ def inventory_reorder_report(request):
             "PurchaseOrders": order_details.get(sku_norm, []),
         })
 
-    # ---------------- Slow Movers ---------------- #
-    start_month = today.replace(day=1) - relativedelta(months=3)
-    end_month = today.replace(day=1)
-    sales_summary = SKUForecastHistory.objects.filter(company=company, month__gte=start_month, month__lt=end_month).values("sku").annotate(total_sales=Sum("actual_sales_30"))
-    sold_map = {normalize_sku(s["sku"]): s["total_sales"] or 0 for s in sales_summary}
-    slow_threshold = 3
+    # ---------------- Slow Movers (Updated) ---------------- #
+    current_month_start = today.replace(day=1)
+    start_month_3 = current_month_start - relativedelta(months=3)
+    start_month_12 = current_month_start - relativedelta(months=12)
 
+    # 3-month total sales
+    sales_summary_3 = (
+        SKUForecastHistory.objects.filter(
+            company=company,
+            month__gte=start_month_3,
+            month__lt=current_month_start
+        )
+        .values("sku")
+        .annotate(total_sales=Sum("actual_sales_30"))
+    )
+    sold_map_3 = {s["sku"]: s["total_sales"] or 0 for s in sales_summary_3}
+
+    # 12-month month-wise sales
+    month_sales = (
+        SKUForecastHistory.objects.filter(
+            company=company,
+            month__gte=start_month_12,
+            month__lt=current_month_start
+        )
+        .values("sku", "month")
+        .annotate(month_sales=Sum("actual_sales_30"))
+        .order_by("sku", "month")
+    )
+    monthwise_sales_map = {}
+    for s in month_sales:
+        sku = s["sku"]
+        month_str = s["month"].strftime("%b %Y")
+        sales_value = s["month_sales"] or 0
+        if sku not in monthwise_sales_map:
+            monthwise_sales_map[sku] = {}
+        monthwise_sales_map[sku][month_str] = sales_value
+
+    slow_threshold = 3
     slow_movers = []
-    for f in latest_forecasts:
-        sku_norm = normalize_sku(f.sku)
-        live_inventory = f.live_inventory or 0
-        total_sold = sold_map.get(sku_norm, 0)
+    for sku, total_sold in sold_map_3.items():
         if total_sold < slow_threshold:
             try:
-                variant = ProductVariant.objects.get(company=company, sku=f.sku)
+                variant = ProductVariant.objects.get(company=company, sku=sku)
                 price = float(variant.price) if variant.price else 0.0
+                live_inventory = variant.inventory_quantity or 0
                 product_id = variant.product_id
                 variant_title = variant.title or ""
+
                 product = Product.objects.filter(company=company, shopify_id=product_id).first()
                 category = product.product_type if product else None
                 product_title = product.title if product else ""
             except ProductVariant.DoesNotExist:
                 price = 0.0
+                live_inventory = 0
                 category = None
                 product_title = ""
                 variant_title = ""
+
             slow_movers.append({
-                "SKU": f.sku,
+                "SKU": sku,
                 "Product": product_title,
                 "Variant": variant_title,
                 "Category": category,
                 "Price": price,
                 "Live_Inventory": live_inventory,
-                "Sales_Last_3_Months": total_sold,
+                "Sales_Last_3_Months_Total": total_sold,
+                "Sales_Last_12_Months": monthwise_sales_map.get(sku, {}),
             })
 
     # ---------------- Summary ---------------- #
@@ -779,3 +812,122 @@ def CompanyDashboardMetricsView(request):
     }
 
     return JsonResponse(dashboard_data, status=200, safe=False)
+
+
+
+# Collections API 
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Count
+from CoreApplication.models import Collection, CollectionItem
+from CoreApplication.views import get_user_from_token
+
+
+@csrf_exempt
+def get_collections_list(request):
+    """
+    Returns all collections for a shop owner with basic details only.
+    Includes the number of items in each collection.
+    """
+    user, error = get_user_from_token(request)
+    if error:
+        return error
+
+    company = user
+
+    # Annotate each collection with total_items
+    collections = (
+        Collection.objects.filter(company_id=company.id)
+        .annotate(total_items=Count('items'))
+        .order_by('-updated_at')
+    )
+    total_collections = collections.count()
+
+    collection_list = []
+    for c in collections:
+        collection_list.append({
+            "collection_id": c.id,
+            "shopify_id": c.shopify_id,
+            "title": c.title,
+            "handle": c.handle,
+            "image_src": c.image_src,
+            "updated_at": c.updated_at,
+            "created_at": c.created_at,
+            "total_items": c.total_items,  # Added number of items
+        })
+
+    return JsonResponse({
+        "company_id": company.id,
+        "total_collections": total_collections,
+        "collections": collection_list
+    }, safe=False, status=200)
+
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from CoreApplication.models import CollectionItem, Product, ProductVariant, Collection
+from CoreApplication.views import get_user_from_token
+
+
+@csrf_exempt
+def get_collection_details(request, collection_id):
+    """
+    Returns all items for a single collection.
+    Includes product details, variant info, tags, and images.
+    """
+    user, error = get_user_from_token(request)
+    if error:
+        return error
+
+    company = user
+
+    # Validate collection belongs to this company
+    try:
+        collection = Collection.objects.get(id=collection_id, company_id=company.id)
+    except Collection.DoesNotExist:
+        return JsonResponse({"error": "Collection not found"}, status=404)
+
+    # Fetch items
+    items = CollectionItem.objects.filter(collection=collection)
+    product_ids = [item.product_id for item in items]
+
+    # Preload products and variants
+    products = {p.shopify_id: p for p in Product.objects.filter(company=company, shopify_id__in=product_ids)}
+    variants = {v.product_id: v for v in ProductVariant.objects.filter(company=company, product_id__in=product_ids)}
+
+    item_list = []
+    for item in items:
+        product = products.get(item.product_id)
+        variant = variants.get(item.product_id)
+
+        item_list.append({
+            "collection_item_id": item.id,
+            "product_shopify_id": item.product_id,
+            "product_title": product.title if product else None,
+            "vendor": product.vendor if product else None,
+            "product_type": product.product_type if product else None,
+            "sku": variant.sku if variant else None,
+            "price": float(variant.price) if variant and variant.price else 0.0,
+            "inventory_quantity": variant.inventory_quantity if variant else 0,
+            "product_tags": product.tags if product and getattr(product, "tags", None) else None,
+            "product_image_src": getattr(product, "image_src", None),
+            "collection_item_image_src": item.image_src,
+            "created_at": item.created_at,
+        })
+
+    response = {
+        "collection_id": collection.id,
+        "shopify_id": collection.shopify_id,
+        "title": collection.title,
+        "handle": collection.handle,
+        "image_src": collection.image_src,
+        "updated_at": collection.updated_at,
+        "created_at": collection.created_at,
+        "total_items": len(item_list),
+        "items": item_list,
+    }
+
+    return JsonResponse(response, safe=False, status=200)
