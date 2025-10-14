@@ -106,104 +106,134 @@ class GenericVectorSearchView(APIView):
 
 
 
-
 import json
+import re
 import requests
+from decimal import Decimal
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.db import connection
 from CoreApplication.views import get_user_from_token
 
+
 @csrf_exempt
 def gemini_chatbot(request):
     """
-    Chatbot endpoint: sends models info + user question to Gemini 2.5 Flash.
-    Returns SQL execution results after Gemini generates strict JSON SQL.
+    Chatbot endpoint (Stable & Deterministic):
+    1. Sends models info + user question to Gemini (temperature=0).
+    2. Extracts and validates SQL strictly.
+    3. Executes the SQL safely.
+    4. Sends question + SQL results back to Gemini for a natural language summary.
     """
     if request.method != "POST":
         return JsonResponse({"error": "POST request required"}, status=400)
 
     try:
-        # Authenticate user
+        # ---------------------- Step 1: Authenticate user ----------------------
         user, error_response = get_user_from_token(request)
         if error_response:
             return error_response
 
-        # Get user question
         data = json.loads(request.body)
         question = data.get("question")
         if not question:
             return JsonResponse({"error": "Question is required"}, status=400)
 
-        # ---------------------- Build prompt with models + examples ----------------------
+        # ---------------------- Step 2: Prompt for SQL generation ----------------------
         prompt = """
-You are an expert AI assistant. Use the following models and examples to generate **safe SQL queries only in JSON format**.
-Do NOT use DROP, DELETE, or any destructive operations.
-Return **strict JSON** like: {"sql": "<your SQL query here>"}
+You are an expert SQL generator for Django ORM databases using MariaDB.
+You must return only valid SQL JSON strictly in this format:
+{"sql": "SELECT ..."}
 
-CoreApplication Models (table prefix: CoreApplication_):
+❗ Never use placeholders or variables like <month_number>, <tenant_id>, or <year>.
+Always use concrete numeric or string literals directly in SQL examples.
+Output must be syntactically valid and executable directly.
 
-1. CompanyUser:
-- id, company, email, password, shopify_access_token, shopify_store_url, webhook_secret
-- Example: {id: 2, company: 'Tarinika', email: 'info@example.com'}
+Allowed tables and model structure:
 
-2. Customer:
-- id, shopify_id, company_id, email, first_name, last_name, phone, created_at, updated_at, city, region, country, total_spent
-- Example: {id: 1, shopify_id: 6688420298818, company_id: 2, email: 'abc@example.com', first_name: 'John', last_name: 'Doe', total_spent: 1234.56}
+1-CoreApplication_Product
+id, name, company_id, created_at, updated_at
 
-3. Location:
-- id, shopify_id, company_id, name, address, city, region, country, postal_code
-- Example: {id: 1, shopify_id: 123456, company_id: 2, name: 'Warehouse A', city: 'New York', region: 'NY'}
+2-CoreApplication_ProductVariant
+shopify_id, product_id, sku, price, created_at
 
-4. Product:
-- id, shopify_id, company_id, title, vendor, product_type, tags, created_at, updated_at, status
-- Example: {id: 1, shopify_id: 7537394876482, company_id: 2, title: '3KG0005XTC', vendor: 'Tarinika', product_type: 'Armlets', tags: 'Antique gold, Armlets'}
+3-CoreApplication_Order
+shopify_id, customer_id, company_id, created_at
 
-5. ProductVariant:
-- id, shopify_id, product_id, company_id, title, sku, price, compare_at_price, cost, inventory_quantity, created_at, updated_at
-- Example: {id: 1, shopify_id: 42419720192066, product_id: 7537394876482, company_id: 2, title: 'Default Title', sku: '3KG0005XTC', price: 59.99, inventory_quantity: 10}
+4-CoreApplication_OrderLineItem
+variant_id, order_id, quantity, price
 
-6. Order:
-- id, shopify_id, company_id, customer_id, order_number, order_date, fulfillment_status, financial_status, currency, total_price, subtotal_price, total_tax, total_discount, region
-- Example: {id: 1, shopify_id: 6380303974466, company_id: 2, customer_id: 6688420298818, order_number: '61912', order_date: '2025-09-08', total_price: 199.18, region: 'United States'}
+5-CoreApplication_Customer
+shopify_id, name, email, company_id
 
-7. OrderLineItem:
-- id, shopify_line_item_id, order_id, product_id, variant_id, quantity, price, discount_allocated, total, company_id
-- Example: {id: 1, shopify_line_item_id: 15980659376194, order_id: 6380303974466, product_id: 7335578861634, variant_id: 41607093649474, quantity: 1, price: 19.99, total: 19.99}
+6-CoreApplication_PromotionalData
+product_id, discount_percent, start_date, end_date
 
-8. PromotionalData:
-- id, user_id, date, clicks, impressions, cost, conversions, conversion_value, ctr, avg_cpc, conv_value_per_cost, conversion_rate, cost_per_conversion, currency_code, image_url, price, title, variant_id
-- Example: {id: 5, user_id: 6, date: '2025-09-11', clicks: 5, impressions: 351, cost: 1.34, conversions: 0, conversion_value: 0.00, price: 29.99, title: 'Tarinika|Armlets', variant_id: 14964261519426}
+7-Testingproject_skuforecastmetrics
+sku, predicted_sales_30, sell_through_rate, month, company_id
 
-9. Collection:
-- id, company_id, shopify_id, title, handle, updated_at, image_src, created_at
-- Example: {id: 2, company_id: 2, shopify_id: 299823104066, title: '925 Silver', handle: '925-silver'}
+8-Testingproject_skuforecasthistory
+sku, actual_sales, month, company_id, live_inventory, predicted_sales_30, reason
 
-10. CollectionItem:
-- id, collection_id, product_id, created_at, image_src
-- Example: {id: 1, collection_id: 1, product_id: 7526721060930, created_at: '2025-09-08'}
+9-CoreApplication_CompanyUser
+id, company, email, password, shopify_access_token, shopify_store_url, webhook_secret
 
-Testingproject Models (table prefix: Testingproject_):
+10-CoreApplication_Location
+shopify_id, company_id, name, address, city, region, country, postal_code
 
-11. SKUForecastMetrics:
-- id, sku, category, month, forecast_accuracy, forecast_bias, days_of_inventory, sell_through_rate, inventory_turnover, created_at, company_id
-- Example: {id: 1, sku: 'TEX0096XTE', category: 'Earrings', month: '2025-01-01', forecast_accuracy: 85.71, inventory_turnover: 7, company_id: 2}
+11-CoreApplication_Collection
+company_id, shopify_id, title, handle, updated_at, image_src, created_at
 
-12. SKUForecastHistory:
-- id, sku, month, predicted_sales_30, actual_sales_30, reason, error, error_reason, predicted_sales_60, predicted_sales_90, live_inventory, company_id
-- Example: {id: 1, sku: 'TEX0096XTE', month: '2025-01-01', predicted_sales_30: 6, actual_sales_30: 7, reason: 'Slight upward trend', predicted_sales_60: 8, predicted_sales_90: 10, live_inventory: 0, company_id: 2}
+12-CoreApplication_CollectionItem
+collection_id, product_id, created_at, image_src
 
-Use this information to generate **strict JSON SQL only** based on user's question.
-        """
+13-CoreApplication_PurchaseOrder
+purchase_order_id, supplier_name, sku_id, order_date, delivery_date, quantity_ordered, company_id
 
-        # Combine prompt and user question
+14-Testingproject_InventoryValuation
+company_id, inventory_value, month, currency, created_at, updated_at
+
+
+🧠 Important Rules:
+- Allowed operations: SELECT only.
+- Prohibited: DELETE, UPDATE, DROP, INSERT, ALTER, TRUNCATE.
+- Always filter using `company_id = 2` where applicable.
+- Use real dates like '2025-06-01' or `MONTH(created_at)=6 AND YEAR(created_at)=2025`.
+- Use correct table joins:
+  * ProductVariant.shopify_id = OrderLineItem.variant_id
+  * Order.shopify_id = OrderLineItem.order_id
+  * Product.id = ProductVariant.product_id
+  * Order.customer_id = Customer.shopify_id
+
+🧩 Correct SQL Examples for Reference:
+
+Example 1:
+User: "How many orders were placed in June 2025?"
+{"sql": "SELECT COUNT(shopify_id) AS number_of_sales FROM CoreApplication_Order WHERE YEAR(created_at)=2025 AND MONTH(created_at)=6 AND company_id=2;"}
+
+Example 2:
+User: "Which SKU sold the most in June 2025?"
+{"sql": "SELECT V.sku, SUM(L.quantity) AS total_sold FROM CoreApplication_OrderLineItem L JOIN CoreApplication_ProductVariant V ON V.shopify_id=L.variant_id JOIN CoreApplication_Order O ON O.shopify_id=L.order_id WHERE O.company_id=2 AND YEAR(O.created_at)=2025 AND MONTH(O.created_at)=6 GROUP BY V.sku ORDER BY total_sold DESC LIMIT 1;"}
+
+Example 3:
+User: "What was the average predicted sales for August 2025?"
+{"sql": "SELECT AVG(predicted_sales_30) AS avg_predicted_sales FROM Testingproject_skuforecastmetrics WHERE month='2025-08-01' AND company_id=2;"}
+
+Example 4:
+User: "Show monthly sales trend for 2024"
+{"sql": "SELECT YEAR(O.created_at) AS year, MONTH(O.created_at) AS month, SUM(L.quantity * L.price) AS total_sales FROM CoreApplication_OrderLineItem L JOIN CoreApplication_Order O ON O.shopify_id=L.order_id WHERE O.company_id=2 AND YEAR(O.created_at)=2024 GROUP BY YEAR(O.created_at), MONTH(O.created_at) ORDER BY YEAR(O.created_at), MONTH(O.created_at);"}
+
+Example 5:
+User: "List top 5 SKUs by total sales value in 2025"
+{"sql": "SELECT V.sku, SUM(L.quantity * L.price) AS total_sales_value FROM CoreApplication_OrderLineItem L JOIN CoreApplication_ProductVariant V ON V.shopify_id=L.variant_id JOIN CoreApplication_Order O ON O.shopify_id=L.order_id WHERE O.company_id=2 AND YEAR(O.created_at)=2025 GROUP BY V.sku ORDER BY total_sales_value DESC LIMIT 5;"}
+"""
+
         final_text = f"{prompt}\n\nUser question: {question}"
 
         payload = {
-            "contents": [
-                {"parts": [{"text": final_text}]}
-            ]
+            "contents": [{"parts": [{"text": final_text}]}],
+            "generationConfig": {"temperature": 0}
         }
 
         headers = {
@@ -211,48 +241,95 @@ Use this information to generate **strict JSON SQL only** based on user's questi
             "Content-Type": "application/json"
         }
 
-        # ---------------------- Call Gemini API ----------------------
-        response = requests.post(
+        # ---------------------- Step 3: Ask Gemini for SQL ----------------------
+        gemini_sql_resp = requests.post(
             "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
             headers=headers,
             data=json.dumps(payload)
-        )
-        gemini_result = response.json()
+        ).json()
 
-        # ---------------------- Extract strict JSON SQL from Gemini response ----------------------
-        try:
-            sql_text = gemini_result['candidates'][0]['content']['parts'][0]['text']
-            # Strip ```json ... ``` if present
-            if sql_text.startswith("```"):
-                sql_text = "\n".join(sql_text.split("\n")[1:-1])
-            sql_json = json.loads(sql_text)
-            sql_query = sql_json.get("sql")
-        except Exception as e:
-            return JsonResponse({
-                "error": "Failed to parse Gemini SQL",
-                "details": str(e),
-                "gemini_response": gemini_result
-            }, status=500)
+        raw_text = gemini_sql_resp["candidates"][0]["content"]["parts"][0]["text"].strip()
+        match = re.search(r"\{.*\}", raw_text, re.DOTALL)
+        if not match:
+            return JsonResponse({"error": "Gemini did not return valid JSON", "response": raw_text}, status=400)
 
-        # ---------------------- Execute SQL ----------------------
-        try:
-            with connection.cursor() as cursor:
-                cursor.execute(sql_query)
-                columns = [col[0] for col in cursor.description]
-                results = [dict(zip(columns, row)) for row in cursor.fetchall()]
-        except Exception as e:
-            return JsonResponse({
-                "error": "SQL execution failed",
-                "details": str(e),
-                "sql": sql_query
-            }, status=500)
+        sql_data = json.loads(match.group())
+        sql_query = sql_data.get("sql")
 
-        # Return executed results along with Gemini response
+        if not sql_query or "SELECT" not in sql_query.upper():
+            return JsonResponse({"error": "Invalid SQL generated", "response": sql_data}, status=400)
+
+        # ---------------------- Step 4: Safety & Fixups ----------------------
+        replacements = {
+            "T2.id": "T2.shopify_id",
+            "T3.id": "T3.shopify_id",
+            "SKUForecastMetrics": "Testingproject_skuforecastmetrics",
+            "SKUForecastHistory": "Testingproject_skuforecasthistory",
+        }
+        for wrong, correct in replacements.items():
+            sql_query = sql_query.replace(wrong, correct)
+
+        sql_query = sql_query.replace("<tenant_id>", "2")  # fallback safety
+
+        if any(word in sql_query.upper() for word in ["DELETE", "DROP", "UPDATE", "INSERT", "ALTER", "TRUNCATE"]):
+            return JsonResponse({"error": "Destructive SQL blocked", "sql": sql_query}, status=400)
+
+        print("\n✅ Final SQL:\n", sql_query)
+
+        # ---------------------- Step 5: Execute SQL ----------------------
+        with connection.cursor() as cursor:
+            cursor.execute(sql_query)
+            columns = [col[0] for col in cursor.description]
+            results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+        # Convert Decimal to float
+        def convert_decimal(obj):
+            if isinstance(obj, list):
+                return [convert_decimal(i) for i in obj]
+            elif isinstance(obj, dict):
+                return {k: convert_decimal(v) for k, v in obj.items()}
+            elif isinstance(obj, Decimal):
+                return float(obj)
+            return obj
+
+        results = convert_decimal(results)
+
+        # ---------------------- Step 6: Generate Summary ----------------------
+        summary_prompt = f"""
+You are an analytics assistant.
+Answer the user's question in one or two human-like sentences using only the SQL results.
+
+Examples:
+Q: "How many sales in October?"
+Results: [{{"total_sales": 400}}]
+A: "A total of 400 sales were recorded in October."
+
+Q: "Which SKU sold the most in June?"
+Results: [{{"sku": "TNX0100XTE"}}]
+A: "The top-selling SKU in June was TNX0100XTE."
+
+Now answer:
+Question: {question}
+Results: {json.dumps(results, indent=2)}
+"""
+
+        summary_payload = {
+            "contents": [{"parts": [{"text": summary_prompt}]}],
+            "generationConfig": {"temperature": 0.3}
+        }
+
+        gemini_summary_resp = requests.post(
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+            headers=headers,
+            data=json.dumps(summary_payload)
+        ).json()
+
+        final_answer = gemini_summary_resp["candidates"][0]["content"]["parts"][0]["text"].strip()
+
+        # ---------------------- Step 7: Return SQL + Answer ----------------------
         return JsonResponse({
-            "question": question,
             "sql": sql_query,
-            "results": results,
-            "gemini_response": gemini_result
+            "answer": final_answer
         })
 
     except Exception as e:

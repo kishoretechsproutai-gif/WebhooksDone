@@ -1,36 +1,31 @@
-from django.db.models import Sum
-from Testingproject.models import SKUForecastMetrics, SKUForecastHistory
-from CoreApplication.models import CompanyUser, Order, OrderLineItem, Product, ProductVariant
-import statistics
 from datetime import datetime, date
-from django.conf import settings
-from cryptography.fernet import Fernet
-from datetime import date, datetime, timedelta
-from django.db.models import Max, Sum
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from dateutil.relativedelta import relativedelta
-
-from CoreApplication.models import PurchaseOrder, ProductVariant, Product
-from Testingproject.models import InventoryValuation, SKUForecastHistory
-from CoreApplication.views import get_user_from_token
-
-
 import json
-from datetime import date, datetime
-from dateutil.relativedelta import relativedelta
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from dateutil.relativedelta import relativedelta
 from django.db.models import Sum, Max
-from CoreApplication.models import ProductVariant, Product, PurchaseOrder
-from Testingproject.models import InventoryValuation, SKUForecastHistory
+import statistics
+from cryptography.fernet import Fernet
+from django.conf import settings
+
+from CoreApplication.models import (
+    CompanyUser,
+    Product,
+    ProductVariant,
+    PurchaseOrder,
+    Order,
+    OrderLineItem,
+)
+from Testingproject.models import (
+    SKUForecastHistory,
+    InventoryValuation,
+    SKUForecastMetrics,
+)
 from CoreApplication.views import get_user_from_token
+
 
 # ---------------- Helper: SKU Normalizer ---------------- #
-
-
 def normalize_sku(sku):
-    """Normalize SKUs for consistent comparison."""
     if not sku:
         return ""
     return str(sku).strip().upper().replace(" ", "").replace("-", "").replace("_", "")
@@ -38,44 +33,47 @@ def normalize_sku(sku):
 
 # ---------------- Helper: Safe date parser ---------------- #
 def safe_parse_date(date_val):
-    """Convert string or date/datetime to a date object."""
-    if not date_val:
+    """
+    Parse string, datetime, or date object to a date object safely.
+    Returns None if parsing fails.
+    """
+    print(f"[DEBUG] safe_parse_date called with: {repr(date_val)} ({type(date_val)})")
+
+    if date_val is None:
         return None
 
-    # Already date
-    if isinstance(date_val, date):
+    # Already a date object (but not datetime)
+    if isinstance(date_val, date) and not isinstance(date_val, datetime):
         return date_val
 
-    # Datetime
+    # If it's a datetime object
     if isinstance(date_val, datetime):
         return date_val.date()
 
-    # String in YYYY-MM-DD
-    try:
-        return datetime.strptime(str(date_val).strip(), "%Y-%m-%d").date()
-    except Exception:
-        pass
-
-    # Fallback: dd.mm.yyyy
-    try:
-        return datetime.strptime(str(date_val).strip(), "%d.%m.%Y").date()
-    except Exception:
-        pass
-
-    # Fallback: dd-mm-yyyy
-    try:
-        return datetime.strptime(str(date_val).strip(), "%d-%m-%Y").date()
-    except Exception:
-        pass
+    # Try parsing as string
+    str_val = str(date_val).strip()
+    for fmt in [
+        "%Y-%m-%d",
+        "%d.%m.%Y",
+        "%d-%m-%Y",
+        "%m/%d/%Y",
+        "%B %d, %Y",
+        "%d/%m/%Y",
+        "%Y-%m-%dT%H:%M:%S"
+    ]:
+        try:
+            return datetime.strptime(str_val, fmt).date()
+        except:
+            continue
 
     print(f"⚠️ Could not parse date: '{date_val}'")
     return None
 
 
-# ---------------- Main View ---------------- #
+
+# ---------------- Main Function ---------------- #
 @csrf_exempt
 def inventory_reorder_report(request):
-    """Reorder and slow movers report with corrected OnOrder calculation."""
     user, error = get_user_from_token(request)
     if error:
         return error
@@ -83,18 +81,12 @@ def inventory_reorder_report(request):
     company = user
     today = date.today()
 
-    # ---------------- Latest Forecasts ---------------- #
-    latest_month = (
-        SKUForecastHistory.objects.filter(company=company)
-        .aggregate(latest_month=Max("month"))
-        .get("latest_month")
-    )
+    # Latest Forecasts
+    latest_month = SKUForecastHistory.objects.filter(company=company).aggregate(latest_month=Max("month")).get("latest_month")
     if not latest_month:
         return JsonResponse({"error": "No forecasts found for this company."}, status=404)
 
-    latest_forecasts = SKUForecastHistory.objects.filter(
-        company=company, month=latest_month
-    )
+    latest_forecasts = SKUForecastHistory.objects.filter(company=company, month=latest_month)
     forecast_skus = [normalize_sku(f.sku) for f in latest_forecasts]
 
     # ---------------- On-Order Calculation ---------------- #
@@ -103,9 +95,7 @@ def inventory_reorder_report(request):
     print(f"Today's Date = {today}")
     print(f"Forecast SKUs = {forecast_skus}")
 
-    purchase_orders = PurchaseOrder.objects.filter(
-        company_id=company.id, sku_id__in=[f.sku for f in latest_forecasts]
-    )
+    purchase_orders = PurchaseOrder.objects.filter(company_id=company.id, sku_id__in=[f.sku for f in latest_forecasts])
     print(f"Found {purchase_orders.count()} POs for company_id={company.id}\n")
 
     on_orders = {}
@@ -116,8 +106,8 @@ def inventory_reorder_report(request):
         print(f"PO ID: {po.id}, PO Number: {po.purchase_order_id}")
         print(f"Company ID in DB: {po.company_id}")
         print(f"SKU: {po.sku_id}")
-        print(
-            f"Order Date: {po.order_date}, Delivery Date: {po.delivery_date}")
+        print(f"Order Date: {po.order_date}, Delivery Date: {po.delivery_date}")
+        print(f"[DEBUG] type of delivery_date field: {type(po.delivery_date)}")
 
         delivery_date = safe_parse_date(po.delivery_date)
         print(f"Parsed Delivery Date: {delivery_date}")
@@ -138,8 +128,7 @@ def inventory_reorder_report(request):
             qty = 0
 
         on_orders[sku_norm] = on_orders.get(sku_norm, 0) + qty
-        print(
-            f"✅ Added {qty} units to SKU {sku_norm}, Total OnOrder now: {on_orders[sku_norm]}\n")
+        print(f"✅ Added {qty} units to SKU {sku_norm}, Total OnOrder now: {on_orders[sku_norm]}\n")
 
         order_details.setdefault(sku_norm, []).append({
             "purchase_order_id": po.purchase_order_id,
@@ -153,7 +142,7 @@ def inventory_reorder_report(request):
     print(f"Final OnOrder Map: {on_orders}")
     print("---- DEBUG END ON-ORDER CHECK ----\n")
 
-    # ---------------- Build Forecast Data ---------------- #
+    # ---------------- Forecast Data ---------------- #
     forecast_data = []
     for f in latest_forecasts:
         sku_norm = normalize_sku(f.sku)
@@ -165,8 +154,7 @@ def inventory_reorder_report(request):
         reason = f.reason or ""
 
         inv_for_calc = live_inventory if live_inventory != -1 else 0
-        reorder_qty = max((forecast_30 + forecast_60) -
-                          (inv_for_calc + on_order), 0)
+        reorder_qty = max((forecast_30 + forecast_60) - (inv_for_calc + on_order), 0)
 
         total_available = inv_for_calc + on_order
         if total_available <= (forecast_30 / 3):
@@ -181,8 +169,7 @@ def inventory_reorder_report(request):
             price = float(variant.price) if variant.price else 0.0
             product_id = variant.product_id
             variant_title = variant.title or ""
-            product = Product.objects.filter(
-                company=company, shopify_id=product_id).first()
+            product = Product.objects.filter(company=company, shopify_id=product_id).first()
             category = product.product_type if product else None
             product_title = product.title if product else ""
         except ProductVariant.DoesNotExist:
@@ -211,14 +198,8 @@ def inventory_reorder_report(request):
     # ---------------- Slow Movers ---------------- #
     start_month = today.replace(day=1) - relativedelta(months=3)
     end_month = today.replace(day=1)
-    sales_summary = (
-        SKUForecastHistory.objects.filter(
-            company=company, month__gte=start_month, month__lt=end_month)
-        .values("sku")
-        .annotate(total_sales=Sum("actual_sales_30"))
-    )
-    sold_map = {normalize_sku(s["sku"]): s["total_sales"]
-                or 0 for s in sales_summary}
+    sales_summary = SKUForecastHistory.objects.filter(company=company, month__gte=start_month, month__lt=end_month).values("sku").annotate(total_sales=Sum("actual_sales_30"))
+    sold_map = {normalize_sku(s["sku"]): s["total_sales"] or 0 for s in sales_summary}
     slow_threshold = 3
 
     slow_movers = []
@@ -228,13 +209,11 @@ def inventory_reorder_report(request):
         total_sold = sold_map.get(sku_norm, 0)
         if total_sold < slow_threshold:
             try:
-                variant = ProductVariant.objects.get(
-                    company=company, sku=f.sku)
+                variant = ProductVariant.objects.get(company=company, sku=f.sku)
                 price = float(variant.price) if variant.price else 0.0
                 product_id = variant.product_id
                 variant_title = variant.title or ""
-                product = Product.objects.filter(
-                    company=company, shopify_id=product_id).first()
+                product = Product.objects.filter(company=company, shopify_id=product_id).first()
                 category = product.product_type if product else None
                 product_title = product.title if product else ""
             except ProductVariant.DoesNotExist:
@@ -254,13 +233,10 @@ def inventory_reorder_report(request):
 
     # ---------------- Summary ---------------- #
     slow_movers_count = len(slow_movers)
-    risk_alerts_count = sum(
-        1 for f in forecast_data if f["Action_Item"] == "StockOut Risk")
-    reorder_needed_count = sum(1 for f in forecast_data if f["Action_Item"] in [
-                               "Reorder Now", "StockOut Risk"])
+    risk_alerts_count = sum(1 for f in forecast_data if f["Action_Item"] == "StockOut Risk")
+    reorder_needed_count = sum(1 for f in forecast_data if f["Action_Item"] in ["Reorder Now", "StockOut Risk"])
 
-    latest_inventory = InventoryValuation.objects.filter(
-        company=company).order_by('-month').first()
+    latest_inventory = InventoryValuation.objects.filter(company=company).order_by('-month').first()
     if latest_inventory:
         inventory_info = {
             "month": latest_inventory.month.strftime("%Y-%m"),
@@ -270,7 +246,6 @@ def inventory_reorder_report(request):
     else:
         inventory_info = None
 
-    # ---------------- Final Response ---------------- #
     return JsonResponse({
         "summary": {
             "slow_movers_count": slow_movers_count,
@@ -281,6 +256,8 @@ def inventory_reorder_report(request):
         "forecasts": forecast_data,
         "slow_movers": slow_movers,
     }, safe=False)
+
+
 
 
 @csrf_exempt
@@ -385,16 +362,16 @@ def get_slow_movers(request):
 # Risk Alerts API function
 
 
-def safe_parse_date(date_str):
-    """Helper to safely parse dates in multiple formats."""
-    if not date_str:
-        return None
-    for fmt in ("%Y-%m-%d", "%Y/%m/%d", "%d-%m-%Y", "%d/%m/%Y", "%Y-%m-%dT%H:%M:%S"):
-        try:
-            return datetime.strptime(date_str, fmt).date()
-        except Exception:
-            continue
-    return None
+# def safe_parse_date(date_str):
+#     """Helper to safely parse dates in multiple formats."""
+#     if not date_str:
+#         return None
+#     for fmt in ("%Y-%m-%d", "%Y/%m/%d", "%d-%m-%Y", "%d/%m/%Y", "%Y-%m-%dT%H:%M:%S"):
+#         try:
+#             return datetime.strptime(date_str, fmt).date()
+#         except Exception:
+#             continue
+#     return None
 
 
 @csrf_exempt
@@ -403,8 +380,8 @@ def get_risk_alerts(request):
     API to fetch Risk Alerts (only StockOut Risk) for a company.
     - Auth via JWT token
     - Includes SKU, Product info, live inventory, on-order, forecast_30, forecast_60
+    - Adds 'reason' and purchase order details
     """
-    # ---------------- Auth ---------------- #
     user, error = get_user_from_token(request)
     if error:
         return error
@@ -420,25 +397,39 @@ def get_risk_alerts(request):
     if not latest_month:
         return JsonResponse({"error": "No forecasts found for this company."}, status=404)
 
-    latest_forecasts = SKUForecastHistory.objects.filter(
-        company=company, month=latest_month)
+    latest_forecasts = SKUForecastHistory.objects.filter(company=company, month=latest_month)
 
     # ---------------- Build Risk Alerts ---------------- #
     risk_alerts = []
+
     for f in latest_forecasts:
         sku = f.sku
         forecast_30 = f.predicted_sales_30 or 0
         forecast_60 = f.predicted_sales_60 or 0
         live_inventory = f.live_inventory or 0
+        reason = f.reason or ""
 
         # ---------------- On-Order Quantities ---------------- #
         on_order = 0
-        purchase_orders = PurchaseOrder.objects.filter(
-            company=company, sku_id=sku)
+        purchase_order_details = []
+
+        purchase_orders = PurchaseOrder.objects.filter(company=company, sku_id=sku)
         for po in purchase_orders:
             delivery_date = safe_parse_date(po.delivery_date)
             if delivery_date and delivery_date >= today:
-                on_order += po.quantity_ordered
+                try:
+                    qty = int(float(str(po.quantity_ordered).strip()))
+                except Exception:
+                    qty = 0
+                on_order += qty
+
+                purchase_order_details.append({
+                    "purchase_order_id": po.purchase_order_id,
+                    "supplier_name": po.supplier_name,
+                    "order_date": str(po.order_date),
+                    "delivery_date": str(po.delivery_date),
+                    "quantity_ordered": qty,
+                })
 
         total_available = live_inventory + on_order
 
@@ -472,10 +463,11 @@ def get_risk_alerts(request):
             "OnOrder": on_order,
             "Forecast_30": forecast_30,
             "Forecast_60": forecast_60,
-            "Action_Item": action_item
+            "Action_Item": action_item,
+            "Reason": reason,
+            "PurchaseOrders": purchase_order_details
         })
 
-    # ---------------- Count summary ---------------- #
     stockout_count = len(risk_alerts)
 
     return JsonResponse({
@@ -485,16 +477,18 @@ def get_risk_alerts(request):
     }, safe=False)
 
 
-def safe_parse_date(date_str):
-    """Helper to safely parse dates in multiple formats."""
-    if not date_str:
-        return None
-    for fmt in ("%Y-%m-%d", "%Y/%m/%d", "%d-%m-%Y", "%d/%m/%Y", "%Y-%m-%dT%H:%M:%S"):
-        try:
-            return datetime.strptime(date_str, fmt).date()
-        except Exception:
-            continue
-    return None
+
+# def safe_parse_date(date_str):
+#     """Helper to safely parse dates in multiple formats."""
+#     if not date_str:
+#         return None
+#     for fmt in ("%Y-%m-%d", "%Y/%m/%d", "%d-%m-%Y", "%d/%m/%Y", "%Y-%m-%dT%H:%M:%S"):
+#         try:
+#             return datetime.strptime(date_str, fmt).date()
+#         except Exception:
+#             continue
+#     return None
+
 
 
 @csrf_exempt
@@ -503,8 +497,8 @@ def get_need_reordering(request):
     API to fetch Need Reordering SKUs (Reorder Now / Sufficient Stock) for a company.
     - Auth via JWT token
     - Includes SKU, Product info, live inventory, on-order, forecast_30, forecast_60
+    - Adds 'Reason' and purchase order details
     """
-    # ---------------- Auth ---------------- #
     user, error = get_user_from_token(request)
     if error:
         return error
@@ -520,25 +514,39 @@ def get_need_reordering(request):
     if not latest_month:
         return JsonResponse({"error": "No forecasts found for this company."}, status=404)
 
-    latest_forecasts = SKUForecastHistory.objects.filter(
-        company=company, month=latest_month)
+    latest_forecasts = SKUForecastHistory.objects.filter(company=company, month=latest_month)
 
     # ---------------- Build Need Reordering ---------------- #
     need_reordering = []
+
     for f in latest_forecasts:
         sku = f.sku
         forecast_30 = f.predicted_sales_30 or 0
         forecast_60 = f.predicted_sales_60 or 0
         live_inventory = f.live_inventory or 0
+        reason = f.reason or ""
 
         # ---------------- On-Order Quantities ---------------- #
         on_order = 0
-        purchase_orders = PurchaseOrder.objects.filter(
-            company=company, sku_id=sku)
+        purchase_order_details = []
+
+        purchase_orders = PurchaseOrder.objects.filter(company=company, sku_id=sku)
         for po in purchase_orders:
             delivery_date = safe_parse_date(po.delivery_date)
             if delivery_date and delivery_date >= today:
-                on_order += po.quantity_ordered
+                try:
+                    qty = int(float(str(po.quantity_ordered).strip()))
+                except Exception:
+                    qty = 0
+                on_order += qty
+
+                purchase_order_details.append({
+                    "purchase_order_id": po.purchase_order_id,
+                    "supplier_name": po.supplier_name,
+                    "order_date": str(po.order_date),
+                    "delivery_date": str(po.delivery_date),
+                    "quantity_ordered": qty,
+                })
 
         total_available = live_inventory + on_order
 
@@ -576,10 +584,11 @@ def get_need_reordering(request):
             "OnOrder": on_order,
             "Forecast_30": forecast_30,
             "Forecast_60": forecast_60,
-            "Action_Item": action_item
+            "Action_Item": action_item,
+            "Reason": reason,
+            "PurchaseOrders": purchase_order_details
         })
 
-    # ---------------- Count summary ---------------- #
     reorder_count = len(need_reordering)
 
     return JsonResponse({
@@ -587,6 +596,7 @@ def get_need_reordering(request):
         "reorder_count": reorder_count,
         "need_reordering": need_reordering
     }, safe=False)
+
 
 
 @csrf_exempt
