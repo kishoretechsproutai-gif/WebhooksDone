@@ -2,3 +2,7 @@
 /chroma
 /chroma_db
 /tenant_2
+# .gitignore
+__pycache__/
+*.pyc
+*.log
