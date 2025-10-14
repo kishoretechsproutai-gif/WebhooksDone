@@ -632,6 +632,24 @@ def get_need_reordering(request):
 
 
 
+import statistics
+from collections import OrderedDict
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
+from cryptography.fernet import Fernet
+from django.conf import settings
+from django.db.models import Sum
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+from CoreApplication.models import (
+    CompanyUser, Order, OrderLineItem, Product,
+
+)
+from Testingproject.models import SKUForecastMetrics, SKUForecastHistory
+from CoreApplication.views import get_user_from_token
+
+
 @csrf_exempt
 def CompanyDashboardMetricsView(request):
     # ---------------- Auth ---------------- #
@@ -658,14 +676,11 @@ def CompanyDashboardMetricsView(request):
     month_str = request.GET.get("month")  # Expect format "YYYY-MM"
     if month_str:
         try:
-            dashboard_month = datetime.strptime(
-                month_str, "%Y-%m").date().replace(day=1)
+            dashboard_month = datetime.strptime(month_str, "%Y-%m").date().replace(day=1)
         except ValueError:
             return JsonResponse({"error": "Invalid month format. Use YYYY-MM."}, status=400)
     else:
-        # Default: pick last available month
-        latest_metric_entry = SKUForecastMetrics.objects.filter(
-            company=user).order_by('-month').first()
+        latest_metric_entry = SKUForecastMetrics.objects.filter(company=user).order_by('-month').first()
         if not latest_metric_entry:
             return JsonResponse({
                 "message": "No SKU metrics found for this company.",
@@ -674,8 +689,7 @@ def CompanyDashboardMetricsView(request):
         dashboard_month = latest_metric_entry.month
 
     # ---------------- Fetch metrics for dashboard_month ---------------- #
-    metrics = SKUForecastMetrics.objects.filter(
-        company=user, month=dashboard_month)
+    metrics = SKUForecastMetrics.objects.filter(company=user, month=dashboard_month)
 
     acc_values, bias_values, doi_values, str_values, it_values = [], [], [], [], []
 
@@ -699,12 +713,7 @@ def CompanyDashboardMetricsView(request):
 
     # ---------------- Orders & Line Items for selected month ---------------- #
     start_month = dashboard_month.replace(day=1)
-    if dashboard_month.month == 12:
-        end_month = dashboard_month.replace(
-            year=dashboard_month.year + 1, month=1, day=1)
-    else:
-        end_month = dashboard_month.replace(
-            month=dashboard_month.month + 1, day=1)
+    end_month = (dashboard_month + relativedelta(months=1)).replace(day=1)
 
     orders = Order.objects.filter(
         company=user,
@@ -712,19 +721,15 @@ def CompanyDashboardMetricsView(request):
         order_date__lt=end_month
     )
     order_ids = list(orders.values_list("shopify_id", flat=True))
-    line_items = OrderLineItem.objects.filter(
-        company=user, order_id__in=order_ids)
+    line_items = OrderLineItem.objects.filter(company=user, order_id__in=order_ids)
 
     top_categories_data = []
     category_wise_performance = []
 
     if line_items.exists():
-        product_ids = [
-            item.product_id for item in line_items if item.product_id]
-        products = Product.objects.filter(
-            company=user, shopify_id__in=product_ids)
-        product_categories = {
-            p.shopify_id: p.product_type or "Unknown" for p in products}
+        product_ids = [item.product_id for item in line_items if item.product_id]
+        products = Product.objects.filter(company=user, shopify_id__in=product_ids)
+        product_categories = {p.shopify_id: p.product_type or "Unknown" for p in products}
 
         category_units = {}
         category_revenue = {}
@@ -732,17 +737,13 @@ def CompanyDashboardMetricsView(request):
 
         for item in line_items:
             category = product_categories.get(item.product_id, "Unknown")
-            category_units[category] = category_units.get(
-                category, 0) + (item.quantity or 0)
-            category_revenue[category] = category_revenue.get(
-                category, 0) + (item.total or 0)
+            category_units[category] = category_units.get(category, 0) + (item.quantity or 0)
+            category_revenue[category] = category_revenue.get(category, 0) + (item.total or 0)
             if category not in category_skus:
                 category_skus[category] = set()
             category_skus[category].add(str(item.variant_id))
 
-        # Top 5 categories by units sold
-        top_categories = sorted(category_units.items(),
-                                key=lambda x: x[1], reverse=True)[:5]
+        top_categories = sorted(category_units.items(), key=lambda x: x[1], reverse=True)[:5]
 
         for category, units in top_categories:
             skus = category_skus.get(category, [])
@@ -763,13 +764,11 @@ def CompanyDashboardMetricsView(request):
                 "sell_through_rate": sell_through,
                 "currency": currency
             })
-            top_categories_data.append(
-                {"category": category, "units_sold": units})
+            top_categories_data.append({"category": category, "units_sold": units})
 
-    # ---------------- Summary counts: slow movers, risk, reorder ---------------- #
-    latest_forecasts = SKUForecastHistory.objects.filter(
-        company=user, month=dashboard_month)
-    slow_threshold = 3  # units sold in last 3 months
+    # ---------------- Summary counts ---------------- #
+    latest_forecasts = SKUForecastHistory.objects.filter(company=user, month=dashboard_month)
+    slow_threshold = 3
     start_slow_month = dashboard_month - relativedelta(months=3)
     sales_summary = SKUForecastHistory.objects.filter(
         company=user,
@@ -778,12 +777,44 @@ def CompanyDashboardMetricsView(request):
     ).values("sku").annotate(total_sales=Sum("actual_sales_30"))
     sold_map = {s["sku"]: s["total_sales"] or 0 for s in sales_summary}
 
-    slow_movers_count = sum(
-        1 for f in latest_forecasts if sold_map.get(f.sku, 0) < slow_threshold)
-    risk_alerts_count = sum(1 for f in latest_forecasts if (
-        f.live_inventory or 0) <= (f.predicted_sales_30 or 0)/3)
-    reorder_needed_count = sum(1 for f in latest_forecasts if (
-        f.live_inventory or 0) <= (f.predicted_sales_30 or 0)/2)
+    slow_movers_count = sum(1 for f in latest_forecasts if sold_map.get(f.sku, 0) < slow_threshold)
+    risk_alerts_count = sum(1 for f in latest_forecasts if (f.live_inventory or 0) <= (f.predicted_sales_30 or 0)/3)
+    reorder_needed_count = sum(1 for f in latest_forecasts if (f.live_inventory or 0) <= (f.predicted_sales_30 or 0)/2)
+
+    # ---------------- Last 12 months units & sales (optimized + fixed) ---------------- #
+    reference_month = dashboard_month
+    start_12_months = (reference_month - relativedelta(months=12)).replace(day=1)
+
+    # Fetch all orders in the last 12 months at once
+    orders_last_12_months = Order.objects.filter(
+        company=user,
+        order_date__gte=start_12_months,
+        order_date__lt=reference_month + relativedelta(months=1)
+    ).values("shopify_id", "order_date")
+
+    order_id_to_month = {o["shopify_id"]: o["order_date"].replace(day=1) for o in orders_last_12_months}
+
+    # Fetch all line items for these orders at once
+    order_ids = list(order_id_to_month.keys())
+    line_items_last_12_months = OrderLineItem.objects.filter(
+        company=user,
+        order_id__in=order_ids
+    ).values("order_id", "quantity", "total")
+
+    # Initialize last 12 months data
+    last_12_months_data = OrderedDict()
+    for i in range(12, 0, -1):
+        month_start = (reference_month - relativedelta(months=i)).replace(day=1)
+        last_12_months_data[month_start.strftime("%b %Y")] = {"units_sold": 0, "sales_amount": 0.0}
+
+    # Aggregate month-wise with KeyError prevention
+    for item in line_items_last_12_months:
+        order_month = order_id_to_month.get(item["order_id"])
+        if order_month:
+            month_key = order_month.replace(day=1).strftime("%b %Y")
+            if month_key in last_12_months_data:
+                last_12_months_data[month_key]["units_sold"] += item["quantity"] or 0
+                last_12_months_data[month_key]["sales_amount"] += float(item["total"] or 0.0)
 
     # ---------------- Final JSON ---------------- #
     dashboard_data = {
@@ -808,7 +839,8 @@ def CompanyDashboardMetricsView(request):
             "slow_movers_count": slow_movers_count,
             "risk_alerts_count": risk_alerts_count,
             "reorder_needed_count": reorder_needed_count
-        }
+        },
+        "last_12_months": last_12_months_data
     }
 
     return JsonResponse(dashboard_data, status=200, safe=False)
