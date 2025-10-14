@@ -1262,20 +1262,39 @@ class UploadPurchaseOrderView(View):
         try:
             df = pd.read_excel(excel_file)
 
-            for index, row in df.iterrows():
-                PurchaseOrder.objects.update_or_create(
-                    purchase_order_id=row['PurchaseOrderID'],
-                    defaults={
-                        'supplier_name': row['SupplierName'],
-                        'sku_id': row['SKUID(VariantID)'],
-                        'order_date': str(row['OrderDate']),
-                        'delivery_date': str(row['DeliveryDate']),
-                        'quantity_ordered': int(row['QuantityOrdered']),
-                        'company': user,
-                    }
-                )
+            required_columns = [
+                'PurchaseOrderID', 'SupplierName', 'SKUID(VariantID)',
+                'OrderDate', 'DeliveryDate', 'QuantityOrdered'
+            ]
+            for col in required_columns:
+                if col not in df.columns:
+                    return JsonResponse(
+                        {"error": f"Missing required column: {col}"},
+                        status=400
+                    )
 
-            return JsonResponse({"message": "Purchase orders uploaded successfully"}, status=200)
+            created_count = 0
+            for _, row in df.iterrows():
+                try:
+                    PurchaseOrder.objects.create(
+                        purchase_order_id=str(row['PurchaseOrderID']).strip(),
+                        supplier_name=str(row['SupplierName']).strip(),
+                        sku_id=str(row['SKUID(VariantID)']).strip(),
+                        order_date=str(row['OrderDate']),
+                        delivery_date=str(row['DeliveryDate']),
+                        quantity_ordered=int(row['QuantityOrdered']),
+                        company=user
+                    )
+                    created_count += 1
+
+                except Exception as row_error:
+                    logger.warning(f"Skipping row due to error: {row_error}")
+
+            return JsonResponse({
+                "message": "Purchase orders uploaded successfully",
+                "rows_created": created_count,
+                "total_rows": len(df)
+            }, status=200)
 
         except Exception as e:
             logger.error(f"Error uploading purchase orders: {e}")

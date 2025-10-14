@@ -8937,3 +8937,1438 @@ sqlalchemy.exc.StatementError: (sqlalchemy.exc.OperationalError) (pymysql.err.Op
 [parameters: [{'name': 'celery'}]]
 (Background on this error at: https://sqlalche.me/e/20/e3q8)
 "POST /ShopifyDetails/ HTTP/1.1" 500 554358
+Internal Server Error: /FetchCollections/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 661, in connect
+    sock = socket.create_connection(
+        (self.host, self.port), self.connect_timeout, **kwargs
+    )
+  File "C:\Python313\Lib\socket.py", line 864, in create_connection
+    raise exceptions[0]
+  File "C:\Python313\Lib\socket.py", line 849, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 365, in __init__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 723, in connect
+    raise exc
+pymysql.err.OperationalError: (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 472, in _reraise_as_library_errors
+    yield
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 155, in _maybe_declare
+    entity.declare(channel=channel)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 617, in declare
+    self._create_queue(nowait=nowait, channel=channel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 626, in _create_queue
+    self.queue_declare(nowait=nowait, passive=False, channel=channel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 655, in queue_declare
+    ret = channel.queue_declare(
+        queue=self.name,
+    ...<5 lines>...
+        nowait=nowait,
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\virtual\base.py", line 537, in queue_declare
+    self._new_queue(queue, **kwargs)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 167, in _new_queue
+    self._get_or_create(queue)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 146, in _get_or_create
+    obj = self.session.query(self.queue_cls) \
+          ^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 141, in session
+    _, Session = self._open()
+                 ~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 133, in _open
+    metadata.create_all(engine)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\sql\schema.py", line 5924, in create_all
+    bind._run_ddl_visitor(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        ddl.SchemaGenerator, self, checkfirst=checkfirst, tables=tables
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3251, in _run_ddl_visitor
+    with self.begin() as conn:
+         ~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3241, in begin
+    with self.connect() as conn:
+         ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3277, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        err, dialect, engine
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 2440, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 365, in __init__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 723, in connect
+    raise exc
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\CoreApplication\views.py", line 894, in post
+    fetch_collections_task.apply_async(args=[user.id])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\task.py", line 601, in apply_async
+    return app.send_task(
+           ~~~~~~~~~~~~~^
+        self.name, args, kwargs, task_id=task_id, producer=producer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        **options
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\base.py", line 930, in send_task
+    amqp.send_task_message(P, name, message, **options)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\amqp.py", line 523, in send_task_message
+    ret = producer.publish(
+        body,
+    ...<8 lines>...
+        **properties
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 190, in publish
+    return _publish(
+        body, priority, content_type, content_encoding,
+        headers, properties, routing_key, mandatory, immediate,
+        exchange_name, declare, timeout, confirm_timeout, retry, retry_policy
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 208, in _publish
+    maybe_declare(entity, retry=retry, **retry_policy)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 107, in maybe_declare
+    return maybe_declare(entity, self.channel, retry, **retry_policy)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 112, in maybe_declare
+    return _imaybe_declare(entity, channel, **retry_policy)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 169, in _imaybe_declare
+    return entity.channel.connection.client.ensure(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        entity, _maybe_declare, **retry_policy)(entity, channel)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 553, in _ensured
+    with self._reraise_as_library_errors():
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 476, in _reraise_as_library_errors
+    raise ConnectionError(str(exc)) from exc
+kombu.exceptions.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+"POST /FetchCollections/ HTTP/1.1" 500 453012
+Internal Server Error: /Login/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\backends\base\base.py", line 289, in ensure_connection
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\backends\base\base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\backends\mysql\base.py", line 247, in get_new_connection
+    connection = Database.connect(**conn_params)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\MySQLdb\__init__.py", line 121, in Connect
+    return Connection(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\MySQLdb\connections.py", line 200, in __init__
+    super().__init__(*args, **kwargs2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+MySQLdb.OperationalError: (2002, "Can't connect to server on 'localhost' (10061)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\CoreApplication\views.py", line 571, in post
+    user = CompanyUser.objects.get(email=email)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 633, in get
+    num = len(clone)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 380, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\models\sql\compiler.py", line 1558, in execute_sql
+    cursor = self.connection.cursor()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\backends\base\base.py", line 330, in cursor
+    return self._cursor()
+           ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\backends\base\base.py", line 306, in _cursor
+    self.ensure_connection()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\backends\base\base.py", line 288, in ensure_connection
+    with self.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\backends\base\base.py", line 289, in ensure_connection
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\backends\base\base.py", line 270, in connect
+    self.connection = self.get_new_connection(conn_params)
+                      ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\utils\asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\db\backends\mysql\base.py", line 247, in get_new_connection
+    connection = Database.connect(**conn_params)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\MySQLdb\__init__.py", line 121, in Connect
+    return Connection(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\MySQLdb\connections.py", line 200, in __init__
+    super().__init__(*args, **kwargs2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+django.db.utils.OperationalError: (2002, "Can't connect to server on 'localhost' (10061)")
+"POST /Login/ HTTP/1.1" 500 253782
+Internal Server Error: /FetchCollections/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 661, in connect
+    sock = socket.create_connection(
+        (self.host, self.port), self.connect_timeout, **kwargs
+    )
+  File "C:\Python313\Lib\socket.py", line 864, in create_connection
+    raise exceptions[0]
+  File "C:\Python313\Lib\socket.py", line 849, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 365, in __init__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 723, in connect
+    raise exc
+pymysql.err.OperationalError: (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 472, in _reraise_as_library_errors
+    yield
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 155, in _maybe_declare
+    entity.declare(channel=channel)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 617, in declare
+    self._create_queue(nowait=nowait, channel=channel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 626, in _create_queue
+    self.queue_declare(nowait=nowait, passive=False, channel=channel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 655, in queue_declare
+    ret = channel.queue_declare(
+        queue=self.name,
+    ...<5 lines>...
+        nowait=nowait,
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\virtual\base.py", line 537, in queue_declare
+    self._new_queue(queue, **kwargs)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 167, in _new_queue
+    self._get_or_create(queue)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 146, in _get_or_create
+    obj = self.session.query(self.queue_cls) \
+          ^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 141, in session
+    _, Session = self._open()
+                 ~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 133, in _open
+    metadata.create_all(engine)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\sql\schema.py", line 5924, in create_all
+    bind._run_ddl_visitor(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        ddl.SchemaGenerator, self, checkfirst=checkfirst, tables=tables
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3251, in _run_ddl_visitor
+    with self.begin() as conn:
+         ~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3241, in begin
+    with self.connect() as conn:
+         ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3277, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        err, dialect, engine
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 2440, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 365, in __init__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 723, in connect
+    raise exc
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\CoreApplication\views.py", line 894, in post
+    fetch_collections_task.apply_async(args=[user.id])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\task.py", line 601, in apply_async
+    return app.send_task(
+           ~~~~~~~~~~~~~^
+        self.name, args, kwargs, task_id=task_id, producer=producer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        **options
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\base.py", line 930, in send_task
+    amqp.send_task_message(P, name, message, **options)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\amqp.py", line 523, in send_task_message
+    ret = producer.publish(
+        body,
+    ...<8 lines>...
+        **properties
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 190, in publish
+    return _publish(
+        body, priority, content_type, content_encoding,
+        headers, properties, routing_key, mandatory, immediate,
+        exchange_name, declare, timeout, confirm_timeout, retry, retry_policy
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 208, in _publish
+    maybe_declare(entity, retry=retry, **retry_policy)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 107, in maybe_declare
+    return maybe_declare(entity, self.channel, retry, **retry_policy)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 112, in maybe_declare
+    return _imaybe_declare(entity, channel, **retry_policy)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 169, in _imaybe_declare
+    return entity.channel.connection.client.ensure(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        entity, _maybe_declare, **retry_policy)(entity, channel)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 553, in _ensured
+    with self._reraise_as_library_errors():
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 476, in _reraise_as_library_errors
+    raise ConnectionError(str(exc)) from exc
+kombu.exceptions.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+"POST /FetchCollections/ HTTP/1.1" 500 451616
+Internal Server Error: /FetchCollections/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 661, in connect
+    sock = socket.create_connection(
+        (self.host, self.port), self.connect_timeout, **kwargs
+    )
+  File "C:\Python313\Lib\socket.py", line 864, in create_connection
+    raise exceptions[0]
+  File "C:\Python313\Lib\socket.py", line 849, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 365, in __init__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 723, in connect
+    raise exc
+pymysql.err.OperationalError: (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 472, in _reraise_as_library_errors
+    yield
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 155, in _maybe_declare
+    entity.declare(channel=channel)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 617, in declare
+    self._create_queue(nowait=nowait, channel=channel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 626, in _create_queue
+    self.queue_declare(nowait=nowait, passive=False, channel=channel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 655, in queue_declare
+    ret = channel.queue_declare(
+        queue=self.name,
+    ...<5 lines>...
+        nowait=nowait,
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\virtual\base.py", line 537, in queue_declare
+    self._new_queue(queue, **kwargs)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 167, in _new_queue
+    self._get_or_create(queue)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 146, in _get_or_create
+    obj = self.session.query(self.queue_cls) \
+          ^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 141, in session
+    _, Session = self._open()
+                 ~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 133, in _open
+    metadata.create_all(engine)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\sql\schema.py", line 5924, in create_all
+    bind._run_ddl_visitor(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        ddl.SchemaGenerator, self, checkfirst=checkfirst, tables=tables
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3251, in _run_ddl_visitor
+    with self.begin() as conn:
+         ~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3241, in begin
+    with self.connect() as conn:
+         ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3277, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        err, dialect, engine
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 2440, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 365, in __init__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 723, in connect
+    raise exc
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\CoreApplication\views.py", line 894, in post
+    fetch_collections_task.apply_async(args=[user.id])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\task.py", line 601, in apply_async
+    return app.send_task(
+           ~~~~~~~~~~~~~^
+        self.name, args, kwargs, task_id=task_id, producer=producer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        **options
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\base.py", line 930, in send_task
+    amqp.send_task_message(P, name, message, **options)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\amqp.py", line 523, in send_task_message
+    ret = producer.publish(
+        body,
+    ...<8 lines>...
+        **properties
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 190, in publish
+    return _publish(
+        body, priority, content_type, content_encoding,
+        headers, properties, routing_key, mandatory, immediate,
+        exchange_name, declare, timeout, confirm_timeout, retry, retry_policy
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 208, in _publish
+    maybe_declare(entity, retry=retry, **retry_policy)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 107, in maybe_declare
+    return maybe_declare(entity, self.channel, retry, **retry_policy)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 112, in maybe_declare
+    return _imaybe_declare(entity, channel, **retry_policy)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 169, in _imaybe_declare
+    return entity.channel.connection.client.ensure(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        entity, _maybe_declare, **retry_policy)(entity, channel)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 553, in _ensured
+    with self._reraise_as_library_errors():
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 476, in _reraise_as_library_errors
+    raise ConnectionError(str(exc)) from exc
+kombu.exceptions.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+"POST /FetchCollections/ HTTP/1.1" 500 451616
+Internal Server Error: /FetchCollections/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 661, in connect
+    sock = socket.create_connection(
+        (self.host, self.port), self.connect_timeout, **kwargs
+    )
+  File "C:\Python313\Lib\socket.py", line 864, in create_connection
+    raise exceptions[0]
+  File "C:\Python313\Lib\socket.py", line 849, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 365, in __init__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 723, in connect
+    raise exc
+pymysql.err.OperationalError: (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 472, in _reraise_as_library_errors
+    yield
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 155, in _maybe_declare
+    entity.declare(channel=channel)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 617, in declare
+    self._create_queue(nowait=nowait, channel=channel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 626, in _create_queue
+    self.queue_declare(nowait=nowait, passive=False, channel=channel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 655, in queue_declare
+    ret = channel.queue_declare(
+        queue=self.name,
+    ...<5 lines>...
+        nowait=nowait,
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\virtual\base.py", line 537, in queue_declare
+    self._new_queue(queue, **kwargs)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 167, in _new_queue
+    self._get_or_create(queue)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 146, in _get_or_create
+    obj = self.session.query(self.queue_cls) \
+          ^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 141, in session
+    _, Session = self._open()
+                 ~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 133, in _open
+    metadata.create_all(engine)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\sql\schema.py", line 5924, in create_all
+    bind._run_ddl_visitor(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        ddl.SchemaGenerator, self, checkfirst=checkfirst, tables=tables
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3251, in _run_ddl_visitor
+    with self.begin() as conn:
+         ~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3241, in begin
+    with self.connect() as conn:
+         ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3277, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        err, dialect, engine
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 2440, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 365, in __init__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 723, in connect
+    raise exc
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\CoreApplication\views.py", line 894, in post
+    fetch_collections_task.apply_async(args=[user.id])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\task.py", line 601, in apply_async
+    return app.send_task(
+           ~~~~~~~~~~~~~^
+        self.name, args, kwargs, task_id=task_id, producer=producer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        **options
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\base.py", line 930, in send_task
+    amqp.send_task_message(P, name, message, **options)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\amqp.py", line 523, in send_task_message
+    ret = producer.publish(
+        body,
+    ...<8 lines>...
+        **properties
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 190, in publish
+    return _publish(
+        body, priority, content_type, content_encoding,
+        headers, properties, routing_key, mandatory, immediate,
+        exchange_name, declare, timeout, confirm_timeout, retry, retry_policy
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 208, in _publish
+    maybe_declare(entity, retry=retry, **retry_policy)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 107, in maybe_declare
+    return maybe_declare(entity, self.channel, retry, **retry_policy)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 112, in maybe_declare
+    return _imaybe_declare(entity, channel, **retry_policy)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 169, in _imaybe_declare
+    return entity.channel.connection.client.ensure(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        entity, _maybe_declare, **retry_policy)(entity, channel)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 553, in _ensured
+    with self._reraise_as_library_errors():
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 476, in _reraise_as_library_errors
+    raise ConnectionError(str(exc)) from exc
+kombu.exceptions.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+"POST /FetchCollections/ HTTP/1.1" 500 451616
+Internal Server Error: /FetchCollections/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 661, in connect
+    sock = socket.create_connection(
+        (self.host, self.port), self.connect_timeout, **kwargs
+    )
+  File "C:\Python313\Lib\socket.py", line 864, in create_connection
+    raise exceptions[0]
+  File "C:\Python313\Lib\socket.py", line 849, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 365, in __init__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 723, in connect
+    raise exc
+pymysql.err.OperationalError: (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 472, in _reraise_as_library_errors
+    yield
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 155, in _maybe_declare
+    entity.declare(channel=channel)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 617, in declare
+    self._create_queue(nowait=nowait, channel=channel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 626, in _create_queue
+    self.queue_declare(nowait=nowait, passive=False, channel=channel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\entity.py", line 655, in queue_declare
+    ret = channel.queue_declare(
+        queue=self.name,
+    ...<5 lines>...
+        nowait=nowait,
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\virtual\base.py", line 537, in queue_declare
+    self._new_queue(queue, **kwargs)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 167, in _new_queue
+    self._get_or_create(queue)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 146, in _get_or_create
+    obj = self.session.query(self.queue_cls) \
+          ^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 141, in session
+    _, Session = self._open()
+                 ~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\transport\sqlalchemy\__init__.py", line 133, in _open
+    metadata.create_all(engine)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\sql\schema.py", line 5924, in create_all
+    bind._run_ddl_visitor(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        ddl.SchemaGenerator, self, checkfirst=checkfirst, tables=tables
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3251, in _run_ddl_visitor
+    with self.begin() as conn:
+         ~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3241, in begin
+    with self.connect() as conn:
+         ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3277, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        err, dialect, engine
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 2440, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\base.py", line 3301, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\sqlalchemy\engine\default.py", line 629, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 365, in __init__
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\pymysql\connections.py", line 723, in connect
+    raise exc
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\CoreApplication\views.py", line 894, in post
+    fetch_collections_task.apply_async(args=[user.id])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\task.py", line 601, in apply_async
+    return app.send_task(
+           ~~~~~~~~~~~~~^
+        self.name, args, kwargs, task_id=task_id, producer=producer,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        **options
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\base.py", line 930, in send_task
+    amqp.send_task_message(P, name, message, **options)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\celery\app\amqp.py", line 523, in send_task_message
+    ret = producer.publish(
+        body,
+    ...<8 lines>...
+        **properties
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 190, in publish
+    return _publish(
+        body, priority, content_type, content_encoding,
+        headers, properties, routing_key, mandatory, immediate,
+        exchange_name, declare, timeout, confirm_timeout, retry, retry_policy
+    )
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 208, in _publish
+    maybe_declare(entity, retry=retry, **retry_policy)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\messaging.py", line 107, in maybe_declare
+    return maybe_declare(entity, self.channel, retry, **retry_policy)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 112, in maybe_declare
+    return _imaybe_declare(entity, channel, **retry_policy)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\common.py", line 169, in _imaybe_declare
+    return entity.channel.connection.client.ensure(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        entity, _maybe_declare, **retry_policy)(entity, channel)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 553, in _ensured
+    with self._reraise_as_library_errors():
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\kombu\connection.py", line 476, in _reraise_as_library_errors
+    raise ConnectionError(str(exc)) from exc
+kombu.exceptions.OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+"POST /FetchCollections/ HTTP/1.1" 500 451616
+Internal Server Error: /InOrderDetails/
+"POST /InOrderDetails/ HTTP/1.1" 500 73
+Internal Server Error: /inventory/reorder/report/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\InventoryAPI\views.py", line 71, in inventory_reorder_report
+    user, error = get_user_from_token(request)
+                  ^^^^^^^^^^^^^^^^^^^
+NameError: name 'get_user_from_token' is not defined
+"POST /inventory/reorder/report/ HTTP/1.1" 500 75948
+Internal Server Error: /inventory/reorder/report/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\InventoryAPI\views.py", line 71, in inventory_reorder_report
+    user, error = get_user_from_token(request)
+                  ^^^^^^^^^^^^^^^^^^^
+NameError: name 'get_user_from_token' is not defined
+"POST /inventory/reorder/report/ HTTP/1.1" 500 75948
+Internal Server Error: /inventory/reorder/report/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\InventoryAPI\views.py", line 71, in inventory_reorder_report
+    for po in PurchaseOrder.objects.filter(company_id=company.company_id, sku_id__in=forecast_skus):
+                                                      ^^^^^^^^^^^^^^^^^^
+AttributeError: 'CompanyUser' object has no attribute 'company_id'. Did you mean: 'company'?
+"POST /inventory/reorder/report/ HTTP/1.1" 500 78251
+Internal Server Error: /inventory/reorder/report/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\InventoryAPI\views.py", line 52, in inventory_reorder_report
+    user, error = get_user_from_token(request)
+                  ^^^^^^^^^^^^^^^^^^^
+NameError: name 'get_user_from_token' is not defined
+"POST /inventory/reorder/report/ HTTP/1.1" 500 76052
+Internal Server Error: /inventory/reorder/report/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\InventoryAPI\views.py", line 74, in inventory_reorder_report
+    forecast_skus = [normalize_sku(f.sku) for f in latest_forecasts]
+                     ^^^^^^^^^^^^^
+NameError: name 'normalize_sku' is not defined
+"POST /inventory/reorder/report/ HTTP/1.1" 500 77521
+Internal Server Error: /dashboard/overview/
+"GET /dashboard/overview/ HTTP/1.1" 500 72
+Internal Server Error: /dashboard/overview/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\InventoryAPI\views.py", line 596, in CompanyDashboardMetricsView
+    order = Order.objects.filter(company=user).first()
+            ^^^^^
+NameError: name 'Order' is not defined
+"GET /dashboard/overview/ HTTP/1.1" 500 77245
+Internal Server Error: /dashboard/overview/
+Traceback (most recent call last):
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\trooba\backend\WebhooksDone\TroobaEnvi\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\trooba\backend\WebhooksDone\InventoryAPI\views.py", line 608, in CompanyDashboardMetricsView
+    order = Order.objects.filter(company=user).first()
+            ^^^^^
+NameError: name 'Order' is not defined
+"GET /dashboard/overview/ HTTP/1.1" 500 77245
