@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('Testingproject.urls')),
     path('', include('InventoryAPI.urls')),
     path('',include('vectordb.urls')),
+    path("admin_dashboard/", include("Admin.urls")),
 ]
 
 

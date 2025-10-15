@@ -631,7 +631,6 @@ def get_need_reordering(request):
     }, safe=False)
 
 
-
 import statistics
 from collections import OrderedDict
 from datetime import datetime, date
@@ -643,8 +642,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from CoreApplication.models import (
-    CompanyUser, Order, OrderLineItem, Product,
-
+    CompanyUser, Order, OrderLineItem, Product, ProductVariant
 )
 from Testingproject.models import SKUForecastMetrics, SKUForecastHistory
 from CoreApplication.views import get_user_from_token
@@ -731,6 +729,13 @@ def CompanyDashboardMetricsView(request):
         products = Product.objects.filter(company=user, shopify_id__in=product_ids)
         product_categories = {p.shopify_id: p.product_type or "Unknown" for p in products}
 
+        # Map variant_id to SKU
+        product_variants = ProductVariant.objects.filter(
+            company=user,
+            shopify_id__in=[item.variant_id for item in line_items if item.variant_id]
+        )
+        variant_to_sku = {v.shopify_id: v.sku for v in product_variants}
+
         category_units = {}
         category_revenue = {}
         category_skus = {}
@@ -741,7 +746,9 @@ def CompanyDashboardMetricsView(request):
             category_revenue[category] = category_revenue.get(category, 0) + (item.total or 0)
             if category not in category_skus:
                 category_skus[category] = set()
-            category_skus[category].add(str(item.variant_id))
+            sku = variant_to_sku.get(item.variant_id)
+            if sku:
+                category_skus[category].add(sku)
 
         top_categories = sorted(category_units.items(), key=lambda x: x[1], reverse=True)[:5]
 

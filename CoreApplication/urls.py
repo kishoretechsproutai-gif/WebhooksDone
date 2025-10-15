@@ -11,7 +11,7 @@ urlpatterns = [
     path('PromotionalExcel/',UploadPromotionalDataView.as_view(),name='PromotionalExcel'),
     path('FetchCollections/',FetchCollectionsView.as_view(),name='FetchCollections'),
     path('TrainVectorDB/', TrainVectorDBView.as_view(), name='TrainVectorDB'),
-    path('VectorDBSearch/', VectorDBSearchView.as_view(), name='VectorDBSearch'), #Using same view as it has both get n post methods
+    path('VectorDBSearch/', VectorDBSearchView.as_view(), name='VectorDBSearch'), 
     path('InOrderDetails/',UploadPurchaseOrderView.as_view(),name='InOrderDetails'),
 ]
 

@@ -451,7 +451,7 @@ def manual_forecast(request):
             )
             .values("variant_id")
             .annotate(total_qty=Sum("quantity"))
-            .order_by("-total_qty")[:3]
+            .order_by("-total_qty")[:50]
         )
 
         for sku_data in sku_sales:
