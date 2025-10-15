@@ -9,6 +9,7 @@ import chromadb
 from CoreApplication.models import Order, OrderLineItem
 from CoreApplication.views import get_user_from_token
 
+#Working version 1.0
 # Initialize model once
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
