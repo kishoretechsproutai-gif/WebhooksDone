@@ -948,7 +948,7 @@ def safe_bool(val):
 
 
 @shared_task(bind=True, max_retries=3)
-def train_vector_db_task(self, company_user_id):
+def train_vector_db_task(self, previous_result,company_user_id):
     logger.info(
         f"🚀 Starting Vector DB training for company_user_id={company_user_id}")
 
